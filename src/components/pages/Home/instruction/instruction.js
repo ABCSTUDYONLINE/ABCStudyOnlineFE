@@ -84,6 +84,7 @@ function Instruction() {
               fontWeight: 400,
               lineHeight: 1.7,
               opacity: 0.95,
+              maxWidth: "90%",
             }}
           >
             An nec placerat repudiare scripserit, temporibus complectitur at
@@ -125,6 +126,7 @@ function Instruction() {
               fontWeight: 400,
               lineHeight: 1.7,
               opacity: 0.95,
+              maxWidth: "90%",
             }}
           >
             An nec placerat repudiare scripserit, temporibus complectitur at
@@ -166,6 +168,7 @@ function Instruction() {
               fontWeight: 400,
               lineHeight: 1.7,
               opacity: 0.95,
+              maxWidth: "90%",
             }}
           >
             An nec placerat repudiare scripserit, temporibus complectitur at

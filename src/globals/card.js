@@ -80,6 +80,24 @@ const styles = {
       backgroundColor: "#fff",
     },
   },
+  cardSocialMedia: {
+    color: "#fff",
+    textAlign: "center",
+    "&:hover": {
+      color: "#ff1949",
+      backgroundColor: "#fff",
+    },
+  },
+  cardFooterText: {
+    fontSize: 15,
+    fontWeight: 400,
+    color: "#ccc",
+    lineHeight: 1.6,
+    marginBottom: 10,
+    "&:hover": {
+      color: "#ff1949",
+    },
+  },
 };
 
 function CardActionContainer({ classes, className, ...props }) {
@@ -110,7 +128,12 @@ function CardButtonTextContainer({ classes, ...props }) {
 function CardIconContainer({ classes, ...props }) {
   return <div className={classes.cardIcon} {...props}></div>;
 }
-
+function CardSocialMediaContainer({ classes, ...props }) {
+  return <div className={classes.cardSocialMedia} {...props}></div>;
+}
+function CardFooterTextContainer({ classes, ...props }) {
+  return <div className={classes.cardFooterText} {...props}></div>;
+}
 export const CardAction = withStyles(styles)(CardActionContainer);
 export const CardButton = injectSheet(styles)(CardButtonContainer);
 export const CardImageBackground = injectSheet(styles)(
@@ -120,3 +143,5 @@ export const Card = injectSheet(styles)(CardContainer);
 export const CardButtonItem = injectSheet(styles)(CardButtonItemContainer);
 export const CardButtonText = withStyles(styles)(CardButtonTextContainer);
 export const CardIcon = injectSheet(styles)(CardIconContainer);
+export const CardSocialMedia = injectSheet(styles)(CardSocialMediaContainer);
+export const CardFooterText = injectSheet(styles)(CardFooterTextContainer);
