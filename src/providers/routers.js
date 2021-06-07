@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { ButtonScrollTop } from "../components/comon/ButtonScrollToTop";
 import Footer from "../components/comon/footer/footer";
 import Header from "../components/comon/header/header";
 import { HomePage, LoginPage } from "../pages/index";
@@ -29,6 +30,7 @@ export function Routers() {
         </div>
       </Router>
       <Footer />
+      <ButtonScrollTop />
     </div>
   );
 }
