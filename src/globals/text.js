@@ -20,6 +20,16 @@ const styles = {
     lineHeight: 1.5,
     color: "#212529",
   },
+  forgotPassword: {
+    color: "#ff1949",
+    fontSize: 13,
+    fontWeight: 400,
+    lineHeight: 1.5,
+    "&:hover": {
+      color: "#0eb582",
+    },
+    cursor: "pointer",
+  },
 };
 
 function RedTextCointainer({ classes, ...props }) {
@@ -31,7 +41,11 @@ function BlackTextCointainer({ classes, ...props }) {
 function GrayTextCointainer({ classes, ...props }) {
   return <div className={classes.grayText} {...props}></div>;
 }
+function ForgotPasswordContainer({ classes, ...props }) {
+  return <div className={classes.forgotPassword} {...props}></div>;
+}
 
 export const RedText = withStyles(styles)(RedTextCointainer);
 export const BlackText = injectSheet(styles)(BlackTextCointainer);
 export const GrayText = injectSheet(styles)(GrayTextCointainer);
+export const ForgotPassword = injectSheet(styles)(ForgotPasswordContainer);
