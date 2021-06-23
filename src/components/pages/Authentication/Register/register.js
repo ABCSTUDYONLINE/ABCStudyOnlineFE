@@ -8,25 +8,37 @@ import {
   GrayText,
 } from "../../../../globals";
 
-function Login() {
+function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   return (
     <div style={{ display: "flex" }}>
       <img
-        src="/assets/login-bg.jpg"
+        src="/assets/register-bg.jpg"
         alt=""
         style={{
           height: "auto",
           width: "50%",
         }}
       />
-      <div style={{ textAlign: "center", width: "50%", padding: 60 }}>
+      <div style={{ width: "50%", padding: 60, textAlign: "center" }}>
         <BlackText>LOGO Team</BlackText>
-        <BlackText style={{ fontSize: 35, fontWeight: 700, marginTop: 30 }}>
-          Welcome back
-        </BlackText>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <BlackText
+            style={{
+              fontSize: 35,
+              fontWeight: 700,
+              marginTop: 30,
+              flexWrap: "wrap",
+              maxWidth: 450,
+              textAlign: "center",
+            }}
+          >
+            Open up your Academy Account now
+          </BlackText>
+        </div>
+
         <div
           style={{
             display: "flex",
@@ -35,7 +47,7 @@ function Login() {
             fontSize: 15,
           }}
         >
-          <GrayText>New to Academy?</GrayText>
+          <GrayText>Aldready signed up?</GrayText>
           <CardButtonText
             style={{
               cursor: "pointer",
@@ -45,7 +57,7 @@ function Login() {
               margin: 0,
             }}
           >
-            Sign up
+            Log in
           </CardButtonText>
         </div>
         <form style={{ marginTop: 32 }}>
@@ -60,7 +72,7 @@ function Login() {
             }}
           />
           <TextField
-            label="Password"
+            label="Create a password"
             variant="outlined"
             margin="dense"
             type="password"
@@ -78,18 +90,11 @@ function Login() {
               fontSize: 15,
             }}
           >
-            Login
+            Sign Up
           </CardButton>
-          <div>
-            <ForgotPassword
-              style={{ textAlign: "end", marginTop: 20, fontSize: 15 }}
-            >
-              Forgot Password?
-            </ForgotPassword>
-          </div>
         </form>
       </div>
     </div>
   );
 }
-export default Login;
+export default Register;

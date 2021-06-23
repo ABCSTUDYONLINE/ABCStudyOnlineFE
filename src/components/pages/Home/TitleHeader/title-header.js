@@ -10,8 +10,8 @@ function TitleHeader({ title }) {
         marginBottom: 30,
       }}
     >
-      <RedText style={{ marginBottom: 10 }}>{title}</RedText>
-      <BlackText>Trending Courses</BlackText>
+      <RedText style={{ marginBottom: 10 }}>DISCOVER COURSES</RedText>
+      <BlackText>{title}</BlackText>
       <CardButton
         style={{
           position: "absolute",

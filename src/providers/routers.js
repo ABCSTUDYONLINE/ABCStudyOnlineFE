@@ -2,7 +2,12 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { ButtonScrollTop } from "../components/comon/ButtonScrollToTop";
 import Footer from "../components/comon/footer/footer";
 import Header from "../components/comon/header/header";
-import { HomePage, LoginPage } from "../pages/index";
+import {
+  HomePage,
+  LoginPage,
+  CategoryPage,
+  RegisterPage,
+} from "../pages/index";
 
 export function Routers() {
   return (
@@ -17,6 +22,9 @@ export function Routers() {
             <li>
               <Link to="/login">Login</Link>
             </li>
+            <li>
+              <Link to="/categoryPage">Category</Link>
+            </li>
           </ul>
           <hr />
           <Switch>
@@ -25,6 +33,12 @@ export function Routers() {
             </Route>
             <Route path="/login">
               <LoginPage />
+            </Route>
+            <Route path="/register">
+              <RegisterPage />
+            </Route>
+            <Route path="/categoryPage">
+              <CategoryPage />
             </Route>
           </Switch>
         </div>

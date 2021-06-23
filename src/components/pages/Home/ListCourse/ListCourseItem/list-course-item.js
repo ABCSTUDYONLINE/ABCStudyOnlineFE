@@ -11,7 +11,7 @@ import StarRatings from "react-star-ratings";
 import PermIdentityIcon from "@material-ui/icons/PermIdentity";
 import ImportContactsIcon from "@material-ui/icons/ImportContacts";
 
-function ListCourseItem({ course }) {
+function ListCourseItem({ course, style }) {
   return (
     <Card
       style={{
@@ -20,6 +20,7 @@ function ListCourseItem({ course }) {
         marginRight: 16,
         marginTop: 32,
         marginBottom: 32,
+        ...style,
       }}
     >
       <CardButtonItem
