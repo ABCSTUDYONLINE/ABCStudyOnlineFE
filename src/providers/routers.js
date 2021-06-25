@@ -7,6 +7,7 @@ import {
   LoginPage,
   CategoryPage,
   RegisterPage,
+  CourseDetailPage,
 } from "../pages/index";
 
 export function Routers() {
@@ -39,6 +40,9 @@ export function Routers() {
             </Route>
             <Route path="/categoryPage">
               <CategoryPage />
+            </Route>
+            <Route path="/courseDetailPage">
+              <CourseDetailPage />
             </Route>
           </Switch>
         </div>
