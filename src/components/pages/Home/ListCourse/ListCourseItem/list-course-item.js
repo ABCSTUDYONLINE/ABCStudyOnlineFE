@@ -10,8 +10,10 @@ import {
 import StarRatings from "react-star-ratings";
 import PermIdentityIcon from "@material-ui/icons/PermIdentity";
 import ImportContactsIcon from "@material-ui/icons/ImportContacts";
+import { useHistory } from "react-router-dom";
 
 function ListCourseItem({ course, style }) {
+  let history = useHistory();
   return (
     <Card
       style={{
@@ -71,8 +73,12 @@ function ListCourseItem({ course, style }) {
             fontWeight: 600,
             lineHeight: 1.5,
           }}
+          onClick={() => {
+            history.push(`/courseDetailPage`);
+            window.scrollTo({ top: 0 });
+          }}
         >
-          Raque Professional IT Expert Certificate Course
+          {course.title}
         </CardButtonText>
         <div
           style={{
@@ -81,7 +87,7 @@ function ListCourseItem({ course, style }) {
           }}
         >
           <StarRatings
-            rating={4.5}
+            rating={course.ratedPoint}
             starRatedColor="#ffc107"
             numberOfStars={5}
             starDimension="16px"
@@ -92,7 +98,7 @@ function ListCourseItem({ course, style }) {
               marginLeft: 4,
             }}
           >
-            4.5 (1 rating)
+            {`${course.ratedPoint} (${course.ratedNumber} rating)`}
           </GrayText>
         </div>
         <div
@@ -115,13 +121,15 @@ function ListCourseItem({ course, style }) {
           >
             <div style={{ display: "flex", alignItems: "center" }}>
               <PermIdentityIcon></PermIdentityIcon>
-              <div>10 students</div>
+              <div>{`${course.studentNumber} students`}</div>
             </div>
             <div style={{ display: "flex", alignItems: "center" }}>
               <ImportContactsIcon></ImportContactsIcon>
               <div style={{ marginLeft: 5 }}>6 lessons</div>
             </div>
-            <RedText style={{ fontSize: 18, fontWeight: 500 }}>$200</RedText>
+            <RedText
+              style={{ fontSize: 18, fontWeight: 500 }}
+            >{`$${course.price}`}</RedText>
           </div>
         </div>
       </div>
