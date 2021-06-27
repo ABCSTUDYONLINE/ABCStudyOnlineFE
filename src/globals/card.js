@@ -98,6 +98,42 @@ const styles = {
       color: "#ff1949",
     },
   },
+  cardButtonLogin: {
+    background: "#fff",
+    border: "medium none",
+    color: "#ff1949",
+    cursor: "pointer",
+    fontSize: 14.5,
+    fontWeight: 700,
+    borderRadius: 1,
+    padding: "13px 25px 12px 25px",
+    // lineHeight: 36,
+    textTransform: "capitalize",
+    "&:hover": {
+      background: "#000",
+      color: "#fff",
+    },
+  },
+  cardDropCategory: {
+    color: "#252525",
+    fontSize: 16.5,
+    fontWeight: 500,
+    cursor: "pointer",
+    borderBottom: "2px solid #eee",
+    "&:hover": {
+      color: "#ff1949",
+    },
+  },
+  cardSocialMediaDashboard: {
+    color: "#ff1949",
+    backgroundColor: "#f4f4f4",
+    textAlign: "center",
+    marginRight: 2,
+    "&:hover": {
+      color: "#fff",
+      backgroundColor: "#ff1949",
+    },
+  },
 };
 
 function CardActionContainer({ classes, className, ...props }) {
@@ -134,6 +170,18 @@ function CardSocialMediaContainer({ classes, ...props }) {
 function CardFooterTextContainer({ classes, ...props }) {
   return <div className={classes.cardFooterText} {...props}></div>;
 }
+function CardButtonLoginContainer({ classes, ...props }) {
+  return <button className={classes.cardButtonLogin} {...props} />;
+}
+function CardDropCategoryContainer({ classes, ...props }) {
+  return (
+    <Typography className={classes.cardDropCategory} {...props}></Typography>
+  );
+}
+function CardSocialMediaDashboardContainer({ classes, ...props }) {
+  return <div className={classes.cardSocialMediaDashboard} {...props}></div>;
+}
+
 export const CardAction = withStyles(styles)(CardActionContainer);
 export const CardButton = injectSheet(styles)(CardButtonContainer);
 export const CardImageBackground = injectSheet(styles)(
@@ -145,3 +193,10 @@ export const CardButtonText = withStyles(styles)(CardButtonTextContainer);
 export const CardIcon = injectSheet(styles)(CardIconContainer);
 export const CardSocialMedia = injectSheet(styles)(CardSocialMediaContainer);
 export const CardFooterText = injectSheet(styles)(CardFooterTextContainer);
+
+export const CardButtonLogin = injectSheet(styles)(CardButtonLoginContainer);
+export const CardDropCategory = injectSheet(styles)(CardDropCategoryContainer);
+
+export const CardSocialMediaDashboard = injectSheet(styles)(
+  CardSocialMediaDashboardContainer
+);

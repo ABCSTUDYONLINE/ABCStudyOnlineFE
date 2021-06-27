@@ -31,7 +31,7 @@ export function ButtonScrollTop() {
             background: "black",
             position: "fixed",
             bottom: 32,
-            right: 32,
+            right: 96,
           }}
           onClick={scrollToTop}
         >
