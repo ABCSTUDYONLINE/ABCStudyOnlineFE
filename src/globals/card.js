@@ -83,6 +83,7 @@ const styles = {
   cardSocialMedia: {
     color: "#fff",
     textAlign: "center",
+    cursor: "pointer",
     "&:hover": {
       color: "#ff1949",
       backgroundColor: "#fff",
@@ -129,6 +130,7 @@ const styles = {
     backgroundColor: "#f4f4f4",
     textAlign: "center",
     marginRight: 2,
+    cursor: "pointer",
     "&:hover": {
       color: "#fff",
       backgroundColor: "#ff1949",

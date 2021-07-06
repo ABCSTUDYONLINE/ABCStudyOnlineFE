@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   BlackText,
   CardFooterText,
   CardSocialMediaDashboard,
+  CardButton,
 } from "../../../../globals/index";
 import PhoneInTalkIcon from "@material-ui/icons/PhoneInTalk";
 import MailIcon from "@material-ui/icons/Mail";
@@ -12,7 +13,20 @@ import TwitterIcon from "@material-ui/icons/Twitter";
 import InstagramIcon from "@material-ui/icons/Instagram";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import PinterestIcon from "@material-ui/icons/Pinterest";
+import Paper from "@material-ui/core/Paper";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import DashboardIcon from "@material-ui/icons/Dashboard";
+import TabPanel from "./TabPanel/tab-panel";
+import EditIcon from "@material-ui/icons/Edit";
+import AccountDetailPanel from "./TabPanel/AccountDetailPanel/account-detail-panel";
 function MyDashboard() {
+  const [value, setValue] = useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
   return (
     <div style={{ padding: "100px 75px 100px 75px" }}>
       <div
@@ -138,9 +152,35 @@ function MyDashboard() {
                 <PinterestIcon style={{ fontSize: 30, padding: 3 }} />
               </CardSocialMediaDashboard>
             </div>
+            <div style={{ marginTop: 25 }}>
+              <CardButton style={{ borderRadius: 4 }}>
+                <div>Logout</div>
+              </CardButton>
+            </div>
           </div>
         </div>
       </div>
+      <Paper square style={{ flexGrow: 1 }}>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          variant="fullWidth"
+          indicatorColor="secondary"
+          textColor="secondary"
+          aria-label="icon label tabs example"
+        >
+          <Tab icon={<DashboardIcon />} label="DASHboard" />
+          <Tab icon={<FavoriteIcon />} label="FAVORITES" />
+          <Tab icon={<EditIcon />} label="Account Details" />
+        </Tabs>
+      </Paper>
+      <TabPanel value={value} index={0} content={"hello dashboard"}></TabPanel>
+      <TabPanel value={value} index={1} content={"hello favorites"}></TabPanel>
+      <AccountDetailPanel
+        value={value}
+        index={2}
+        content={"hello Account details"}
+      ></AccountDetailPanel>
     </div>
   );
 }
