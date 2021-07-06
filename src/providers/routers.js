@@ -17,7 +17,7 @@ export function Routers() {
       <Header />
       <Router>
         <div>
-          <ul>
+          {/* <ul>
             <li>
               <Link to="/">Home</Link>
             </li>
@@ -28,7 +28,7 @@ export function Routers() {
               <Link to="/categoryPage">Category</Link>
             </li>
           </ul>
-          <hr />
+          <hr /> */}
           <Switch>
             <Route exact path="/">
               <HomePage />
