@@ -8,9 +8,8 @@ import {
   GrayText,
 } from "../../../../globals";
 
-function Login() {
+function Verify() {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
   return (
     <div style={{ display: "flex" }}>
@@ -25,7 +24,7 @@ function Login() {
       <div style={{ textAlign: "center", width: "50%", padding: 60 }}>
         <BlackText>LOGO Team</BlackText>
         <BlackText style={{ fontSize: 35, fontWeight: 700, marginTop: 30 }}>
-          Welcome back
+          Verify Your Identify
         </BlackText>
         <div
           style={{
@@ -35,24 +34,11 @@ function Login() {
             fontSize: 15,
           }}
         >
-          <GrayText>New to Academy?</GrayText>
-          <CardButtonText
-            style={{
-              cursor: "pointer",
-              fontSize: 15,
-              fontWeight: 400,
-              lineHeight: 1.5,
-              margin: 0,
-              marginLeft: 5,
-            }}
-          >
-            Sign up
-          </CardButtonText>
+          <GrayText>We've sent an email with your code to your email</GrayText>
         </div>
-
         <form style={{ marginTop: 32 }}>
           <TextField
-            label="Your email address"
+            label="Enter the code"
             variant="outlined"
             margin="dense"
             fullWidth
@@ -61,17 +47,7 @@ function Login() {
               setEmail(e.target.value);
             }}
           />
-          <TextField
-            label="Password"
-            variant="outlined"
-            margin="dense"
-            type="password"
-            fullWidth
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-          />
+
           <CardButton
             style={{
               width: "100%",
@@ -80,26 +56,19 @@ function Login() {
               fontSize: 15,
             }}
           >
-            Login
+            Continue
           </CardButton>
-          <div>
-            <ForgotPassword
-              style={{ textAlign: "end", marginTop: 20, fontSize: 15 }}
-            >
-              Forgot Password?
+          <div
+            style={{ display: "flex", marginTop: 20, justifyContent: "center" }}
+          >
+            <div style={{ fontSize: 15 }}>Didn't receive an email? </div>
+            <ForgotPassword style={{ fontSize: 15, marginLeft: 5 }}>
+              Resend
             </ForgotPassword>
           </div>
         </form>
-        <div>
-          <div style={{}}>Or</div>
-          <CardButton
-            style={{ borderRadius: 4, marginTop: 20, marginBottom: 20 }}
-          >
-            <div>Login With Google</div>
-          </CardButton>
-        </div>
       </div>
     </div>
   );
 }
-export default Login;
+export default Verify;

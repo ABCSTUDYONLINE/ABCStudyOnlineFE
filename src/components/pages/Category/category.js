@@ -1,4 +1,5 @@
 import React from "react";
+import { Grid } from "@material-ui/core";
 import ListCourseItem from "../Home/ListCourse/ListCourseItem/list-course-item";
 
 function Category() {
@@ -121,23 +122,19 @@ function Category() {
       }}
     >
       <div>Category Filter</div>
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "space-between",
-        }}
-      >
+      <Grid container spacing={0}>
         {courses.map((course) => {
           return (
-            <ListCourseItem
-              key={course.id}
-              course={course}
-              style={{ maxWidth: 280 }}
-            />
+            <Grid item xs={3}>
+              <ListCourseItem
+                key={course.id}
+                style={{ maxWidth: 280 }}
+                course={course}
+              />
+            </Grid>
           );
         })}
-      </div>
+      </Grid>
     </div>
   );
 }

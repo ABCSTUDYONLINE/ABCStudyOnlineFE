@@ -36,7 +36,7 @@ function PanelCourse() {
       <Carousel
         responsive={responsive}
         showDots={true}
-        style={{ marginTop: 15, display: "flex", justifyContent: "flex-start" }}
+        style={{ marginTop: 15, display: "flex" }}
       >
         {temp.map((i) => (
           <ListCourseItem
