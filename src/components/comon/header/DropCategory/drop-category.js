@@ -15,6 +15,7 @@ function Dropbox({ open, anchorEl }) {
   return (
     <Popper
       open={open}
+      style={{ zIndex: 2300 }}
       anchorEl={anchorEl}
       placement={"bottom-start"}
       transition
@@ -58,6 +59,7 @@ function Dropbox({ open, anchorEl }) {
     </Popper>
   );
 }
+
 function DropBoxItem({ subItems, children }) {
   const [subMenuAnchorEl, setsubMenuAnchorEl] = useState(null);
   return (
@@ -125,7 +127,12 @@ function DropCategory() {
       }}
     >
       <CardDropCategory
-        style={{ display: "flex", alignItems: "center", borderBottom: "0" }}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          borderBottom: "0",
+          marginRight: 20,
+        }}
       >
         <Typography>Category</Typography>
         <KeyboardArrowDownIcon></KeyboardArrowDownIcon>
