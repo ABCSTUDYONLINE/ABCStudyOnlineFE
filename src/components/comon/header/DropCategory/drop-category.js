@@ -14,7 +14,7 @@ import KeyboardArrowRightIcon from "@material-ui/icons/KeyboardArrowRight";
 function Dropbox({ open, anchorEl }) {
   return (
     <Popper
-      open={true}
+      open={open}
       style={{ zIndex: 2300 }}
       anchorEl={anchorEl}
       placement={"bottom-start"}

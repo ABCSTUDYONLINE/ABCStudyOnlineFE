@@ -2,6 +2,7 @@ import React from "react";
 // import { BlackText } from "../../../../../../globals/index";
 import ListCourseItem from "../../../../Home/ListCourse/ListCourseItem/list-course-item";
 import Carousel from "react-multi-carousel";
+import { Grid } from "@material-ui/core";
 
 function PanelCourse() {
   const temp = [1, 2, 3, 4];
@@ -33,19 +34,23 @@ function PanelCourse() {
   };
   return (
     <div style={{ marginTop: 30 }}>
+      {/* <Grid container spacing={0}></Grid> */}
       <Carousel
         responsive={responsive}
         showDots={true}
         style={{ marginTop: 15, display: "flex" }}
-      >
+      >       
         {temp.map((i) => (
+          // <Grid item xs={6}>
           <ListCourseItem
             key={temp[i]}
             course={course}
             style={{ maxWidth: 280 }}
           />
+          // </Grid
         ))}
       </Carousel>
+      {/* </Grid> */}
     </div>
   );
 }

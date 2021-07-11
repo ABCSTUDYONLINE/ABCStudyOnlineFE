@@ -15,8 +15,8 @@ import {
 export function Routers() {
   return (
     <div>
-      <Header />
       <Router>
+        <Header />
         <div>
           {/* <ul>
             <li>

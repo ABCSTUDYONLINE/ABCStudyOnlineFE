@@ -31,7 +31,7 @@ function Register() {
   const userInfo = useSelector((state) => state.Authentication.userInfo);
   let history = useHistory();
   const registerStatus = useSelector(
-    (state) => state.Authentication.registerSuccess
+    (state) => state.Authentication.registerStatus
   );
 
   const validateAll = () => {
@@ -75,10 +75,19 @@ function Register() {
         phoneNumber,
         address
       )
-    ).then(() => {
-      dispatch(ApiSendEmail(email)).then(() => {
-        history.push("/verify");
-      });
+    ).then((response) => {
+      console.log(response);
+      if (response?.status === 201) {
+        dispatch(ApiSendEmail(email)).then(() => {
+          history.push("/verify", {
+            email: email,
+          });
+        });
+      } else {
+        const msg = {};
+        msg.email = "Email already exists";
+        setValidationMsg(msg);
+      }
     });
   };
 
@@ -125,6 +134,9 @@ function Register() {
               fontWeight: 400,
               lineHeight: 1.5,
               margin: 0,
+            }}
+            onClick={() => {
+              history.push("/login");
             }}
           >
             Log in
@@ -226,6 +238,7 @@ function Register() {
             onChange={(e) => {
               setPhoneNumber(e.target.value);
             }}
+            type="number"
             error={!!validationMsg.phoneNumber}
             helperText={validationMsg.phoneNumber || ""}
           />

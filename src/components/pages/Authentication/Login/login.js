@@ -1,5 +1,8 @@
 import { TextField } from "@material-ui/core";
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import isEmpty from "validator/lib/isEmpty";
 import {
   BlackText,
   CardButton,
@@ -7,10 +10,55 @@ import {
   ForgotPassword,
   GrayText,
 } from "../../../../globals";
+import {
+  ApiLogin,
+  ApiUsersMe,
+} from "../../../../lib/redux/actions/authentication";
 
 function Login() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [validationMsg, setValidationMsg] = useState({});
+
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const accessToken = useSelector((state) => state.Authentication.accessToken);
+
+  const validateAll = () => {
+    const msg = {};
+    if (isEmpty(username)) {
+      msg.username = "Please input your username";
+    }
+    if (isEmpty(password)) {
+      msg.password = "Please input your Password";
+    }
+    setValidationMsg(msg);
+    if (Object.keys(msg).length > 0) return false;
+    return true;
+  };
+
+  const onSubmitLogin = () => {
+    const isValid = validateAll();
+    if (!isValid) return;
+    dispatch(ApiLogin(username, password)).then((response) => {
+      if (response?.status === 201) {
+        console.log("login thanh cong voi response: ", response);
+        console.log(
+          "login thanh cong voi accessToken: ",
+          response.data.access_token
+        );
+        dispatch(ApiUsersMe(response.data.access_token));
+        history.push("/");
+      } else {
+        console.log("login that bai voi response: ", response);
+        const msg = {};
+        msg.username = "Username is incorrect!";
+        msg.password = "password is incorrect!";
+        setValidationMsg(msg);
+      }
+    });
+  };
 
   return (
     <div style={{ display: "flex" }}>
@@ -45,6 +93,9 @@ function Login() {
               margin: 0,
               marginLeft: 5,
             }}
+            onClick={()=>{
+              history.push('register');
+            }}
           >
             Sign up
           </CardButtonText>
@@ -56,10 +107,12 @@ function Login() {
             variant="outlined"
             margin="dense"
             fullWidth
-            value={email}
+            value={username}
             onChange={(e) => {
-              setEmail(e.target.value);
+              setUsername(e.target.value);
             }}
+            error={!!validationMsg.username}
+            helperText={validationMsg.username || ""}
           />
           <TextField
             label="Password"
@@ -71,6 +124,8 @@ function Login() {
             onChange={(e) => {
               setPassword(e.target.value);
             }}
+            error={!!validationMsg.password}
+            helperText={validationMsg.password || ""}
           />
           <CardButton
             style={{
@@ -79,6 +134,8 @@ function Login() {
               borderRadius: 4,
               fontSize: 15,
             }}
+            type="button"
+            onClick={onSubmitLogin}
           >
             Login
           </CardButton>
@@ -93,9 +150,9 @@ function Login() {
         <div>
           <div style={{}}>Or</div>
           <CardButton
-            style={{ borderRadius: 4, marginTop: 20, marginBottom: 20 }}
+            style={{ borderRadius: 4, marginTop: 40, marginBottom: 20,width:"100%",borderColor:"#3b5998",boxShadow:"0 5px 28.5px 1.5px rgb(59 89 152 / 20%)" }}
           >
-            <div>Login With Google</div>
+            <div>Connect With Google</div>
           </CardButton>
         </div>
       </div>

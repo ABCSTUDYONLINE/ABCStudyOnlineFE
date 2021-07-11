@@ -3,9 +3,11 @@ import Search from "./Search/search";
 import { CardButton } from "../../../globals/index";
 import DropCategory from "./DropCategory/drop-category";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
+import { useHistory } from "react-router-dom";
 
 function Header() {
   const temp = false;
+  const history = useHistory();
   return (
     <div
       style={{
@@ -50,6 +52,10 @@ function Header() {
               marginRight: 4,
               borderRadius: "50%",
               cursor: "pointer",
+            }}
+            onClick={() => {
+              history.push("/myDashboardPage");
+              window.scrollTo({ top: 0 });
             }}
           />
         </div>
