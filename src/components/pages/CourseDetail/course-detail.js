@@ -177,7 +177,7 @@ function CourseDetail() {
           <CourseAdditionalInformation />
           <InstructorSection />
           <Comments />
-          <RelatedCourses />
+          <RelatedCourses caseTitle={'Related Courses'} />
         </div>
         <CourseContent />
       </div>

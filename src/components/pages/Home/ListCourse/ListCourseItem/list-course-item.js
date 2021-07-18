@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   BlackText,
   Card,
@@ -11,11 +11,19 @@ import StarRatings from "react-star-ratings";
 import PermIdentityIcon from "@material-ui/icons/PermIdentity";
 import ImportContactsIcon from "@material-ui/icons/ImportContacts";
 import { useHistory } from "react-router-dom";
+import ActionLinksHover from "./action-links-hover";
 
 function ListCourseItem({ course, style }) {
   let history = useHistory();
+  const [isHover, setIsHover] = useState(false);
   return (
     <Card
+      onMouseEnter={() => {
+        setIsHover(true);
+      }}
+      onMouseLeave={() => {
+        setIsHover(false);
+      }}
       style={{
         height: "auto",
         marginLeft: 16,
@@ -25,22 +33,25 @@ function ListCourseItem({ course, style }) {
         ...style,
       }}
     >
-      <CardButtonItem
-        onClick={() => {
-          console.log("image clicked");
-        }}
-      >
-        <img
-          style={{
-            objectFit: "cover",
-            borderTopLeftRadius: 8,
-            borderTopRightRadius: 8,
-            width: "100%",
+      <div style={{display:'flex',position:'relative'}}>
+        <CardButtonItem
+          onClick={() => {
+            console.log("image clicked");
           }}
-          src="/assets/courses1.jpg"
-          alt=""
-        />
-      </CardButtonItem>
+        >
+          <img
+            style={{
+              objectFit: "cover",
+              borderTopLeftRadius: 8,
+              borderTopRightRadius: 8,
+              width: "100%",
+            }}
+            src="/assets/courses1.jpg"
+            alt=""
+          />
+        </CardButtonItem>
+        {isHover ? <ActionLinksHover /> : <div></div>}
+      </div>
       <div
         style={{
           padding: "0px 10px 0px 10px",

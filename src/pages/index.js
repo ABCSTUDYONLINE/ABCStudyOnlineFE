@@ -5,3 +5,4 @@ export * from "./category";
 export * from "./courseDetail";
 export * from "./myDashboard";
 export * from "./verify";
+export * from "./instructorDetail"

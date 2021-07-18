@@ -10,6 +10,7 @@ import React, { useState } from "react";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import { CardDropCategory } from "../../../../globals/index";
 import KeyboardArrowRightIcon from "@material-ui/icons/KeyboardArrowRight";
+import { useHistory } from "react-router-dom";
 
 function Dropbox({ open, anchorEl }) {
   return (
@@ -81,6 +82,7 @@ function DropBoxItem({ subItems, children }) {
   );
 }
 function SubDropbox({ items, open, anchorEl }) {
+  let history = useHistory();
   return (
     <Popper
       open={open}
@@ -96,7 +98,9 @@ function SubDropbox({ items, open, anchorEl }) {
               {(items || []).map((sub) => (
                 <ListItem
                   onClick={() => {
-                    alert(sub);
+                    history.push("./categoryPage", {
+                      susTitle: sub,
+                    });
                   }}
                   key={sub}
                 >

@@ -10,6 +10,7 @@ import {
   CourseDetailPage,
   MyDashboardPage,
   VerifyPage,
+  InstructorDetailPage,
 } from "../pages/index";
 
 export function Routers() {
@@ -51,6 +52,9 @@ export function Routers() {
             </Route>
             <Route path="/myDashboardPage">
               <MyDashboardPage />
+            </Route>
+            <Route path="/instructorPage" >
+              <InstructorDetailPage />
             </Route>
           </Switch>
         </div>

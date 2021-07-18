@@ -3,7 +3,7 @@ import { BlackText } from "../../../../globals/index";
 import ListCourseItem from "../../Home/ListCourse/ListCourseItem/list-course-item";
 import Carousel from "react-multi-carousel";
 
-function RelatedCourses() {
+function RelatedCourses({caseTitle,style}) {
   const temp = [1, 2, 3, 4];
   const course = {
     title: "Raque Professional IT Expert Certificate Course",
@@ -39,9 +39,10 @@ function RelatedCourses() {
           fontWeight: 600,
           paddingBottom: 20,
           borderBottom: "1px solid #f3f3f3",
+          ...style
         }}
       >
-        Related Courses
+        {caseTitle}
       </BlackText>
       <Carousel
         responsive={responsive}
