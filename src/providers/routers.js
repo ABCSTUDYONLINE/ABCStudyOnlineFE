@@ -11,6 +11,7 @@ import {
   MyDashboardPage,
   VerifyPage,
   InstructorDetailPage,
+  ForgetPasswordPage,
 } from "../pages/index";
 
 export function Routers() {
@@ -55,6 +56,9 @@ export function Routers() {
             </Route>
             <Route path="/instructorPage" >
               <InstructorDetailPage />
+            </Route>
+            <Route path="/forget-password">
+              <ForgetPasswordPage />
             </Route>
           </Switch>
         </div>

@@ -56,6 +56,9 @@ function Register() {
     } else if (!isEmail(email)) {
       msg.email = "Your email is incorrect";
     }
+    if (password !== confirmPassword) {
+      msg.confirmPassword = "Confirm Password doesn't match Password";
+    }
 
     setValidationMsg(msg);
     if (Object.keys(msg).length > 0) return false;

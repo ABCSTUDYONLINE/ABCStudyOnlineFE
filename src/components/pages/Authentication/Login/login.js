@@ -141,7 +141,9 @@ function Login() {
           </CardButton>
           <div>
             <ForgotPassword
-              style={{ textAlign: "end", marginTop: 20, fontSize: 15 }}
+              style={{ textAlign: "end", marginTop: 20, fontSize: 15 }} onClick={()=>{
+                history.push("/forget-password")
+              }}
             >
               Forgot Password?
             </ForgotPassword>

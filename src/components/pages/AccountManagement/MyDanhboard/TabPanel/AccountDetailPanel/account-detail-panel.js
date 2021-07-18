@@ -1,8 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import { TextField, Typography } from "@material-ui/core";
 import { CardButton } from "../../../../../../globals/index";
+import { useDispatch, useSelector } from "react-redux";
 
 function AccountDetailPanel({ value, index, content }) {
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [validationMsg, setValidationMsg] = useState({});
+
+  const validateAll = () => {
+    const msg = {};
+    if (newPassword !== confirmNewPassword) {
+      msg.confirmNewPassword = "Confirm Password doesn't match new Password";
+    }
+    setValidationMsg(msg);
+    if (Object.keys(msg).length > 0) return false;
+    return true;
+  };
+
+  const onSubmitChangePassword = () => {
+    const isValid = validateAll();
+    if (!isValid) return;
+  };
+
   return (
     <div role="tabpanel" hidden={value !== index} id={index}>
       {value === index && (
@@ -66,6 +87,10 @@ function AccountDetailPanel({ value, index, content }) {
               helperText="leave blank to leave unchanged"
               variant="outlined"
               style={{ width: "49%" }}
+              value={currentPassword}
+              onChange={(e) => {
+                setCurrentPassword(e.target.value);
+              }}
             />
             <TextField
               id="outlined-helperText"
@@ -75,6 +100,10 @@ function AccountDetailPanel({ value, index, content }) {
               helperText="leave blank to leave unchanged"
               variant="outlined"
               style={{ width: "49%" }}
+              value={newPassword}
+              onChange={(e) => {
+                setNewPassword(e.target.value);
+              }}
             />
           </div>
           <TextField
@@ -85,6 +114,12 @@ function AccountDetailPanel({ value, index, content }) {
             helperText="leave blank to leave unchanged"
             variant="outlined"
             style={{ width: "100%", marginTop: 30 }}
+            error={!!validationMsg.confirmNewPassword}
+            helperText={validationMsg.confirmNewPassword || "leave blank to leave unchanged"}
+            value={confirmNewPassword}
+            onChange={(e) => {
+              setConfirmNewPassword(e.target.value);
+            }}
           />
 
           <CardButton
@@ -95,8 +130,10 @@ function AccountDetailPanel({ value, index, content }) {
               fontSize: 16,
               fontWeight: 700,
             }}
+            onClick={onSubmitChangePassword}
+            
           >
-            <div>Save Changes</div>
+            Save Changes
           </CardButton>
         </div>
       )}
