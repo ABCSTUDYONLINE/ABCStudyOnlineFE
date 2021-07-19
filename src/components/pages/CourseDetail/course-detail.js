@@ -15,15 +15,20 @@ import InstructorSection from "./InstructorSection/instructor-section";
 import Comments from "./Comments/comments";
 import RelatedCourses from "./RelatedCourses/related-courses";
 import CourseContent from "./CourseContent/course-content";
+import { useLocation } from "react-router-dom";
 
 function CourseDetail() {
+  const location = useLocation();
+
+  const course=location.state.course;
+  console.log("Xem course: ",course);
   return (
     <div
       style={{
         paddingBottom: 70,
         paddingLeft: 75,
         paddingRight: 75,
-        paddingTop: 75,
+        paddingTop: 175,
       }}
     >
       <div
@@ -43,11 +48,10 @@ function CourseDetail() {
                 marginBottom: 12,
               }}
             >
-              Certified Graphic Design with Free Project Course
+              {course.courseName}
             </BlackText>
             <GrayText style={{ fontSize: 15, color: "#727965" }}>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy.
+              {course.shortCourseDescription}
             </GrayText>
           </div>
           <div style={{ marginTop: 20 }}>
@@ -74,7 +78,7 @@ function CourseDetail() {
                       margin: 0,
                     }}
                   >
-                    Design
+                    {course.category.categoryName}
                   </CardButtonText>
                 </div>
               </div>
@@ -100,7 +104,7 @@ function CourseDetail() {
                       margin: 0,
                     }}
                   >
-                    10
+                    {course.studies}
                   </CardButtonText>
                 </div>
               </div>
@@ -124,7 +128,7 @@ function CourseDetail() {
                       margin: 0,
                     }}
                   >
-                    01/14/2019
+                   {course.updatedAt.slice(0,10)}
                   </CardButtonText>
                 </div>
               </div>
@@ -141,7 +145,7 @@ function CourseDetail() {
             }}
           >
             <StarRatings
-              rating={5}
+              rating={course.rates.rate}
               starRatedColor="#ffc107"
               numberOfStars={5}
               starDimension="16px"
@@ -153,7 +157,7 @@ function CourseDetail() {
                 color: "#727965",
               }}
             >
-              (5 reviews)
+              {`(${course.rates.total} reviews)`}
             </GrayText>
           </div>
           <div style={{ display: "flex" }}>
@@ -164,7 +168,7 @@ function CourseDetail() {
                 marginRight: 10,
               }}
             >
-              $250
+              {course.fee}
             </BlackText>
             <CardButton style={{ borderRadius: 4 }}>
               <div>Buy Course</div>
@@ -175,9 +179,9 @@ function CourseDetail() {
       <div style={{ display: "flex" }}>
         <div style={{ width: "70%" }}>
           <CourseAdditionalInformation />
-          <InstructorSection />
+          <InstructorSection teacher={course.teacher} />
           <Comments />
-          <RelatedCourses />
+          {/* <RelatedCourses caseTitle={'Related Courses'}/> */}
         </div>
         <CourseContent />
       </div>

@@ -23,6 +23,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import AccountDetailPanel from "./TabPanel/AccountDetailPanel/account-detail-panel";
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function MyDashboard() {
   const [value, setValue] = useState(0);
@@ -30,6 +31,7 @@ function MyDashboard() {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  const favoriteCourses=useSelector((state)=>state.Courses.favoriteCourses);
   const history=useHistory();
   return (
     <div style={{ padding: "100px 0px 100px 0px " }}>
@@ -214,8 +216,8 @@ function MyDashboard() {
           <Tab icon={<EditIcon />} label="Account Details" />
         </Tabs>
       </Paper>
-      <TabPanel value={value} index={0} content={"hello dashboard"}></TabPanel>
-      <TabPanel value={value} index={1} content={"hello favorites"}></TabPanel>
+      {/* <TabPanel value={value} index={0} content={"hello dashboard"} courses></TabPanel> */}
+      <TabPanel value={value} index={1} content={"hello favorites"} favoriteCourses={favoriteCourses}></TabPanel>
       <AccountDetailPanel
         value={value}
         index={2}

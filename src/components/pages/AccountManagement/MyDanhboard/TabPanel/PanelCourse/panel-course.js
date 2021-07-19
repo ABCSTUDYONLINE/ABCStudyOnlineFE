@@ -1,56 +1,50 @@
-import React from "react";
+import React, { useState } from "react";
 // import { BlackText } from "../../../../../../globals/index";
 import ListCourseItem from "../../../../Home/ListCourse/ListCourseItem/list-course-item";
-import Carousel from "react-multi-carousel";
 import { Grid } from "@material-ui/core";
+import Pagination from "@material-ui/lab/Pagination";
 
-function PanelCourse() {
-  const temp = [1, 2, 3, 4];
-  const course = {
-    title: "Raque Professional IT Expert Certificate Course",
-    ratedPoint: 5,
-    ratedNumber: 5,
-    studentNumber: 10,
-    price: 200,
-  };
-  const responsive = {
-    superLargeDesktop: {
-      // the naming can be any, depends on you.
-      breakpoint: { max: 4000, min: 3000 },
-      items: 5,
-    },
-    desktop: {
-      breakpoint: { max: 3000, min: 1024 },
-      items: 3,
-    },
-    tablet: {
-      breakpoint: { max: 1024, min: 464 },
-      items: 2,
-    },
-    mobile: {
-      breakpoint: { max: 464, min: 0 },
-      items: 1,
-    },
-  };
+function PanelCourse({ favoriteCourses }) {
+  console.log("PAnel course: ", favoriteCourses);
+  // Cho courses vao state
+  const [page, setpage] = useState(1);
+  const coursePerPage = 4;
+
+  const courseToShow = favoriteCourses.slice(
+    (page - 1) * coursePerPage,
+    page * coursePerPage
+  );
+
   return (
     <div style={{ marginTop: 30 }}>
-      {/* <Grid container spacing={0}></Grid> */}
-      <Carousel
-        responsive={responsive}
-        showDots={true}
-        style={{ marginTop: 15, display: "flex" }}
-      >       
-        {temp.map((i) => (
-          // <Grid item xs={6}>
-          <ListCourseItem
-            key={temp[i]}
-            course={course}
-            style={{ maxWidth: 280 }}
-          />
-          // </Grid
-        ))}
-      </Carousel>
-      {/* </Grid> */}
+      <Grid container spacing={0}>
+        {courseToShow.map((course) => {
+          return (
+            <Grid item xs={3}>
+              <ListCourseItem
+                key={course.id}
+                style={{ maxWidth: 360 }}
+                course={course}
+              />
+            </Grid>
+          );
+        })}
+      </Grid>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          paddingBottom: 100,
+        }}
+      >
+        <Pagination
+          count={Math.ceil(favoriteCourses.length / 4)}
+          shape="rounded"
+          onChange={(e, value) => {
+            setpage(value);
+          }}
+        />
+      </div>
     </div>
   );
 }

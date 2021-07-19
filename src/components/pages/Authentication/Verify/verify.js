@@ -13,6 +13,8 @@ import {
   ApiSendEmail,
 } from "../../../../lib/redux/actions/authentication";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import isEmpty from "validator/lib/isEmpty";
+
 
 function Verify() {
   const [code, setCode] = useState("");
@@ -27,12 +29,14 @@ function Verify() {
   // );
 
   const onSubmitOtpEmaill = () => {
+    if(isEmpty(code)){
+      setValidationMsg("Please input code");
+      return;
+    }
     dispatch(ApiConfirmOtpEmail(location.state.email, Number(code))).then(
       (response) => {
-        if (response?.status === 201) {
+        if (response?.data.data!==null && response?.status === 201) {
           setopenPopup(true);
-
-          //ong dung state nay de render 1 cai popup gi do la ,pop up cu the la cai nao vay, t biet alert
         } else {
           console.log(response);
           setValidationMsg("Wrong code!");
@@ -92,7 +96,7 @@ function Verify() {
             <CardButton
               style={{
                 width: "100%",
-                marginTop: 4,
+                marginTop: 16,
                 borderRadius: 4,
                 fontSize: 15,
               }}

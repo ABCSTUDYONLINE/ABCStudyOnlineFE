@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   BlackText,
   Card,
@@ -11,11 +11,20 @@ import StarRatings from "react-star-ratings";
 import PermIdentityIcon from "@material-ui/icons/PermIdentity";
 import ImportContactsIcon from "@material-ui/icons/ImportContacts";
 import { useHistory } from "react-router-dom";
+import ActionLinksHover from "./action-links-hover";
+import Avatar from "@material-ui/core/Avatar";
 
 function ListCourseItem({ course, style }) {
   let history = useHistory();
+  const [isHover, setIsHover] = useState(false);
   return (
     <Card
+      onMouseEnter={() => {
+        setIsHover(true);
+      }}
+      onMouseLeave={() => {
+        setIsHover(false);
+      }}
       style={{
         height: "auto",
         marginLeft: 16,
@@ -25,22 +34,25 @@ function ListCourseItem({ course, style }) {
         ...style,
       }}
     >
-      <CardButtonItem
-        onClick={() => {
-          console.log("image clicked");
-        }}
-      >
-        <img
-          style={{
-            objectFit: "cover",
-            borderTopLeftRadius: 8,
-            borderTopRightRadius: 8,
-            width: "100%",
+      <div style={{ display: "flex", position: "relative" }}>
+        <CardButtonItem
+          onClick={() => {
+            console.log("image clicked");
           }}
-          src="/assets/courses1.jpg"
-          alt=""
-        />
-      </CardButtonItem>
+        >
+          <img
+            style={{
+              objectFit: "cover",
+              borderTopLeftRadius: 8,
+              borderTopRightRadius: 8,
+              width: "100%",
+            }}
+            src="https://abcstudyonline.s3.ap-southeast-1.amazonaws.com/image/1626592930495_android_kotlin.jpeg"
+            alt=""
+          />
+        </CardButtonItem>
+        {isHover ? <ActionLinksHover id={course.id} /> : <div></div>}
+      </div>
       <div
         style={{
           padding: "0px 10px 0px 10px",
@@ -52,18 +64,21 @@ function ListCourseItem({ course, style }) {
             alignItems: "center",
           }}
         >
-          <img
-            src="/assets/user1.jpg"
-            alt=""
-            style={{
-              width: 37,
-              height: 37,
-              marginRight: 4,
-              borderRadius: "50%",
-            }}
-          />
-          <BlackText style={{ fontSize: 14.5, fontWeight: 500 }}>
-            Steven Smith
+          {course.teacher.avatarLink !==null ? (
+            <img
+              src={course.teacher.avatarLink}
+              alt=""
+              style={{
+                width: 37,
+                height: 37,
+                borderRadius: "50%",
+              }}
+            />
+          ) : (
+            <Avatar src="/broken-image.jpg" />
+          )}
+          <BlackText style={{ fontSize: 14.5, fontWeight: 500,marginLeft:8 }}>
+            {`${course.teacher.firstName} ${course.teacher.lastName}`}
           </BlackText>
         </div>
         <CardButtonText
@@ -74,11 +89,11 @@ function ListCourseItem({ course, style }) {
             lineHeight: 1.5,
           }}
           onClick={() => {
-            history.push(`/courseDetailPage`);
+            history.push(`/course-detail/${course.id}`,{course:course});
             window.scrollTo({ top: 0 });
           }}
         >
-          {course.title}
+          {course.courseName}
         </CardButtonText>
         <div
           style={{
@@ -87,7 +102,7 @@ function ListCourseItem({ course, style }) {
           }}
         >
           <StarRatings
-            rating={course.ratedPoint}
+            rating={course.rates.rate}
             starRatedColor="#ffc107"
             numberOfStars={5}
             starDimension="16px"
@@ -98,7 +113,7 @@ function ListCourseItem({ course, style }) {
               marginLeft: 4,
             }}
           >
-            {`${course.ratedPoint} (${course.ratedNumber} rating)`}
+            {`${course.rates.rate} (${course.rates.total} rating)`}
           </GrayText>
         </div>
         <div
@@ -121,15 +136,15 @@ function ListCourseItem({ course, style }) {
           >
             <div style={{ display: "flex", alignItems: "center" }}>
               <PermIdentityIcon></PermIdentityIcon>
-              <div>{`${course.studentNumber} students`}</div>
+              <div>{`${course.studies} students`}</div>
             </div>
             <div style={{ display: "flex", alignItems: "center" }}>
               <ImportContactsIcon></ImportContactsIcon>
-              <div style={{ marginLeft: 5 }}>6 lessons</div>
+              <div style={{ marginLeft: 5 }}>{`6 lessons`}</div>
             </div>
             <RedText
               style={{ fontSize: 18, fontWeight: 500 }}
-            >{`$${course.price}`}</RedText>
+            >{`$${course.fee}`}</RedText>
           </div>
         </div>
       </div>

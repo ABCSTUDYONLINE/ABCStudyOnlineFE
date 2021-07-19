@@ -103,7 +103,7 @@ function Login() {
 
         <form style={{ marginTop: 32 }}>
           <TextField
-            label="Your email address"
+            label="User name"
             variant="outlined"
             margin="dense"
             fullWidth
@@ -141,7 +141,9 @@ function Login() {
           </CardButton>
           <div>
             <ForgotPassword
-              style={{ textAlign: "end", marginTop: 20, fontSize: 15 }}
+              style={{ textAlign: "end", marginTop: 20, fontSize: 15 }} onClick={()=>{
+                history.push("/forget-password")
+              }}
             >
               Forgot Password?
             </ForgotPassword>

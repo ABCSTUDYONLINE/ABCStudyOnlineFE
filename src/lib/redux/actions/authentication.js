@@ -110,3 +110,71 @@ export const ApiUsersMe = (accessToken) => (dispatch, getStore) => {
       dispatch({ type: TYPES.GET_USERINFO_FAILED });
     });
 };
+
+export const ApiForgetPasswordSendEmail =
+  (username) => (dispatch, getStore) => {
+    return axios
+      .post(apiUrl + "/auth/otp/forget/send", {
+        username,
+      })
+      .then((response) => {
+        if (response.status === 201) {
+          dispatch({
+            type: TYPES.FORGET_PASSWORD_SEND_EMAIL_SUCCESSED,
+            payload: response.data,
+          });
+        } else {
+          dispatch({ type: TYPES.FORGET_PASSWORD_SEND_EMAIL_FAILED });
+        }
+        return response;
+      })
+      .catch((error) => {
+        console.log("send Otp Error: ", error);
+        dispatch({ type: TYPES.FORGET_PASSWORD_SEND_EMAIL_FAILED });
+      });
+  };
+export const ApiForgetPasswordConfirmOtpEmail =
+  (username, code) => (dispatch, getStore) => {
+    return axios
+      .post(apiUrl + "/auth/otp/forget/confirm", {
+        username,
+        code,
+      })
+      .then((response) => {
+        if (response.status === 201) {
+          console.log("Otp confirm: ", response);
+          dispatch({ type: TYPES.CONFIRM_OTP_EMAIL_SUCCESSED });
+        } else {
+          dispatch({ type: TYPES.CONFIRM_OTP_EMAIL_FAILED });
+        }
+        return response;
+      })
+      .catch((error) => {
+        console.log("Otp confirm Error: ", error);
+        dispatch({ type: TYPES.CONFIRM_OTP_EMAIL_FAILED });
+      });
+  };
+
+export const ApiForgetPasswordUpdateNewPassword =
+  (username, newPassword) => (dispatch, getStore) => {
+    return axios
+      .patch(apiUrl + "/auth/forget/password", {
+        username,
+        newPassword,
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          dispatch({
+            type: TYPES.FORGET_PASSWORD_UPDATE_NEW_PASSWORD_SUCCESSED,
+          });
+        } else {
+          dispatch({ type: TYPES.FORGET_PASSWORD_UPDATE_NEW_PASSWORD_FAILED });
+        }
+        console.log("res: ", response);
+        return response;
+      })
+      .catch((error) => {
+        console.log("update password Error: ", error);
+        dispatch({ type: TYPES.FORGET_PASSWORD_UPDATE_NEW_PASSWORD_FAILED });
+      });
+  };

@@ -10,6 +10,8 @@ import {
   CourseDetailPage,
   MyDashboardPage,
   VerifyPage,
+  InstructorDetailPage,
+  ForgetPasswordPage,
 } from "../pages/index";
 
 export function Routers() {
@@ -18,18 +20,6 @@ export function Routers() {
       <Router>
         <Header />
         <div>
-          {/* <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/login">Login</Link>
-            </li>
-            <li>
-              <Link to="/categoryPage">Category</Link>
-            </li>
-          </ul>
-          <hr /> */}
           <Switch>
             <Route exact path="/">
               <HomePage />
@@ -46,11 +36,17 @@ export function Routers() {
             <Route path="/categoryPage">
               <CategoryPage />
             </Route>
-            <Route path="/courseDetailPage">
+            <Route exact path="/course-detail/:id">
               <CourseDetailPage />
             </Route>
             <Route path="/myDashboardPage">
               <MyDashboardPage />
+            </Route>
+            <Route path="/instructorPage">
+              <InstructorDetailPage />
+            </Route>
+            <Route path="/forget-password">
+              <ForgetPasswordPage />
             </Route>
           </Switch>
         </div>
