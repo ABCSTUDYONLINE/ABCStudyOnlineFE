@@ -1,7 +1,12 @@
 import { TextField } from "@material-ui/core";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { BlackText, CardButton, ForgotPassword, GrayText } from "../../../../globals";
+import {
+  BlackText,
+  CardButton,
+  ForgotPassword,
+  GrayText,
+} from "../../../../globals";
 import isEmpty from "validator/lib/isEmpty";
 import { useDispatch } from "react-redux";
 import {
@@ -54,7 +59,7 @@ function ForgetPassword() {
         } else {
           console.log(response);
           setValidationMsg("Wrong code!");
-        //   setopenPopupInputCode(false);
+          //   setopenPopupInputCode(false);
         }
       }
     );
@@ -84,7 +89,7 @@ function ForgetPassword() {
   };
 
   return (
-    <div style={{ display: "flex", marginTop: 100 }}>
+    <div style={{ display: "flex", }}>
       <img
         src="/assets/login-bg.jpg"
         alt=""

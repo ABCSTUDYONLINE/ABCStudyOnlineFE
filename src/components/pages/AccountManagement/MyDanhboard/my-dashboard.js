@@ -21,28 +21,46 @@ import DashboardIcon from "@material-ui/icons/Dashboard";
 import TabPanel from "./TabPanel/tab-panel";
 import EditIcon from "@material-ui/icons/Edit";
 import AccountDetailPanel from "./TabPanel/AccountDetailPanel/account-detail-panel";
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import { useHistory } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 function MyDashboard() {
   const [value, setValue] = useState(0);
+  const dispatch = useDispatch();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  const favoriteCourses=useSelector((state)=>state.Courses.favoriteCourses);
-  const history=useHistory();
+  const favoriteCourses = useSelector((state) => state.Courses.favoriteCourses);
+  const history = useHistory();
   return (
     <div style={{ padding: "100px 0px 100px 0px " }}>
-      <div style={{ paddingTop: 160, height: 320, alignContent: 'flex-end', backgroundPosition: '50%', backgroundSize: 'cover', background: 'url("https://ednuv-ng.envytheme.com/page-title1.ba127805b954f8da1e9c.jpg")' }}>
-        <div style={{ marginRight: 91, marginLeft: 91, display: 'flex', alignItems: 'center', }}>
+      <div
+        style={{
+          paddingTop: 160,
+          height: 320,
+          alignContent: "flex-end",
+          backgroundPosition: "50%",
+          backgroundSize: "cover",
+          background:
+            'url("https://ednuv-ng.envytheme.com/page-title1.ba127805b954f8da1e9c.jpg")',
+        }}
+      >
+        <div
+          style={{
+            marginRight: 91,
+            marginLeft: 91,
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
           <CardFooterText
             style={{
               cursor: "pointer",
               marginLeft: 5,
               marginBottom: 0,
-              marginTop: 30
+              marginTop: 30,
             }}
             onClick={() => {
               history.push(`/`);
@@ -51,22 +69,32 @@ function MyDashboard() {
           >
             Home
           </CardFooterText>
-          <NavigateNextIcon style={{ marginTop: 30, color: '#ccc', marginRight: 8, marginLeft: 8 }} />
-          <div style={{
-            fontSize: 15,
-            fontWeight: 400,
-            color: "#ccc",
-            marginTop: 30
-          }} >
+          <NavigateNextIcon
+            style={{
+              marginTop: 30,
+              color: "#ccc",
+              marginRight: 8,
+              marginLeft: 8,
+            }}
+          />
+          <div
+            style={{
+              fontSize: 15,
+              fontWeight: 400,
+              color: "#ccc",
+              marginTop: 30,
+            }}
+          >
             My Dashboard
           </div>
         </div>
         <div
-          style={{ 
+          style={{
             fontSize: 42,
             fontWeight: 700,
             color: "#fff",
-            marginRight: 91, marginLeft: 91,
+            marginRight: 91,
+            marginLeft: 91,
           }}
         >{`My Dashboard`}</div>
       </div>
@@ -75,7 +103,7 @@ function MyDashboard() {
           marginBottom: 35,
           boxShadow: "0 0 40px 3px rgb(0 0 0 / 4%)",
           borderRadius: 5,
-          padding: "70px 75px 70px 75px "
+          padding: "70px 75px 70px 75px ",
         }}
       >
         <div style={{ display: "flex" }}>
@@ -195,7 +223,12 @@ function MyDashboard() {
               </CardSocialMediaDashboard>
             </div>
             <div style={{ marginTop: 25 }}>
-              <CardButton style={{ borderRadius: 4 }}>
+              <CardButton
+                style={{ borderRadius: 4 }}
+                onClick={() => {
+                  dispatch({ type: "LOGOUT" });
+                }}
+              >
                 <div>Logout</div>
               </CardButton>
             </div>
@@ -217,7 +250,12 @@ function MyDashboard() {
         </Tabs>
       </Paper>
       {/* <TabPanel value={value} index={0} content={"hello dashboard"} courses></TabPanel> */}
-      <TabPanel value={value} index={1} content={"hello favorites"} favoriteCourses={favoriteCourses}></TabPanel>
+      <TabPanel
+        value={value}
+        index={1}
+        content={"hello favorites"}
+        favoriteCourses={favoriteCourses}
+      ></TabPanel>
       <AccountDetailPanel
         value={value}
         index={2}

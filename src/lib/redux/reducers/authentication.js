@@ -52,6 +52,14 @@ export function Authentication(prevState = initState, action) {
       return { ...prevState, forgetPasswordUpdateNewPasswordStatus: true };
     case TYPES.FORGET_PASSWORD_UPDATE_NEW_PASSWORD_FAILED:
       return { ...prevState, forgetPasswordUpdateNewPasswordStatus: false };
+    case TYPES.LOGOUT:
+      console.log("lkllkl");
+      return {
+        ...prevState,
+        userInfo: null,
+        accessToken: "",
+        loginStatus: false,
+      };
     default:
       return prevState;
   }

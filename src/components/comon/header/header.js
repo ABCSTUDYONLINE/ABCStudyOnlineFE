@@ -9,6 +9,9 @@ import {
   ApiGetCategories,
   ApiGetFavoriteCourse,
 } from "../../../lib/redux/actions/courses";
+import Avatar from "@material-ui/core/Avatar";
+import DropHeart from "./DropHeart/drop-heart";
+import DropCart from "./DropCart/drop-cart";
 
 function Header() {
   const loginStatus = useSelector((state) => state.Authentication.loginStatus);
@@ -30,7 +33,7 @@ function Header() {
     <div
       style={{
         display: "flex",
-        padding: "30px 75px 30px 75px",
+        padding: "30px 75px 15px 75px",
         justifyContent: "space-between",
         zIndex: 2010,
         background: "white",
@@ -71,28 +74,21 @@ function Header() {
         <CardButton
           onClick={() => {
             history.push("/login");
+            window.scrollTo({ top: 0 });
           }}
         >
           Log In
         </CardButton>
       ) : (
         <div style={{ display: "flex", alignItems: "center" }}>
-          <FavoriteBorderIcon
-            style={{
-              fontSize: 30,
-              marginRight: 10,
-              color: "#ff1949",
-              cursor: "pointer",
-            }}
-          ></FavoriteBorderIcon>
-          <img
-            src="/assets/user1.jpg"
-            alt=""
+          <DropHeart />
+          <DropCart />
+          <Avatar
+            src="/broken-image.jpg"
             style={{
               width: 50,
               height: 50,
               marginRight: 4,
-              borderRadius: "50%",
               cursor: "pointer",
             }}
             onClick={() => {
