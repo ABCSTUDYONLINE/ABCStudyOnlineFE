@@ -1,26 +1,33 @@
-import React from "react";
-import { BlackText } from "../../../../../globals/index";
+import React, { useState } from "react";
 
-function LessonItem({ lesson }) {
+import { BlackText, CardButtonText } from "../../../../../globals/index";
+
+function LessonItem({ lesson, index, handleClickOpen,activeId }) {
   return (
     <div style={{ marginTop: 10, display: "flex" }}>
       <BlackText
         style={{
           fontSize: 15,
-          fontWeight: 400,
+          fontWeight: "bold",
         }}
       >
-        {`${lesson}. `}
+        {`${index}. `}
       </BlackText>
-      <BlackText
+
+      <CardButtonText
         style={{
+          cursor: "pointer",
           fontSize: 15,
-          fontWeight: 400,
-          color: "#727695",
+          fontWeight: activeId!==lesson.id ? 500 : " bold",
+          margin: 0,
+          marginLeft: 5,
+        }}
+        onClick={() => {
+          handleClickOpen(lesson.videoLink,lesson.id);
         }}
       >
-        Secret 1: Sell The Problem, Not The Solution (14:37)
-      </BlackText>
+        {`${lesson.lessonName}`}
+      </CardButtonText>
     </div>
   );
 }

@@ -3,7 +3,7 @@ import { BlackText } from "../../../../globals/index";
 import LearnItem from "./LearnItem/learn-item";
 import RequirementItem from "./RequirementItem/requirement-item";
 
-function CourseAdditionalInformation() {
+function CourseAdditionalInformation({course}) {
   const temp = [1, 2, 3, 4, 5, 6];
   return (
     <div>
@@ -14,7 +14,7 @@ function CourseAdditionalInformation() {
           borderTopRightRadius: 8,
           width: "100%",
         }}
-        src="/assets/courses1.jpg"
+        src={course.courseImageLink}
         alt=""
       />
       <div style={{ marginTop: 30 }}>
@@ -65,10 +65,7 @@ function CourseAdditionalInformation() {
             marginTop: 15,
           }}
         >
-          We are proud to present you this one-of-a-kind opportunity. There are
-          several online courses teaching some of the skills related to the BI
-          Analyst profession. The truth of the matter is that none of them
-          completely prepare you.
+          {course.detailCourseDescription}
         </BlackText>
       </div>
     </div>

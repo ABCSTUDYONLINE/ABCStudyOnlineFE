@@ -84,14 +84,16 @@ function SubDropbox({ items, open, anchorEl }) {
   return (
     <Popper
       open={open}
+      style={{ zIndex: 2200 }}
       anchorEl={anchorEl}
       placement={"right-start"}
       transition
+      
       keepMounted
     >
       {({ TransitionProps }) => (
         <Fade {...TransitionProps} timeout={350}>
-          <Paper>
+          <Paper style={ { zIndex: 9999}}>
             <List>
               {(items || []).map((sub) => (
                 <ListItem

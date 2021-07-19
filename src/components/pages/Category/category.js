@@ -35,7 +35,7 @@ function Category() {
     <div>
       <div
         style={{
-          paddingTop: 160,
+          marginTop: 120,
           height: 320,
           alignContent: "flex-end",
           backgroundPosition: "50%",

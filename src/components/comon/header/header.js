@@ -5,17 +5,20 @@ import DropCategory from "./DropCategory/drop-category";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { ApiGetCategories, ApiGetFavoriteCourse } from "../../../lib/redux/actions/courses";
+import {
+  ApiGetCategories,
+  ApiGetFavoriteCourse,
+} from "../../../lib/redux/actions/courses";
 
 function Header() {
-  const temp = false;
+  const loginStatus = useSelector((state) => state.Authentication.loginStatus);
   const history = useHistory();
 
   const dispatch = useDispatch();
-  const categories = useSelector((state)=>state.Courses.categories);
+  const categories = useSelector((state) => state.Courses.categories);
 
   useEffect(() => {
-    dispatch(ApiGetCategories( 1, 10));
+    dispatch(ApiGetCategories(1, 10));
   }, []);
 
   // useEffect(() => {
@@ -64,8 +67,14 @@ function Header() {
         </div>
         <Search />
       </div>
-      {temp ? (
-        <CardButton>Log In</CardButton>
+      {!loginStatus ? (
+        <CardButton
+          onClick={() => {
+            history.push("/login");
+          }}
+        >
+          Log In
+        </CardButton>
       ) : (
         <div style={{ display: "flex", alignItems: "center" }}>
           <FavoriteBorderIcon
