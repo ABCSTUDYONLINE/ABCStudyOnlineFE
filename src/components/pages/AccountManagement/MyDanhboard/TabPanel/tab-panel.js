@@ -2,7 +2,7 @@ import React from "react";
 import { Typography } from "@material-ui/core";
 import PanelCourse from "./PanelCourse/panel-course";
 
-function TabPanel({ value, index, content }) {
+function TabPanel({ value, index, content,favoriteCourses }) {
   return (
     <div role="tabpanel" hidden={value !== index} id={index}>
       {value === index && (
@@ -15,7 +15,7 @@ function TabPanel({ value, index, content }) {
           }}
         >
           <Typography>{content}</Typography>
-          <PanelCourse />
+          <PanelCourse favoriteCourses={favoriteCourses} />
         </div>
       )}
     </div>

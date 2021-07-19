@@ -1,13 +1,28 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Search from "./Search/search";
 import { BlackText, CardButton } from "../../../globals/index";
 import DropCategory from "./DropCategory/drop-category";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import { useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { ApiGetCategories, ApiGetFavoriteCourse } from "../../../lib/redux/actions/courses";
 
 function Header() {
   const temp = false;
   const history = useHistory();
+
+  const dispatch = useDispatch();
+  const categories = useSelector((state)=>state.Courses.categories);
+
+  useEffect(() => {
+    dispatch(ApiGetCategories( 1, 10));
+  }, []);
+
+  // useEffect(() => {
+  //     dispatch(ApiGetFavoriteCourse(accessToken,1,10));
+  //     console.log("Favorites list: ",favoriteCourses)
+  // }, [accessToken]);
+
   return (
     <div
       style={{
@@ -24,7 +39,7 @@ function Header() {
         position: "fixed",
       }}
     >
-      <div style={{ display: "flex" }}>
+      <div style={{ display: "flex", alignItems: "center" }}>
         <div
           style={{ display: "flex", cursor: "pointer", alignItems: "center" }}
           onClick={() => {

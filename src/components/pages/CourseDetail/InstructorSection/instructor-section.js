@@ -1,7 +1,9 @@
+import { Avatar } from "@material-ui/core";
 import React from "react";
 import { BlackText, CardButton } from "../../../../globals/index";
 
-function InstructorSection() {
+function InstructorSection({ teacher }) {
+  console.log("Teacher: ", teacher);
   return (
     <div style={{ marginTop: 30 }}>
       <div>
@@ -25,16 +27,27 @@ function InstructorSection() {
           }}
         ></div>
         <div style={{ padding: "0 25px 25px", marginTop: -45 }}>
-          <img
-            src="/assets/user1.jpg"
-            alt=""
-            style={{
-              width: 100,
-              height: 100,
-              border: "3px solid '#fff",
-              borderRadius: "50%",
-            }}
-          />
+          {teacher?.avatarLink !== null ? (
+            <img
+              src={teacher?.avatarLink}
+              alt=""
+              style={{
+                width: 100,
+                height: 100,
+                border: "3px solid '#fff",
+                borderRadius: "50%",
+              }}
+            />
+          ) : (
+            <Avatar
+              style={{
+                width: 100,
+                height: 100,
+                border: "3px solid '#fff",
+              }}
+              src="/avatar-default.jpg"
+            />
+          )}
           <div
             style={{
               marginTop: 15,
@@ -47,12 +60,12 @@ function InstructorSection() {
               <BlackText
                 style={{ fontSize: 17, fontWeight: 600, marginBottom: 5 }}
               >
-                James Anderson
+                {`${teacher.firstName} ${teacher.lastName}`}
               </BlackText>
               <BlackText
                 style={{ fontSize: 14, fontWeight: 400, color: "#0eb582" }}
               >
-                Photographer, Author, Teacher
+                Reactjs
               </BlackText>
             </div>
             <CardButton style={{ borderRadius: 4 }}>
@@ -67,8 +80,7 @@ function InstructorSection() {
               marginTop: 15,
             }}
           >
-            James Anderson is a celebrated photographer, author, and teacher who
-            brings passion to everything he does.
+            Short bio
           </BlackText>
         </div>
       </div>

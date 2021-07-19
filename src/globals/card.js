@@ -146,9 +146,18 @@ const styles = {
     "&:hover": {
       background: "#ff1949",
     },
-    fontSize: 16,
     borderColor: "white",
-    position:'absolute'
+  },
+  cardActionReverseHover: {
+    border: "1px solid",
+    background: "#ff1949",
+    color: "#111",
+    display: "block",
+    marginBottom: 10,
+    "&:hover": {
+      background: "#e9e9e9",
+    },
+    borderColor: "white",
   },
 };
 
@@ -206,6 +215,14 @@ function CardActionHoverContainer({ classes, className, ...props }) {
     ></IconButton>
   );
 }
+function CardActionReverseHoverContainer({ classes, className, ...props }) {
+  return (
+    <IconButton
+      className={classnames(className, classes.cardActionReverseHover)}
+      {...props}
+    ></IconButton>
+  );
+}
 
 export const CardAction = withStyles(styles)(CardActionContainer);
 export const CardButton = injectSheet(styles)(CardButtonContainer);
@@ -226,3 +243,4 @@ export const CardSocialMediaDashboard = injectSheet(styles)(
   CardSocialMediaDashboardContainer
 );
 export const CardActionHover = withStyles(styles)(CardActionHoverContainer);
+export const CardActionReverseHover = withStyles(styles)(CardActionReverseHoverContainer);

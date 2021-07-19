@@ -8,6 +8,7 @@ import Pagination from "@material-ui/lab/Pagination";
 import { FormControl } from "@material-ui/core";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
+import { useSelector } from "react-redux";
 
 function Category() {
   let history = useHistory();
@@ -19,206 +20,8 @@ function Category() {
     setSort(event.target.value);
   };
 
-  const courses = [
-    {
-      id: 1,
-      title: "Raque Professional IT Expert Certificate Course",
-      description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy",
-      price: 200,
-      requirement: ["gioi toan", "gioi tin"],
-      learnWhat: [
-        "Tự tin phát triển những ứng dụng Android, game Android",
-        "Biết cách upload ứng dụng Android lên Google Play",
-        "Kiếm tiền từ các ứng dụng trên Google Play",
-        "ASO - tối ưu ứng dụng lên TOP tìm kiếm từ khoá",
-      ],
-      ratedPoint: 4.5,
-      ratedNumber: 5,
-      videoNumber: 6,
-      studentNumber: 10,
-    },
-    {
-      id: 2,
-      title: "Raque Professional IT Expert Certificate Course",
-      description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy",
-      price: 200,
-      requirement: ["gioi toan", "gioi tin"],
-      learnWhat: [
-        "Tự tin phát triển những ứng dụng Android, game Android",
-        "Biết cách upload ứng dụng Android lên Google Play",
-        "Kiếm tiền từ các ứng dụng trên Google Play",
-        "ASO - tối ưu ứng dụng lên TOP tìm kiếm từ khoá",
-      ],
-      ratedPoint: 4.5,
-      ratedNumber: 5,
-      videoNumber: 6,
-      studentNumber: 10,
-    },
-    {
-      id: 3,
-      title: "Raque Professional IT Expert Certificate Course",
-      description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy",
-      price: 200,
-      requirement: ["gioi toan", "gioi tin"],
-      learnWhat: [
-        "Tự tin phát triển những ứng dụng Android, game Android",
-        "Biết cách upload ứng dụng Android lên Google Play",
-        "Kiếm tiền từ các ứng dụng trên Google Play",
-        "ASO - tối ưu ứng dụng lên TOP tìm kiếm từ khoá",
-      ],
-      ratedPoint: 4.5,
-      ratedNumber: 5,
-      videoNumber: 6,
-      studentNumber: 10,
-    },
-    {
-      id: 4,
-      title: "Raque Professional IT Expert Certificate Course",
-      description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy",
-      price: 200,
-      requirement: ["gioi toan", "gioi tin"],
-      learnWhat: [
-        "Tự tin phát triển những ứng dụng Android, game Android",
-        "Biết cách upload ứng dụng Android lên Google Play",
-        "Kiếm tiền từ các ứng dụng trên Google Play",
-        "ASO - tối ưu ứng dụng lên TOP tìm kiếm từ khoá",
-      ],
-      ratedPoint: 4.5,
-      ratedNumber: 5,
-      videoNumber: 6,
-      studentNumber: 10,
-    },
-    {
-      id: 5,
-      title: "Raque Professional IT Expert Certificate Course",
-      description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy",
-      price: 200,
-      requirement: ["gioi toan", "gioi tin"],
-      learnWhat: [
-        "Tự tin phát triển những ứng dụng Android, game Android",
-        "Biết cách upload ứng dụng Android lên Google Play",
-        "Kiếm tiền từ các ứng dụng trên Google Play",
-        "ASO - tối ưu ứng dụng lên TOP tìm kiếm từ khoá",
-      ],
-      ratedPoint: 4.5,
-      ratedNumber: 5,
-      videoNumber: 6,
-      studentNumber: 10,
-    },
-    {
-      id: 6,
-      title: "Raque Professional IT Expert Certificate Course",
-      description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy",
-      price: 200,
-      requirement: ["gioi toan", "gioi tin"],
-      learnWhat: [
-        "Tự tin phát triển những ứng dụng Android, game Android",
-        "Biết cách upload ứng dụng Android lên Google Play",
-        "Kiếm tiền từ các ứng dụng trên Google Play",
-        "ASO - tối ưu ứng dụng lên TOP tìm kiếm từ khoá",
-      ],
-      ratedPoint: 4.5,
-      ratedNumber: 5,
-      videoNumber: 6,
-      studentNumber: 10,
-    },
-    {
-      id: 7,
-      title: "Raque Professional IT Expert Certificate Course",
-      description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy",
-      price: 200,
-      requirement: ["gioi toan", "gioi tin"],
-      learnWhat: [
-        "Tự tin phát triển những ứng dụng Android, game Android",
-        "Biết cách upload ứng dụng Android lên Google Play",
-        "Kiếm tiền từ các ứng dụng trên Google Play",
-        "ASO - tối ưu ứng dụng lên TOP tìm kiếm từ khoá",
-      ],
-      ratedPoint: 4.5,
-      ratedNumber: 5,
-      videoNumber: 6,
-      studentNumber: 10,
-    },
-    {
-      id: 8,
-      title: "Raque Professional IT Expert Certificate Course",
-      description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy",
-      price: 200,
-      requirement: ["gioi toan", "gioi tin"],
-      learnWhat: [
-        "Tự tin phát triển những ứng dụng Android, game Android",
-        "Biết cách upload ứng dụng Android lên Google Play",
-        "Kiếm tiền từ các ứng dụng trên Google Play",
-        "ASO - tối ưu ứng dụng lên TOP tìm kiếm từ khoá",
-      ],
-      ratedPoint: 4.5,
-      ratedNumber: 5,
-      videoNumber: 6,
-      studentNumber: 10,
-    },
-    {
-      id: 9,
-      title: "Raque Professional IT Expert Certificate Course",
-      description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy",
-      price: 200,
-      requirement: ["gioi toan", "gioi tin"],
-      learnWhat: [
-        "Tự tin phát triển những ứng dụng Android, game Android",
-        "Biết cách upload ứng dụng Android lên Google Play",
-        "Kiếm tiền từ các ứng dụng trên Google Play",
-        "ASO - tối ưu ứng dụng lên TOP tìm kiếm từ khoá",
-      ],
-      ratedPoint: 4.5,
-      ratedNumber: 5,
-      videoNumber: 6,
-      studentNumber: 10,
-    },
-    {
-      id: 10,
-      title: "Raque Professional IT Expert Certificate Course",
-      description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy",
-      price: 200,
-      requirement: ["gioi toan", "gioi tin"],
-      learnWhat: [
-        "Tự tin phát triển những ứng dụng Android, game Android",
-        "Biết cách upload ứng dụng Android lên Google Play",
-        "Kiếm tiền từ các ứng dụng trên Google Play",
-        "ASO - tối ưu ứng dụng lên TOP tìm kiếm từ khoá",
-      ],
-      ratedPoint: 4.5,
-      ratedNumber: 5,
-      videoNumber: 6,
-      studentNumber: 10,
-    },
-    {
-      id: 11,
-      title: "Raque Professional IT Expert Certificate Course",
-      description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy",
-      price: 200,
-      requirement: ["gioi toan", "gioi tin"],
-      learnWhat: [
-        "Tự tin phát triển những ứng dụng Android, game Android",
-        "Biết cách upload ứng dụng Android lên Google Play",
-        "Kiếm tiền từ các ứng dụng trên Google Play",
-        "ASO - tối ưu ứng dụng lên TOP tìm kiếm từ khoá",
-      ],
-      ratedPoint: 4.5,
-      ratedNumber: 5,
-      videoNumber: 6,
-      studentNumber: 10,
-    },
-  ];
+  const courses = useSelector((state)=>state.Courses.topNewCourses);
+  console.log("page category courses: ",courses);
 
   // Cho courses vao state
   const [page, setpage] = useState(1);
@@ -290,7 +93,7 @@ function Category() {
             marginRight: 91,
             marginLeft: 91,
           }}
-        >{location.state.susTitle}</div>
+        >{location.state.sub.categoryName}</div>
       </div>
       <div
         style={{
@@ -298,10 +101,11 @@ function Category() {
           paddingTop: 80,
           paddingLeft: 91,
           paddingRight: 91,
-          justifyContent:'flex-end',
+          justifyContent:'space-between',
           alignItems:'center'
         }}
       >
+        <div style={{fontSize:20,color:"#212529"}}>{`${'4'} results`}</div>
         <FormControl style={{ minWidth: 200 }}>
           <InputLabel htmlFor="age-native-simple">Sort</InputLabel>
           <Select
@@ -324,6 +128,8 @@ function Category() {
         style={{
           paddingBottom: 30,
           paddingTop: 30,
+          paddingLeft: 91,
+          paddingRight: 91,
         }}
       >
         <Grid container spacing={0}>

@@ -1,5 +1,10 @@
 import { combineReducers } from "redux";
 import { Authentication } from "./authentication";
-import { Course } from "./course";
+import { Courses } from "./courses";
+import { AccountManagement } from "./account-management";
 
-export const reducers = combineReducers({ Authentication, Course });
+export const reducers = combineReducers({
+  Authentication,
+  AccountManagement,
+  Courses,
+});

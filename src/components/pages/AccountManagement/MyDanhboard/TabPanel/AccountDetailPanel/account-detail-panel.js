@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { TextField, Typography } from "@material-ui/core";
 import { CardButton } from "../../../../../../globals/index";
 import { useDispatch, useSelector } from "react-redux";
+import isEmpty from "validator/lib/isEmpty";
+import { ApiChangePassword } from "../../../../../../lib/redux/actions/account-management";
 
 function AccountDetailPanel({ value, index, content }) {
   const [currentPassword, setCurrentPassword] = useState("");
@@ -9,19 +11,47 @@ function AccountDetailPanel({ value, index, content }) {
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [validationMsg, setValidationMsg] = useState({});
 
-  const validateAll = () => {
-    const msg = {};
-    if (newPassword !== confirmNewPassword) {
-      msg.confirmNewPassword = "Confirm Password doesn't match new Password";
-    }
-    setValidationMsg(msg);
-    if (Object.keys(msg).length > 0) return false;
-    return true;
-  };
+  const dispatch = useDispatch();
+  const accessToken = useSelector((state) => state.Authentication.accessToken);
 
-  const onSubmitChangePassword = () => {
-    const isValid = validateAll();
-    if (!isValid) return;
+  const onSubmitSaveChanges = () => {
+    if (
+      currentPassword === "" &&
+      newPassword === "" &&
+      confirmNewPassword === ""
+    ) {
+      setValidationMsg({});
+      console.log("change profile");
+    } else {
+      const msg = {};
+      if (isEmpty(currentPassword)) {
+        msg.currentPassword = "Please input your password";
+      }
+      if (isEmpty(newPassword)) {
+        msg.currentPassword = "Please input new password";
+      }
+      if (isEmpty(confirmNewPassword)) {
+        msg.currentPassword = "Please input confirm new password";
+      }
+      if (newPassword !== confirmNewPassword) {
+        msg.confirmNewPassword = "Confirm Password doesn't match new Password";
+      }
+      setValidationMsg(msg);
+      if (Object.keys(msg).length > 0) {
+        return;
+      }
+      dispatch(
+        ApiChangePassword(accessToken, currentPassword, newPassword)
+      ).then((response) => {
+        if (response?.status === 200 && response?.data.data !== null) {
+          console.log("Show diaglog Change password thanh cong");
+          setCurrentPassword("");
+          setNewPassword("");
+          setConfirmNewPassword("");
+        }
+        console.log("notify",response?.data.message)
+      });
+    }
   };
 
   return (
@@ -84,10 +114,14 @@ function AccountDetailPanel({ value, index, content }) {
               type="password"
               label="Current password"
               defaultValue=""
-              helperText="leave blank to leave unchanged"
               variant="outlined"
               style={{ width: "49%" }}
               value={currentPassword}
+              error={!!validationMsg.currentPassword}
+              helperText={
+                validationMsg.currentPassword ||
+                "leave blank to leave unchanged"
+              }
               onChange={(e) => {
                 setCurrentPassword(e.target.value);
               }}
@@ -97,10 +131,13 @@ function AccountDetailPanel({ value, index, content }) {
               type="password"
               label="New password"
               defaultValue=""
-              helperText="leave blank to leave unchanged"
               variant="outlined"
               style={{ width: "49%" }}
               value={newPassword}
+              error={!!validationMsg.newPassword}
+              helperText={
+                validationMsg.newPassword || "leave blank to leave unchanged"
+              }
               onChange={(e) => {
                 setNewPassword(e.target.value);
               }}
@@ -111,11 +148,13 @@ function AccountDetailPanel({ value, index, content }) {
             type="password"
             label="Confirm new password"
             defaultValue=""
-            helperText="leave blank to leave unchanged"
             variant="outlined"
             style={{ width: "100%", marginTop: 30 }}
             error={!!validationMsg.confirmNewPassword}
-            helperText={validationMsg.confirmNewPassword || "leave blank to leave unchanged"}
+            helperText={
+              validationMsg.confirmNewPassword ||
+              "leave blank to leave unchanged"
+            }
             value={confirmNewPassword}
             onChange={(e) => {
               setConfirmNewPassword(e.target.value);
@@ -130,8 +169,7 @@ function AccountDetailPanel({ value, index, content }) {
               fontSize: 16,
               fontWeight: 700,
             }}
-            onClick={onSubmitChangePassword}
-            
+            onClick={onSubmitSaveChanges}
           >
             Save Changes
           </CardButton>

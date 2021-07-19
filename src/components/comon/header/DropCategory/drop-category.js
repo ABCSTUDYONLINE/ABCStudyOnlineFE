@@ -11,8 +11,15 @@ import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import { CardDropCategory } from "../../../../globals/index";
 import KeyboardArrowRightIcon from "@material-ui/icons/KeyboardArrowRight";
 import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function Dropbox({ open, anchorEl }) {
+  const categories = useSelector((state) => state.Courses.categories);
+  console.log("Drop category: ", categories);
+  const webs=categories.filter((category)=>category.levelCategory==="web");
+  console.log("webs category: ", webs);
+  const mobiles=categories.filter((category)=>category.levelCategory==="mobile");
+  console.log("mobiles category: ", mobiles);
   return (
     <Popper
       open={open}
@@ -27,21 +34,12 @@ function Dropbox({ open, anchorEl }) {
             <List>
               {[
                 {
-                  text: "Lap trinh",
-                  subs: [
-                    "Lap trinh web",
-                    "Lap trinh mobile",
-                    "Lap trinh game",
-                    "Lap trinh nhung",
-                  ],
+                  text: "web",
+                  subs: webs,
                 },
                 {
-                  text: "Thiet ke",
-                  subs: ["Thiet ke giao dien", "Thiet ke do hoa"],
-                },
-                {
-                  text: "Ngoai ngu",
-                  subs: ["Tieng anh", "Tieng tay ban nha"],
+                  text: "mobile",
+                  subs: mobiles,
                 },
               ].map((dropData, index) => (
                 <DropBoxItem subItems={dropData.subs} key={index}>
@@ -99,15 +97,15 @@ function SubDropbox({ items, open, anchorEl }) {
                 <ListItem
                   onClick={() => {
                     history.push("./categoryPage", {
-                      susTitle: sub,
+                      sub: sub,
                     });
                   }}
-                  key={sub}
+                  key={sub.id}
                 >
                   <CardDropCategory
                     style={{ display: "flex", alignItems: "center" }}
                   >
-                    <Typography>{sub}</Typography>
+                    <Typography>{sub.categoryName}</Typography>
                   </CardDropCategory>
                 </ListItem>
               ))}
