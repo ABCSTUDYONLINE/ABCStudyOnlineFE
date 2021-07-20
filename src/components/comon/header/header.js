@@ -90,6 +90,7 @@ function Header() {
               height: 50,
               marginRight: 4,
               cursor: "pointer",
+              marginLeft:40
             }}
             onClick={() => {
               history.push("/myDashboardPage");

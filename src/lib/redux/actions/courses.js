@@ -113,6 +113,7 @@ export const ApiGetFavoriteCourses =
         } else {
           dispatch({ type: TYPES.GET_FAVORITE_COURSES_FAILED });
         }
+        return response;
       })
       .catch((error) => {
         console.log("catch favorites error: ", error);
@@ -146,9 +147,9 @@ export const ApiAddFavoriteCourse =
       });
   };
 export const ApiRemoveFavoriteCourse =
-  (accessToken, courseId) => (dispatch, getStore) => {
+  (accessToken, favoriteId) => (dispatch, getStore) => {
     return axios
-      .delete(apiUrl + `/courses/favorites?courseId=${courseId}`, {
+      .delete(apiUrl + `/courses/favorites?favoriteId=${favoriteId}`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
       .then((response) => {
@@ -182,5 +183,40 @@ export const ApiGetCourseDetail = (courseId) => (dispatch, getStore) => {
     .catch((error) => {
       console.log(error);
       dispatch({ type: TYPES.GET_COURSE_DETAIL_FAILED });
+    });
+};
+
+export const ApiAddCourseToCart = (courseId) => (dispatch, getStore) => {
+  return axios
+    .post(apiUrl + "/learn", {
+      courseId
+    })
+    .then((response) => {
+      if (response.status === 201) {
+        dispatch({ type: TYPES.ADD_COURSE_TO_CART_SUCCESSED });
+      } else {
+        dispatch({ type: TYPES.ADD_COURSE_TO_CART_FAILED });
+      }
+      return response;
+    })
+    .catch((error) => {
+      console.log(error);
+      dispatch({ type: TYPES.ADD_COURSE_TO_CART_FAILED });
+    });
+};
+export const ApiRemoveCourseFromCart = (courseId) => (dispatch, getStore) => {
+  return axios
+    .delete(apiUrl + `/learn?earnId=${courseId}` )
+    .then((response) => {
+      if (response.status === 200) {
+        dispatch({ type: TYPES.REMOVE_COURSE_FROM_CART_SUCCESSED });
+      } else {
+        dispatch({ type: TYPES.REMOVE_COURSE_FROM_CART_FAILED });
+      }
+      return response;
+    })
+    .catch((error) => {
+      console.log(error);
+      dispatch({ type: TYPES.REMOVE_COURSE_FROM_CART_FAILED });
     });
 };

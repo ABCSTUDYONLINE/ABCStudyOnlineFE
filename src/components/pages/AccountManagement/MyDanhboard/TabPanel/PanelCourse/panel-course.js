@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 // import { BlackText } from "../../../../../../globals/index";
-import ListCourseItem from "../../../../Home/ListCourse/ListCourseItem/list-course-item";
 import { Grid } from "@material-ui/core";
 import Pagination from "@material-ui/lab/Pagination";
+import PanelCourseItem from "./panel-course-item";
 
 function PanelCourse({ favoriteCourses }) {
   console.log("PAnel course: ", favoriteCourses);
@@ -21,7 +21,7 @@ function PanelCourse({ favoriteCourses }) {
         {courseToShow.map((course) => {
           return (
             <Grid item xs={3}>
-              <ListCourseItem
+              <PanelCourseItem
                 key={course.id}
                 style={{ maxWidth: 360 }}
                 course={course}

@@ -24,6 +24,9 @@ import AccountDetailPanel from "./TabPanel/AccountDetailPanel/account-detail-pan
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import FormComment from "./TabPanel/FormComment/form-comment";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import TabCart from "./TabCart/tab-cart";
 
 function MyDashboard() {
   const [value, setValue] = useState(0);
@@ -38,13 +41,16 @@ function MyDashboard() {
     <div style={{ padding: "100px 0px 100px 0px " }}>
       <div
         style={{
-          paddingTop: 160,
-          height: 320,
+          paddingTop: 120,
           alignContent: "flex-end",
           backgroundPosition: "50%",
           backgroundSize: "cover",
           background:
             'url("https://ednuv-ng.envytheme.com/page-title1.ba127805b954f8da1e9c.jpg")',
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          height: "50vh",
         }}
       >
         <div
@@ -244,21 +250,24 @@ function MyDashboard() {
           textColor="secondary"
           aria-label="icon label tabs example"
         >
-          <Tab icon={<DashboardIcon />} label="DASHboard" />
-          <Tab icon={<FavoriteIcon />} label="FAVORITES" />
+          <Tab icon={<DashboardIcon />} label="Dashboard" />
+          <Tab icon={<ShoppingCartIcon />} label="Carts" />
+          <Tab icon={<FavoriteIcon />} label="Favorites" />
           <Tab icon={<EditIcon />} label="Account Details" />
         </Tabs>
       </Paper>
       {/* <TabPanel value={value} index={0} content={"hello dashboard"} courses></TabPanel> */}
+      <FormComment value={value} index={0}></FormComment>
+      <TabCart value={value} index={1}></TabCart>
       <TabPanel
         value={value}
-        index={1}
+        index={2}
         content={"hello favorites"}
         favoriteCourses={favoriteCourses}
       ></TabPanel>
       <AccountDetailPanel
         value={value}
-        index={2}
+        index={3}
         content={"hello Account details"}
       ></AccountDetailPanel>
     </div>

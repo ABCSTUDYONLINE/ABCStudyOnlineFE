@@ -6,6 +6,7 @@ let initState = {
   topRateInWeek: [],
   categories: [],
   favoriteCourses: [],
+  cart: [],
   courseDetail: null,
   getTopNewCourseStatus: false,
   getTopRegisterCoursesStatus: false,
@@ -15,6 +16,8 @@ let initState = {
   addFavoriteCourseStatus: false,
   removeFavoriteCourseStatus: false,
   getCourseDetailStatus: false,
+  addCourseToCartStatus: false,
+  removeCourseFromCartStatus: false,
 };
 
 export function Courses(prevState = initState, action) {
@@ -81,6 +84,16 @@ export function Courses(prevState = initState, action) {
       };
     case TYPES.GET_COURSE_DETAIL_FAILED:
       return { ...prevState, getCourseDetailStatus: false };
+
+    case TYPES.ADD_COURSE_TO_CART_SUCCESSED:
+      return {...prevState,addCourseToCartStatus:true}
+      case TYPES.ADD_COURSE_TO_CART_FAILED:
+        return {...prevState,addCourseToCartStatus:false}
+        
+    case TYPES.REMOVE_COURSE_FROM_CART_SUCCESSED:
+      return {...prevState,removeCourseFromCartStatus:true}
+      case TYPES.REMOVE_COURSE_FROM_CART_FAILED:
+        return {...prevState,removeCourseFromCartStatus:false}
     default:
       return prevState;
   }

@@ -132,7 +132,7 @@ function DropCategory() {
           display: "flex",
           alignItems: "center",
           borderBottom: "0",
-          marginRight: 20,
+          paddingRight: 20,
         }}
       >
         <Typography>Category</Typography>

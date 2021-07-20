@@ -12,7 +12,7 @@ function SectionCourse({ title, courses }) {
       }}
     >
       {courses.map((course, index) => (
-        <SectionCourseItem key={index} course={course.course} />
+        <SectionCourseItem key={index} course={course} />
       ))}
       <CardDropCategory style={{ fontSize: 18, textAlign: "end" }}>
         {title}

@@ -6,18 +6,19 @@ import { useSelector } from "react-redux";
 
 function Dropbox({ open, anchorEl }) {
   const favoriteCourses = useSelector((state) => state.Courses.favoriteCourses);
+  console.log("Favorite courses: ", favoriteCourses);
   return (
     <Popper
       open={open}
       style={{ zIndex: 2300 }}
       anchorEl={anchorEl}
-      placement={"bottom-start"}
+      placement={"bottom-end"}
       transition
     >
       {({ TransitionProps }) => (
         <Fade {...TransitionProps} timeout={350}>
           <Paper>
-            <SectionCourse title={'See all'} courses={favoriteCourses} />
+            <SectionCourse title={"See all"} courses={favoriteCourses} />
           </Paper>
         </Fade>
       )}
@@ -39,7 +40,7 @@ function DropHeart() {
       <FavoriteBorderIcon
         style={{
           fontSize: 30,
-          marginRight: 50,
+          marginRight: 30,
           color: "#ff1949",
           cursor: "pointer",
         }}

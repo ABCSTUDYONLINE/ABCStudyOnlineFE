@@ -11,7 +11,7 @@ function Dropbox({ open, anchorEl }) {
       open={open}
       style={{ zIndex: 2300 }}
       anchorEl={anchorEl}
-      placement={"bottom-start"}
+      placement={"bottom-end"}
       transition
     >
       {({ TransitionProps }) => (
@@ -39,7 +39,8 @@ function DropCart() {
       <ShoppingCartIcon
         style={{
           fontSize: 30,
-          marginRight: 60,
+          marginRight: 20,
+          marginLeft:20,
           cursor: "pointer",
         }}
       ></ShoppingCartIcon>

@@ -14,6 +14,7 @@ import {
 
 function ActionLinksHover({ id }) {
   const [isHeart, setIsHeart] = useState(false);
+  const [isCart, setIsCart] = useState(false);
 
   const favoriteCourses = useSelector((state) => state.Courses.favoriteCourses);
   const accessToken = useSelector((state) => state.Authentication.accessToken);
@@ -25,28 +26,37 @@ function ActionLinksHover({ id }) {
   }, []);
 
   const handleClickHeart = () => {
-    if (isHeart) {
-      dispatch(ApiRemoveFavoriteCourse(accessToken, id)).then((response) => {
-        if (response.status === 200) {
-          setIsHeart(!isHeart);
-          dispatch(ApiGetFavoriteCourses(accessToken, 1, 10));
-        } else {
-          console.log("action link remove error: ", response.data.message);
+    console.log("🚀 ~ file: action-links-hover.js ~ line 33 ~ handleClickHeart ~ favoriteCourses", favoriteCourses)
+    let foundedCourse = favoriteCourses.find(
+      (favorite) => favorite.course.id === id
+    );
+    if ( isHeart) {
+      dispatch(ApiRemoveFavoriteCourse(accessToken, foundedCourse.id)).then(
+        (response) => {
+          
+          if (response?.status === 200) {
+            setIsHeart(!isHeart);
+            dispatch(ApiGetFavoriteCourses(accessToken, 1, 10));
+          } else {
+            console.log("action link remove error: ", response?.data.message);
+          }
         }
-      });
+      );
     } else {
-      dispatch(ApiAddFavoriteCourse(accessToken, id)).then((response) => {
-        if (response.status === 201) {
-          setIsHeart(!isHeart);
-          dispatch(ApiGetFavoriteCourses(accessToken, 1, 10));
-        } else {
-          console.log("action link add error: ", response.data.message);
+      dispatch(ApiAddFavoriteCourse(accessToken, id)).then(
+        (response) => {
+          if (response.status === 201) {
+            setIsHeart(!isHeart);
+            dispatch(ApiGetFavoriteCourses(accessToken, 1, 10));
+          } else {
+            console.log("action link add error: ", response.data.message);
+          }
         }
-      });
+      );
     }
   };
 
-  const handleClickSync = () => {};
+  const handleClickCart = () => {};
 
   return (
     <div
@@ -68,9 +78,15 @@ function ActionLinksHover({ id }) {
           <AiOutlineHeart title="Wishlist" onClick={handleClickHeart} />
         </CardActionReverseHover>
       )}
-      <CardActionHover>
-        <CardMembershipIcon title="Assign" onClick={handleClickSync} />
-      </CardActionHover>
+      {!isCart ? (
+        <CardActionHover>
+          <CardMembershipIcon title="Assign" onClick={handleClickCart} />
+        </CardActionHover>
+      ) : (
+        <CardActionReverseHover>
+          <CardMembershipIcon title="Assign" onClick={handleClickCart} />
+        </CardActionReverseHover>
+      )}
     </div>
   );
 }

@@ -36,12 +36,15 @@ function Category() {
       <div
         style={{
           marginTop: 120,
-          height: 320,
           alignContent: "flex-end",
           backgroundPosition: "50%",
           backgroundSize: "cover",
           background:
             'url("https://ednuv-ng.envytheme.com/page-title4.3b9883c8a45ee489796f.jpg")',
+            display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          height: "50vh",
         }}
       >
         <div
