@@ -60,6 +60,25 @@ export const ApiGetTopRegisterCourses =
       });
   };
 
+export const ApiGetTopRateInWeek = (page, limit) => (dispatch, getStore) => {
+  return axios
+    .get(apiUrl + `/courses/sorts?type=rateInWeek&page=${page}&limit=${limit}`)
+    .then((response) => {
+      if (response.status === 200) {
+        dispatch({
+          type: TYPES.GET_TOP_RATE_IN_WEEK_SUCCESSED,
+          payload: response.data,
+        });
+      } else {
+        dispatch({ type: TYPES.GET_TOP_RATE_IN_WEEK_FAILED });
+      }
+      console.log("RESPONSE: ", response);
+    })
+    .catch((error) => {
+      console.log("TOP new courses error: ", error);
+      dispatch({ type: TYPES.GET_TOP_RATE_IN_WEEK_FAILED });
+    });
+};
 export const ApiGetCategories = (page, limit) => (dispatch, getStore) => {
   return axios
     .get(apiUrl + `/categories?page=${page}&limit=${limit}`)
@@ -126,15 +145,12 @@ export const ApiAddFavoriteCourse =
         dispatch({ type: TYPES.ADD_FAVORITE_COURSE_FAILED });
       });
   };
-  export const ApiRemoveFavoriteCourse =
+export const ApiRemoveFavoriteCourse =
   (accessToken, courseId) => (dispatch, getStore) => {
     return axios
-      .delete(
-        apiUrl + `/courses/favorites?courseId=${courseId}`,
-        {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        }
-      )
+      .delete(apiUrl + `/courses/favorites?courseId=${courseId}`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
       .then((response) => {
         if (response.status === 200) {
           dispatch({ type: TYPES.REMOVE_FAVORITE_COURSE_SUCCESSED });
@@ -148,3 +164,23 @@ export const ApiAddFavoriteCourse =
         dispatch({ type: TYPES.REMOVE_FAVORITE_COURSE_FAILED });
       });
   };
+
+export const ApiGetCourseDetail = (courseId) => (dispatch, getStore) => {
+  return axios
+    .get(apiUrl + `/courses/detail?courseId=${courseId}`)
+    .then((response) => {
+      if (response.status === 200) {
+        dispatch({
+          type: TYPES.GET_COURSE_DETAIL_SUCCSED,
+          payload: response.data,
+        });
+      } else {
+        dispatch({ type: TYPES.GET_COURSE_DETAIL_FAILED });
+      }
+      return response;
+    })
+    .catch((error) => {
+      console.log(error);
+      dispatch({ type: TYPES.GET_COURSE_DETAIL_FAILED });
+    });
+};

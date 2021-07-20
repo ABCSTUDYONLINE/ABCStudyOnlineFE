@@ -15,11 +15,8 @@ import { useSelector } from "react-redux";
 
 function Dropbox({ open, anchorEl }) {
   const categories = useSelector((state) => state.Courses.categories);
-  console.log("Drop category: ", categories);
   const webs=categories.filter((category)=>category.levelCategory==="web");
-  console.log("webs category: ", webs);
   const mobiles=categories.filter((category)=>category.levelCategory==="mobile");
-  console.log("mobiles category: ", mobiles);
   return (
     <Popper
       open={open}
@@ -98,7 +95,7 @@ function SubDropbox({ items, open, anchorEl }) {
               {(items || []).map((sub) => (
                 <ListItem
                   onClick={() => {
-                    history.push("./categoryPage", {
+                    history.push("/categoryPage", {
                       sub: sub,
                     });
                   }}

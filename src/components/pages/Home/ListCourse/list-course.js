@@ -35,7 +35,9 @@ function ListCourse({ title, courses }) {
     >
       <TitleHeader title={title} />
       {!courses || courses?.length === 0 ? (
-        <CircularProgress />
+        <div style={{ height: 100,display:'flex',alignItems:'center',justifyContent:'center' }}>
+          <CircularProgress />
+        </div>
       ) : (
         <Carousel responsive={responsive} showDots={true}>
           {courses.map((course) => (

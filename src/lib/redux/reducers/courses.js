@@ -3,14 +3,18 @@ import * as TYPES from "../types";
 let initState = {
   topNewCourses: [],
   topRegisterCourses: [],
+  topRateInWeek: [],
   categories: [],
   favoriteCourses: [],
+  courseDetail: null,
   getTopNewCourseStatus: false,
   getTopRegisterCoursesStatus: false,
+  getTopRateInWeekStatus: false,
   getCategoriesStatus: false,
   getFavoriteCoursesStatus: false,
   addFavoriteCourseStatus: false,
   removeFavoriteCourseStatus: false,
+  getCourseDetailStatus: false,
 };
 
 export function Courses(prevState = initState, action) {
@@ -31,6 +35,14 @@ export function Courses(prevState = initState, action) {
       };
     case TYPES.GET_TOP_REGISTER_COURSE_FAILED:
       return { ...prevState, getTopRegisterCourseStatus: false };
+    case TYPES.GET_TOP_RATE_IN_WEEK_SUCCESSED:
+      return {
+        ...prevState,
+        getTopRateInWeekStatus: true,
+        topRateInWeek: action.payload.data.list,
+      };
+    case TYPES.GET_TOP_RATE_IN_WEEK_FAILED:
+      return { ...prevState, getTopRateInWeekStatus: false };
     case TYPES.GET_CATEGORIES_SUCCESSED:
       return {
         ...prevState,
@@ -61,6 +73,14 @@ export function Courses(prevState = initState, action) {
       };
     case TYPES.REMOVE_FAVORITE_COURSE_FAILED:
       return { ...prevState, removeFavoriteCourseStatus: false };
+    case TYPES.GET_COURSE_DETAIL_SUCCSED:
+      return {
+        ...prevState,
+        getCourseDetailStatus: true,
+        courseDetail: action.payload.data,
+      };
+    case TYPES.GET_COURSE_DETAIL_FAILED:
+      return { ...prevState, getCourseDetailStatus: false };
     default:
       return prevState;
   }

@@ -89,7 +89,7 @@ function ListCourseItem({ course, style }) {
             lineHeight: 1.5,
           }}
           onClick={() => {
-            history.push(`/course-detail/${course.id}`,{course:course});
+            history.push(`/course-detail/${course.id}`);
             window.scrollTo({ top: 0 });
           }}
         >
