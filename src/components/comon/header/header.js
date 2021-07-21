@@ -15,6 +15,8 @@ import DropCart from "./DropCart/drop-cart";
 
 function Header() {
   const loginStatus = useSelector((state) => state.Authentication.loginStatus);
+  
+  const accessToken = localStorage.getItem('accessToken')
   const history = useHistory();
 
   const dispatch = useDispatch();
@@ -70,7 +72,7 @@ function Header() {
         </div>
         <Search />
       </div>
-      {!loginStatus ? (
+      {!accessToken ? (
         <CardButton
           onClick={() => {
             history.push("/login");

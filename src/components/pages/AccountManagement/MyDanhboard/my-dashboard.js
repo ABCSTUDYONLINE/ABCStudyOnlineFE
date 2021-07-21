@@ -232,7 +232,10 @@ function MyDashboard() {
               <CardButton
                 style={{ borderRadius: 4 }}
                 onClick={() => {
+                  localStorage.removeItem("accessToken");
                   dispatch({ type: "LOGOUT" });
+                  history.push("/");
+                  
                 }}
               >
                 <div>Logout</div>

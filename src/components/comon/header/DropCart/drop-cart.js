@@ -5,7 +5,8 @@ import SectionCourse from "../../../pages/SectionCourse/section-course";
 import { useSelector } from "react-redux";
 
 function Dropbox({ open, anchorEl }) {
-  const favoriteCourses = useSelector((state) => state.Courses.favoriteCourses);
+  const cart = useSelector((state) => state.Courses.cart);
+  console.log("CART: ",cart);
   return (
     <Popper
       open={open}
@@ -17,7 +18,18 @@ function Dropbox({ open, anchorEl }) {
       {({ TransitionProps }) => (
         <Fade {...TransitionProps} timeout={350}>
           <Paper>
-            <SectionCourse title={"Proceed to Checkout"} courses={favoriteCourses} />
+            {cart.length !== 0 ? (
+              <SectionCourse title={"See all"} courses={cart} />
+            ) : (
+              <div
+                style={{
+                  padding: "20px 10px 10px 10px",
+                  boxShadow: "-9px 10px 30px -5px rgba(0,0,0,0.06)",
+                }}
+              >
+                You don't have any course in cart
+              </div>
+            )}
           </Paper>
         </Fade>
       )}

@@ -186,10 +186,12 @@ export const ApiGetCourseDetail = (courseId) => (dispatch, getStore) => {
     });
 };
 
-export const ApiAddCourseToCart = (courseId) => (dispatch, getStore) => {
+export const ApiAddCourseToCart = (accessToken,courseId) => (dispatch, getStore) => {
   return axios
     .post(apiUrl + "/learn", {
-      courseId
+      courseId,
+    },{
+      headers: { Authorization: `Bearer ${accessToken}` },
     })
     .then((response) => {
       if (response.status === 201) {
@@ -206,7 +208,7 @@ export const ApiAddCourseToCart = (courseId) => (dispatch, getStore) => {
 };
 export const ApiRemoveCourseFromCart = (courseId) => (dispatch, getStore) => {
   return axios
-    .delete(apiUrl + `/learn?earnId=${courseId}` )
+    .delete(apiUrl + `/learn?earnId=${courseId}`)
     .then((response) => {
       if (response.status === 200) {
         dispatch({ type: TYPES.REMOVE_COURSE_FROM_CART_SUCCESSED });
@@ -220,3 +222,26 @@ export const ApiRemoveCourseFromCart = (courseId) => (dispatch, getStore) => {
       dispatch({ type: TYPES.REMOVE_COURSE_FROM_CART_FAILED });
     });
 };
+
+export const ApiGetCoursesFromCart =
+  (accessToken, page, limit) => (dispatch, getStore) => {
+    return axios
+      .get(apiUrl + `/learn?status=unpaid&page=${page}&limit=${limit}`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          dispatch({
+            type: TYPES.GET_COURSES_FROM_CART_SUCCESSED,
+            payload: response.data,
+          });
+        } else {
+          dispatch({ type: TYPES.GET_COURSES_FROM_CART_FAILED });
+        }
+        console.log("carrt res: ",response);
+      })
+      .catch((error) => {
+        console.log(error);
+        dispatch({ type: TYPES.GET_COURSES_FROM_CART_FAILED });
+      });
+  };

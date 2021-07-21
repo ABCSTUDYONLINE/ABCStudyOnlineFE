@@ -48,6 +48,7 @@ function Login() {
           "login thanh cong voi accessToken: ",
           response.data.access_token
         );
+        localStorage.setItem('accessToken', response.data.access_token)
         dispatch(ApiUsersMe(response.data.access_token));
         history.push("/");
       } else {
