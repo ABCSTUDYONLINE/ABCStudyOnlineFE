@@ -2,7 +2,18 @@ import React, { useState } from "react";
 
 import { BlackText, CardButtonText } from "../../../../../globals/index";
 
+function secondsToms(d) {
+  d = Number(d);
+  var m = Math.floor(d % 3600 / 60);
+  var s = Math.floor(d % 3600 % 60);
+
+  var mDisplay = m > 0 ? m + (m === 1 ? " minute, " : " minutes, ") : "";
+  var sDisplay = s > 0 ? s + (s === 1 ? " second" : " seconds") : "";
+  return  mDisplay + sDisplay; 
+}
+
 function LessonItem({ lesson, index, handleClickOpen, activeId }) {
+  const time=secondsToms(lesson.duration);
   return (
     <div style={{ marginTop: 10, display: "flex" }}>
       {/* <BlackText
@@ -28,7 +39,7 @@ function LessonItem({ lesson, index, handleClickOpen, activeId }) {
           }
         }}
       >
-        {`${index}. ${lesson.lessonName}`}
+        {`${index}. ${lesson.lessonName} (${time})`}
       </CardButtonText>
     </div>
   );

@@ -12,7 +12,7 @@ function AccountDetailPanel({ value, index, content }) {
   const [validationMsg, setValidationMsg] = useState({});
 
   const dispatch = useDispatch();
-  const accessToken = useSelector((state) => state.Authentication.accessToken);
+  const accessToken = localStorage.getItem("accessToken");
 
   const onSubmitSaveChanges = () => {
     if (

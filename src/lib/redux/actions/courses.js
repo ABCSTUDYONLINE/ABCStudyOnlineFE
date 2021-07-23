@@ -186,35 +186,44 @@ export const ApiGetCourseDetail = (courseId) => (dispatch, getStore) => {
     });
 };
 
-export const ApiAddCourseToCart = (accessToken,courseId) => (dispatch, getStore) => {
+export const ApiAddCourseToCart =
+  (accessToken, courseId) => (dispatch, getStore) => {
+    return axios
+      .post(
+        apiUrl + "/learn",
+        {
+          courseId,
+        },
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+      )
+      .then((response) => {
+        if ( response.data.data &&response.status === 201) {
+          dispatch({ type: TYPES.ADD_COURSE_TO_CART_SUCCESSED });
+        } else {
+          dispatch({ type: TYPES.ADD_COURSE_TO_CART_FAILED });
+        }
+        console.log("add cart ", response);
+        return response;
+      })
+      .catch((error) => {
+        console.log(error);
+        dispatch({ type: TYPES.ADD_COURSE_TO_CART_FAILED });
+      });
+  };
+export const ApiRemoveCourseFromCart = (accessToken,courseId) => (dispatch, getStore) => {
   return axios
-    .post(apiUrl + "/learn", {
-      courseId,
-    },{
+    .delete(apiUrl + `/learn?learnId=${courseId}`,{
       headers: { Authorization: `Bearer ${accessToken}` },
     })
-    .then((response) => {
-      if (response.status === 201) {
-        dispatch({ type: TYPES.ADD_COURSE_TO_CART_SUCCESSED });
-      } else {
-        dispatch({ type: TYPES.ADD_COURSE_TO_CART_FAILED });
-      }
-      return response;
-    })
-    .catch((error) => {
-      console.log(error);
-      dispatch({ type: TYPES.ADD_COURSE_TO_CART_FAILED });
-    });
-};
-export const ApiRemoveCourseFromCart = (courseId) => (dispatch, getStore) => {
-  return axios
-    .delete(apiUrl + `/learn?earnId=${courseId}`)
     .then((response) => {
       if (response.status === 200) {
         dispatch({ type: TYPES.REMOVE_COURSE_FROM_CART_SUCCESSED });
       } else {
         dispatch({ type: TYPES.REMOVE_COURSE_FROM_CART_FAILED });
       }
+      console.log("remove cart ", response);
       return response;
     })
     .catch((error) => {
@@ -238,7 +247,7 @@ export const ApiGetCoursesFromCart =
         } else {
           dispatch({ type: TYPES.GET_COURSES_FROM_CART_FAILED });
         }
-        console.log("carrt res: ",response);
+        console.log("carrt res: ", response);
       })
       .catch((error) => {
         console.log(error);

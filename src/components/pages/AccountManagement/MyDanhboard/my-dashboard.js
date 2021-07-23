@@ -234,7 +234,7 @@ function MyDashboard() {
                 onClick={() => {
                   localStorage.removeItem("accessToken");
                   dispatch({ type: "LOGOUT" });
-                  history.push("/");
+                  history.push("");
                   
                 }}
               >
