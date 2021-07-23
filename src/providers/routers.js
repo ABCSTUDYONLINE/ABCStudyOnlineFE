@@ -38,7 +38,7 @@ export function Routers() {
                 <Route exact path="/">
                   <HomePage />
                 </Route>
-                <Route path="/categoryPage">
+                <Route path="/search/:keyWord?/:categoryName?">
                   <CategoryPage />
                 </Route>
                 <Route exact path="/course-detail/:id">

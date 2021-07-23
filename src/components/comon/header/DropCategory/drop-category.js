@@ -15,8 +15,13 @@ import { useSelector } from "react-redux";
 
 function Dropbox({ open, anchorEl }) {
   const categories = useSelector((state) => state.Courses.categories);
-  const webs=categories.filter((category)=>category.levelCategory==="web");
-  const mobiles=categories.filter((category)=>category.levelCategory==="mobile");
+  const webs = categories.filter(
+    (category) => category.levelCategory === "web"
+  );
+  const mobiles = categories.filter(
+    (category) => category.levelCategory === "mobile"
+  );
+  console.log("items: ", mobiles);
   return (
     <Popper
       open={open}
@@ -85,19 +90,17 @@ function SubDropbox({ items, open, anchorEl }) {
       anchorEl={anchorEl}
       placement={"right-start"}
       transition
-      
       keepMounted
     >
       {({ TransitionProps }) => (
         <Fade {...TransitionProps} timeout={350}>
-          <Paper style={ { zIndex: 9999}}>
+          <Paper style={{ zIndex: 9999 }}>
             <List>
               {(items || []).map((sub) => (
                 <ListItem
                   onClick={() => {
-                    history.push("/categoryPage", {
-                      sub: sub,
-                    });
+                    history.push(`/search/category/${sub.categoryName}`);
+                    window.scrollTo({ top: 0 });
                   }}
                   key={sub.id}
                 >

@@ -15,16 +15,17 @@ import DropCart from "./DropCart/drop-cart";
 
 function Header() {
   const loginStatus = useSelector((state) => state.Authentication.loginStatus);
-  
-  const accessToken = localStorage.getItem('accessToken')
+
+  const accessToken = localStorage.getItem("accessToken");
   const history = useHistory();
 
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.Courses.categories);
-
-  useEffect(() => {
+  
+  if (categories.length === 0) {
+    
     dispatch(ApiGetCategories(1, 10));
-  }, []);
+  }
 
   // useEffect(() => {
   //     dispatch(ApiGetFavoriteCourse(accessToken,1,10));
@@ -92,7 +93,7 @@ function Header() {
               height: 50,
               marginRight: 4,
               cursor: "pointer",
-              marginLeft:40
+              marginLeft: 40,
             }}
             onClick={() => {
               history.push("/myDashboardPage");

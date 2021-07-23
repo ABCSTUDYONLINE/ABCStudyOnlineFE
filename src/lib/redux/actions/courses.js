@@ -32,6 +32,7 @@ export const ApiGetTopNewCourses = (page, limit) => (dispatch, getStore) => {
         dispatch({ type: TYPES.GET_TOP_NEW_COURSE_FAILED });
       }
       console.log("RESPONSE: ", response);
+      return response;
     })
     .catch((error) => {
       console.log("TOP new courses error: ", error);
@@ -199,7 +200,7 @@ export const ApiAddCourseToCart =
         }
       )
       .then((response) => {
-        if ( response.data.data &&response.status === 201) {
+        if (response.data.data && response.status === 201) {
           dispatch({ type: TYPES.ADD_COURSE_TO_CART_SUCCESSED });
         } else {
           dispatch({ type: TYPES.ADD_COURSE_TO_CART_FAILED });
@@ -212,25 +213,26 @@ export const ApiAddCourseToCart =
         dispatch({ type: TYPES.ADD_COURSE_TO_CART_FAILED });
       });
   };
-export const ApiRemoveCourseFromCart = (accessToken,courseId) => (dispatch, getStore) => {
-  return axios
-    .delete(apiUrl + `/learn?learnId=${courseId}`,{
-      headers: { Authorization: `Bearer ${accessToken}` },
-    })
-    .then((response) => {
-      if (response.status === 200) {
-        dispatch({ type: TYPES.REMOVE_COURSE_FROM_CART_SUCCESSED });
-      } else {
+export const ApiRemoveCourseFromCart =
+  (accessToken, courseId) => (dispatch, getStore) => {
+    return axios
+      .delete(apiUrl + `/learn?learnId=${courseId}`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          dispatch({ type: TYPES.REMOVE_COURSE_FROM_CART_SUCCESSED });
+        } else {
+          dispatch({ type: TYPES.REMOVE_COURSE_FROM_CART_FAILED });
+        }
+        console.log("remove cart ", response);
+        return response;
+      })
+      .catch((error) => {
+        console.log(error);
         dispatch({ type: TYPES.REMOVE_COURSE_FROM_CART_FAILED });
-      }
-      console.log("remove cart ", response);
-      return response;
-    })
-    .catch((error) => {
-      console.log(error);
-      dispatch({ type: TYPES.REMOVE_COURSE_FROM_CART_FAILED });
-    });
-};
+      });
+  };
 
 export const ApiGetCoursesFromCart =
   (accessToken, page, limit) => (dispatch, getStore) => {
@@ -252,5 +254,48 @@ export const ApiGetCoursesFromCart =
       .catch((error) => {
         console.log(error);
         dispatch({ type: TYPES.GET_COURSES_FROM_CART_FAILED });
+      });
+  };
+export const ApiGetDetailCategory = (categoryId) => (dispatch, getStore) => {
+  return axios
+    .get(apiUrl + `/categories/detail?categoryId=${categoryId}`)
+    .then((response) => {
+      if (response.status === 200) {
+        dispatch({
+          type: TYPES.GET_CATEGORIES_SUCCESSED,
+          payload: response.data,
+        });
+      } else {
+        dispatch({ type: TYPES.GET_CATEGORY_DETAIL_FAILED });
+      }
+      console.log("Detial category: ", response);
+      return response;
+    })
+    .catch((error) => {
+      console.log(error);
+      dispatch({ type: TYPES.GET_CATEGORY_DETAIL_FAILED });
+    });
+};
+
+export const ApiSearchCourses =
+  (type, subText, page, limit) => (dispatch, getStore) => {
+    return axios
+      .get(
+        apiUrl +
+          `/courses/finds?type=${type}&subText=${subText}&page=${page}&limit=${limit}`
+      )
+      .then((response) => {
+        if (response.status === 200) { 
+          dispatch({
+            type: TYPES.SEARCH_COURSES_SUCCESSED,
+            payload: response.data,
+          });
+        } else {
+          dispatch({ type: TYPES.SEARCH_COURSES_FAILED });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        dispatch({ type: TYPES.SEARCH_COURSES_FAILED });
       });
   };

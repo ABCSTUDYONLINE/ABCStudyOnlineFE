@@ -8,6 +8,8 @@ let initState = {
   favoriteCourses: [],
   cart: [],
   courseDetail: null,
+  categoryDetail: null,
+  listCoursesBySearch: [],
   getTopNewCourseStatus: false,
   getTopRegisterCoursesStatus: false,
   getTopRateInWeekStatus: false,
@@ -19,6 +21,8 @@ let initState = {
   addCourseToCartStatus: false,
   removeCourseFromCartStatus: false,
   getCoursesFromCartStatus: false,
+  getCategoryDetailStatus: false,
+  searchCoursesStatus: false,
 };
 
 export function Courses(prevState = initState, action) {
@@ -103,6 +107,22 @@ export function Courses(prevState = initState, action) {
       };
     case TYPES.GET_COURSES_FROM_CART_FAILED:
       return { ...prevState, getCoursesFromCartStatus: false };
+    case TYPES.GET_CATEGORY_DETAIL_SUCCESSED:
+      return {
+        ...prevState,
+        getCategoriesStatus: true,
+        categoryDetail: action.payload.data,
+      };
+    case TYPES.GET_CATEGORY_DETAIL_FAILED:
+      return { ...prevState, getCategoriesStatus: false };
+    case TYPES.SEARCH_COURSES_SUCCESSED:
+      return {
+        ...prevState,
+        searchCoursesStatus: true,
+        listCoursesBySearch: action.payload.data.list,
+      };
+    case TYPES.SEARCH_COURSES_FAILED:
+      return { ...prevState, searchCoursesStatus: false };
     default:
       return prevState;
   }

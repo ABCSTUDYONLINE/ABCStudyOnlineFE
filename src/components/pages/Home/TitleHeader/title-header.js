@@ -1,10 +1,12 @@
 import { CircularProgress, Typography } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { BlackText, CardButton, RedText } from "../../../../globals";
 
 function TitleHeader({ title }) {
   const dispatch = useDispatch();
+  const history=useHistory();
 
   useEffect(() => {
     // dispatch(getCurrentTodo(1));
@@ -34,6 +36,9 @@ function TitleHeader({ title }) {
           position: "absolute",
           right: 0,
           top: "10%",
+        }}
+        onClick={()=>{
+          history.push("/search",{title:title})
         }}
       >
         <div>View Courses</div>

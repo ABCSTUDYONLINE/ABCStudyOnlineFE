@@ -15,6 +15,7 @@ import {
 function Home() {
   const history = useHistory();
   const dispatch = useDispatch();
+  let loadingNewCourses=true;
 
   const topNewCourses = useSelector((state) => state.Courses.topNewCourses);
   const topRegisterCourses = useSelector(
@@ -31,7 +32,11 @@ function Home() {
       dispatch(ApiGetCoursesFromCart(accessToken, 1, 10));
     }
 
-    dispatch(ApiGetTopNewCourses(1, 10));
+    dispatch(ApiGetTopNewCourses(1, 10)).then((response)=>{
+      if(response===200){
+        loadingNewCourses=false;
+      }
+    })
     console.log("Home register courses: ", topNewCourses);
     dispatch(ApiGetTopRegisterCourses(1, 10));
 
@@ -43,7 +48,7 @@ function Home() {
     <div>
       <SlideBackground />
       <ListCourse title={"Top Rate In Week"} courses={topRateInWeek} />
-      <ListCourse title={"New Courses"} courses={topNewCourses} />
+      <ListCourse title={"New Courses"} courses={topNewCourses}  />
       <ListCourse title={"Register Courses"} courses={topRegisterCourses} />
     </div>
   );
