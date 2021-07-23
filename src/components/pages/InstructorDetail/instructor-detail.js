@@ -1,5 +1,5 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import {
   BlackText,
   CardButton,
@@ -17,9 +17,14 @@ import InstagramIcon from "@material-ui/icons/Instagram";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import PinterestIcon from "@material-ui/icons/Pinterest";
 import RelatedCourses from "../CourseDetail/RelatedCourses/related-courses";
+import { Avatar } from "@material-ui/core";
+
 
 function InstructorDetail() {
   const history = useHistory();
+  const location = useLocation();
+  const teacher=location.state.teacher;
+  console.log('instructor detail: ',teacher)
   return (
     <div style={{ padding: "100px 0px 100px 0px " }}>
       <div
@@ -93,9 +98,9 @@ function InstructorDetail() {
         }}
       >
         <div style={{ display: "flex" }}>
-          <div style={{ width: "100%", textAlign: "center" }}>
+          <div style={{ width: "40%", textAlign: "center" }}>
             <img
-              src="/assets/user1.jpg"
+              src={teacher?.avatarLink ? teacher.avatarLink : "https://portal.staralliance.com/imagelibrary/aux-pictures/prototype-images/avatar-default.png/@@images/image.png"}
               alt=""
               style={{
                 marginRight: 4,
@@ -129,7 +134,7 @@ function InstructorDetail() {
                       margin: 0,
                     }}
                   >
-                    91
+                    2
                   </CardButtonText>
                 </div>
               </div>
@@ -155,7 +160,7 @@ function InstructorDetail() {
                       margin: 0,
                     }}
                   >
-                    80
+                    1
                   </CardButtonText>
                 </div>
               </div>
@@ -194,14 +199,14 @@ function InstructorDetail() {
             }}
           >
             <BlackText style={{ fontSize: 22, fontWeight: 600 }}>
-              Jonkin Jullinor
+              {`${teacher?.firstName} ${teacher?.lastName}`}
             </BlackText>
             <RedText
               style={{
                 marginTop: 15,
               }}
             >
-              Angular Teacher
+              {teacher?.role}
             </RedText>
             <BlackText
               style={{
@@ -211,21 +216,11 @@ function InstructorDetail() {
                 marginTop: 15,
               }}
             >
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book. It has
-              survived not only five centuries, but also the leap into
-              electronic typesetting, remaining essentially unchanged. It is a
-              long established fact that a reader will be distracted by the
-              readable content of a page when looking at its layout. The point
-              of using Lorem Ipsum is that it has a more-or-less normal
-              distribution of letters, as opposed to using 'Content here,
-              content here', making it look like readable English.
+              {teacher?.shortBio}
             </BlackText>
           </div>
         </div>
-        <RelatedCourses style={{ marginTop: 60,fontSize:37 }} caseTitle={'Courses by Jonkin Jullinor'} />
+        {/* <RelatedCourses style={{ marginTop: 60,fontSize:37 }} caseTitle={'Courses by Jonkin Jullinor'} /> */}
       </div>
     </div>
   );

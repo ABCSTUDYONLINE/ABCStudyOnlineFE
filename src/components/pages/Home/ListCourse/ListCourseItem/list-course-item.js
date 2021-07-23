@@ -17,6 +17,10 @@ import Avatar from "@material-ui/core/Avatar";
 function ListCourseItem({ course, style }) {
   let history = useHistory();
   const [isHover, setIsHover] = useState(false);
+  let countLessons = 0;
+  course?.topics.map((topic) => {
+    countLessons += topic.lessons.length;
+  });
   return (
     <Card
       onMouseEnter={() => {
@@ -64,7 +68,7 @@ function ListCourseItem({ course, style }) {
             alignItems: "center",
           }}
         >
-          {course.teacher.avatarLink !==null ? (
+          {course.teacher.avatarLink !== null ? (
             <img
               src={course.teacher.avatarLink}
               alt=""
@@ -77,7 +81,7 @@ function ListCourseItem({ course, style }) {
           ) : (
             <Avatar src="/broken-image.jpg" />
           )}
-          <BlackText style={{ fontSize: 14.5, fontWeight: 500,marginLeft:8 }}>
+          <BlackText style={{ fontSize: 14.5, fontWeight: 500, marginLeft: 8 }}>
             {`${course.teacher.firstName} ${course.teacher.lastName}`}
           </BlackText>
         </div>
@@ -140,7 +144,7 @@ function ListCourseItem({ course, style }) {
             </div>
             <div style={{ display: "flex", alignItems: "center" }}>
               <ImportContactsIcon></ImportContactsIcon>
-              <div style={{ marginLeft: 5 }}>{`6 lessons`}</div>
+              <div style={{ marginLeft: 5 }}>{`${countLessons} lessons`}</div>
             </div>
             <RedText
               style={{ fontSize: 18, fontWeight: 500 }}

@@ -2,7 +2,7 @@ import React from "react";
 import CheckIcon from "@material-ui/icons/Check";
 import { BlackText } from "../../../../../globals/index";
 
-function LearnItem() {
+function LearnItem({item}) {
   return (
     <div
       style={{
@@ -21,7 +21,7 @@ function LearnItem() {
           fontWeight: 500,
         }}
       >
-        Become an expert in Statistics
+        {item}
       </BlackText>
     </div>
   );

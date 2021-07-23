@@ -2,7 +2,7 @@ import React from "react";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import { BlackText } from "../../../../../globals/index";
 
-function RequirementItem() {
+function RequirementItem({item}) {
   return (
     <div
       style={{
@@ -23,7 +23,7 @@ function RequirementItem() {
           color: "#727695",
         }}
       >
-        Contrary to popular belief, Lorem Ipsum is not simply random text.
+        item
       </BlackText>
     </div>
   );

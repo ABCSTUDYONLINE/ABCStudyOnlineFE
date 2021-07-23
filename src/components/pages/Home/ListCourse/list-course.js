@@ -35,7 +35,7 @@ function ListCourse({ title, courses }) {
       }}
     >
       <TitleHeader title={title} />
-      {!courses  ? (
+      {!courses || courses?.length === 0  ? (
         <div
           style={{
             height: 100,

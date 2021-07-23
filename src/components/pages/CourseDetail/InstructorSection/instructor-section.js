@@ -1,8 +1,10 @@
 import { Avatar } from "@material-ui/core";
 import React from "react";
+import { useHistory } from "react-router-dom";
 import { BlackText, CardButton } from "../../../../globals/index";
 
 function InstructorSection({ teacher }) {
+  const history=useHistory();
   console.log("Teacher: ", teacher);
   return (
     <div style={{ marginTop: 30 }}>
@@ -68,7 +70,9 @@ function InstructorSection({ teacher }) {
                 {teacher?.role}
               </BlackText>
             </div>
-            <CardButton style={{ borderRadius: 4 }}>
+            <CardButton style={{ borderRadius: 4 }} onClick={()=>{
+              history.push(`/instructor/${teacher.id}`,{teacher:teacher})
+            }} >
               <div>View Profile on Academy</div>
             </CardButton>
           </div>

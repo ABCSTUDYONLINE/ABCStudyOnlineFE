@@ -3,8 +3,13 @@ import { BlackText } from "../../../../globals/index";
 import LearnItem from "./LearnItem/learn-item";
 import RequirementItem from "./RequirementItem/requirement-item";
 
-function CourseAdditionalInformation({course}) {
+function CourseAdditionalInformation({ course }) {
   const temp = [1, 2, 3, 4, 5, 6];
+  const whatYouWillLearns = course.whatWillLearn.split(/(?:,)+/);
+  console.log("whatYouWillLearns", whatYouWillLearns);
+
+  const requirements = course.requirements.split(/(?:,)+/);
+  console.log("requirements", requirements);
   return (
     <div>
       <img
@@ -27,9 +32,22 @@ function CourseAdditionalInformation({course}) {
           What you'll learn
         </BlackText>
         <div style={{ marginTop: 15, flexWrap: "wrap", display: "flex" }}>
-          {temp.map((i) => (
-            <LearnItem key={temp[i]} />
-          ))}
+          {whatYouWillLearns?.length > 0 ? (
+            whatYouWillLearns.map((item, index) => (
+              <LearnItem key={index} item={item} />
+            ))
+          ) : (
+            <BlackText
+              style={{
+                fontSize: 15,
+                fontWeight: 400,
+                color: "#727695",
+                marginLeft: 10,
+              }}
+            >
+              (No What you'll learn)
+            </BlackText>
+          )}
         </div>
       </div>
       <div style={{ marginTop: 30 }}>
@@ -42,9 +60,22 @@ function CourseAdditionalInformation({course}) {
           Requirements
         </BlackText>
         <div style={{ marginTop: 15 }}>
-          {temp.map((i) => (
-            <RequirementItem key={temp[i]} />
-          ))}
+          {requirements.length > 0 ? (
+            requirements.map((item, index) => (
+              <RequirementItem key={index} item={item} />
+            ))
+          ) : (
+            <BlackText
+              style={{
+                fontSize: 15,
+                fontWeight: 400,
+                color: "#727695",
+                marginLeft: 10,
+              }}
+            >
+              (No Requirements)
+            </BlackText>
+          )}
         </div>
       </div>
       <div style={{ marginTop: 30 }}>

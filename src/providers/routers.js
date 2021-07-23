@@ -47,7 +47,7 @@ export function Routers() {
                 <Route path="/myDashboardPage">
                   <MyDashboardPage />
                 </Route>
-                <Route path="/instructorPage">
+                <Route path="/instructor/:id">
                   <InstructorDetailPage />
                 </Route>
               </Switch>
