@@ -23,6 +23,7 @@ let initState = {
   getCoursesFromCartStatus: false,
   getCategoryDetailStatus: false,
   searchCoursesStatus: false,
+  chargeCourseStatus: false,
 };
 
 export function Courses(prevState = initState, action) {
@@ -123,6 +124,13 @@ export function Courses(prevState = initState, action) {
       };
     case TYPES.SEARCH_COURSES_FAILED:
       return { ...prevState, searchCoursesStatus: false };
+    case TYPES.CHARGE_COURSE_SUCCESSED:
+      return {
+        ...prevState,
+        chargeCourseStatus: true,
+      };
+    case TYPES.CHARGE_COURSE_FAILED:
+      return { ...prevState, chargeCourseStatus: false };
     default:
       return prevState;
   }

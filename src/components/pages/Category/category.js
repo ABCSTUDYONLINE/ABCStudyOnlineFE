@@ -128,7 +128,7 @@ function Category() {
             marginLeft: 91,
           }}
         >
-          {categoryName ? categoryName : keyWord}
+          {categoryName ? categoryName : `Search keyword ${keyWord}`}
         </div>
       </div>
       <div
@@ -141,7 +141,7 @@ function Category() {
           alignItems: "center",
         }}
       >
-        <div style={{ fontSize: 20, color: "#212529" }}>{`${"4"} results`}</div>
+        <div style={{ fontSize: 20, color: "#212529" }}>{`${listCoursesBySearch?.length} results`}</div>
         <FormControl style={{ minWidth: 200 }}>
           <InputLabel htmlFor="age-native-simple">Sort</InputLabel>
           <Select

@@ -285,7 +285,7 @@ export const ApiSearchCourses =
           `/courses/finds?type=${type}&subText=${subText}&page=${page}&limit=${limit}`
       )
       .then((response) => {
-        if (response.status === 200) { 
+        if (response.status === 200) {
           dispatch({
             type: TYPES.SEARCH_COURSES_SUCCESSED,
             payload: response.data,
@@ -297,5 +297,31 @@ export const ApiSearchCourses =
       .catch((error) => {
         console.log(error);
         dispatch({ type: TYPES.SEARCH_COURSES_FAILED });
+      });
+  };
+
+export const ApiChargeCourse =
+  (accessToken, learnIds) => (dispatch, getStore) => {
+    return axios
+      .put(
+        apiUrl + "/learn/charge",
+        {
+          learnIds: learnIds,
+        },
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+      )
+      .then((response) => {
+        if (response.status === 200) {
+          dispatch({ type: TYPES.CHARGE_COURSE_SUCCESSED });
+        } else {
+          dispatch({ type: TYPES.CHARGE_COURSE_FAILED });
+        }
+        return response;
+      })
+      .then((error) => {
+        console.log(error);
+        dispatch({ type: TYPES.CHARGE_COURSE_FAILED });
       });
   };
