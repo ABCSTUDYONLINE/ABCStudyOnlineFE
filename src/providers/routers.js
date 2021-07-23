@@ -18,35 +18,39 @@ export function Routers() {
   return (
     <div>
       <Router>
-        <Header />
         <div>
           <Switch>
-            <Route exact path="/">
-              <HomePage />
-            </Route>
-            <Route path="/login">
+            <Route exact path="/login">
               <LoginPage />
             </Route>
-            <Route path="/register">
+            <Route exact path="/register">
               <RegisterPage />
             </Route>
             <Route path="/verify">
               <VerifyPage />
             </Route>
-            <Route path="/categoryPage">
-              <CategoryPage />
-            </Route>
-            <Route exact path="/course-detail/:id">
-              <CourseDetailPage />
-            </Route>
-            <Route path="/myDashboardPage">
-              <MyDashboardPage />
-            </Route>
-            <Route path="/instructorPage">
-              <InstructorDetailPage />
-            </Route>
             <Route path="/forget-password">
               <ForgetPasswordPage />
+            </Route>
+            <Route path="*">
+              <Header />
+              <Switch>
+                <Route exact path="/">
+                  <HomePage />
+                </Route>
+                <Route path="/search/:keyWord?/:categoryName?">
+                  <CategoryPage />
+                </Route>
+                <Route exact path="/course-detail/:id">
+                  <CourseDetailPage />
+                </Route>
+                <Route path="/myDashboardPage">
+                  <MyDashboardPage />
+                </Route>
+                <Route path="/instructor/:id">
+                  <InstructorDetailPage />
+                </Route>
+              </Switch>
             </Route>
           </Switch>
         </div>

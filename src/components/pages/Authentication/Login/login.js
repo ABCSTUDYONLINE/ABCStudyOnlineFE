@@ -48,6 +48,7 @@ function Login() {
           "login thanh cong voi accessToken: ",
           response.data.access_token
         );
+        localStorage.setItem('accessToken', response.data.access_token)
         dispatch(ApiUsersMe(response.data.access_token));
         history.push("/");
       } else {
@@ -71,7 +72,30 @@ function Login() {
         }}
       />
       <div style={{ textAlign: "center", width: "50%", padding: 60 }}>
-        <BlackText>LOGO Team</BlackText>
+        <div
+          style={{
+            display: "flex",
+            cursor: "pointer",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+          onClick={() => {
+            history.push("/");
+            window.scrollTo({ top: 0 });
+          }}
+        >
+          <img
+            src="/assets/logo-team.png"
+            alt=""
+            style={{
+              width: 100,
+              height: 100,
+              marginRight: 4,
+              objectFit: "cover",
+            }}
+          />
+          <BlackText style={{ fontSize: 32 }}>ABCStudy</BlackText>
+        </div>
         <BlackText style={{ fontSize: 35, fontWeight: 700, marginTop: 30 }}>
           Welcome back
         </BlackText>
@@ -93,8 +117,8 @@ function Login() {
               margin: 0,
               marginLeft: 5,
             }}
-            onClick={()=>{
-              history.push('register');
+            onClick={() => {
+              history.push("register");
             }}
           >
             Sign up
@@ -141,8 +165,9 @@ function Login() {
           </CardButton>
           <div>
             <ForgotPassword
-              style={{ textAlign: "end", marginTop: 20, fontSize: 15 }} onClick={()=>{
-                history.push("/forget-password")
+              style={{ textAlign: "end", marginTop: 20, fontSize: 15 }}
+              onClick={() => {
+                history.push("/forget-password");
               }}
             >
               Forgot Password?
@@ -152,7 +177,14 @@ function Login() {
         <div>
           <div style={{}}>Or</div>
           <CardButton
-            style={{ borderRadius: 4, marginTop: 40, marginBottom: 20,width:"100%",borderColor:"#3b5998",boxShadow:"0 5px 28.5px 1.5px rgb(59 89 152 / 20%)" }}
+            style={{
+              borderRadius: 4,
+              marginTop: 40,
+              marginBottom: 20,
+              width: "100%",
+              borderColor: "#3b5998",
+              boxShadow: "0 5px 28.5px 1.5px rgb(59 89 152 / 20%)",
+            }}
           >
             <div>Connect With Google</div>
           </CardButton>

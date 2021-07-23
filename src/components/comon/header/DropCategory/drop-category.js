@@ -15,11 +15,13 @@ import { useSelector } from "react-redux";
 
 function Dropbox({ open, anchorEl }) {
   const categories = useSelector((state) => state.Courses.categories);
-  console.log("Drop category: ", categories);
-  const webs=categories.filter((category)=>category.levelCategory==="web");
-  console.log("webs category: ", webs);
-  const mobiles=categories.filter((category)=>category.levelCategory==="mobile");
-  console.log("mobiles category: ", mobiles);
+  const webs = categories.filter(
+    (category) => category.levelCategory === "web"
+  );
+  const mobiles = categories.filter(
+    (category) => category.levelCategory === "mobile"
+  );
+  console.log("items: ", mobiles);
   return (
     <Popper
       open={open}
@@ -84,6 +86,7 @@ function SubDropbox({ items, open, anchorEl }) {
   return (
     <Popper
       open={open}
+      style={{ zIndex: 2200 }}
       anchorEl={anchorEl}
       placement={"right-start"}
       transition
@@ -91,14 +94,13 @@ function SubDropbox({ items, open, anchorEl }) {
     >
       {({ TransitionProps }) => (
         <Fade {...TransitionProps} timeout={350}>
-          <Paper>
+          <Paper style={{ zIndex: 9999 }}>
             <List>
               {(items || []).map((sub) => (
                 <ListItem
                   onClick={() => {
-                    history.push("./categoryPage", {
-                      sub: sub,
-                    });
+                    history.push(`/search/category/${sub.categoryName}`);
+                    window.scrollTo({ top: 0 });
                   }}
                   key={sub.id}
                 >
@@ -133,7 +135,7 @@ function DropCategory() {
           display: "flex",
           alignItems: "center",
           borderBottom: "0",
-          marginRight: 20,
+          paddingRight: 20,
         }}
       >
         <Typography>Category</Typography>

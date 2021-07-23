@@ -105,7 +105,30 @@ function Register() {
         }}
       />
       <div style={{ width: "50%", padding: 60, textAlign: "center" }}>
-        <BlackText>LOGO Team</BlackText>
+        <div
+          style={{
+            display: "flex",
+            cursor: "pointer",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+          onClick={() => {
+            history.push("/");
+            window.scrollTo({ top: 0 });
+          }}
+        >
+          <img
+            src="/assets/logo-team.png"
+            alt=""
+            style={{
+              width: 100,
+              height: 100,
+              marginRight: 4,
+              objectFit: "cover",
+            }}
+          />
+          <BlackText style={{ fontSize: 32 }}>ABCStudy</BlackText>
+        </div>
         <div style={{ display: "flex", justifyContent: "center" }}>
           <BlackText
             style={{

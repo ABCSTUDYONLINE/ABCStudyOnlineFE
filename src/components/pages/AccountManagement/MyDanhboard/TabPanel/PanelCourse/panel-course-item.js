@@ -6,21 +6,17 @@ import {
   CardButtonText,
   GrayText,
   RedText,
-} from "../../../../../globals";
+} from "../../../../../../globals/index"
 import StarRatings from "react-star-ratings";
 import PermIdentityIcon from "@material-ui/icons/PermIdentity";
 import ImportContactsIcon from "@material-ui/icons/ImportContacts";
 import { useHistory } from "react-router-dom";
-import ActionLinksHover from "./action-links-hover";
+import ActionLinksHover from "../../../../Home/ListCourse/ListCourseItem/action-links-hover"
 import Avatar from "@material-ui/core/Avatar";
 
-function ListCourseItem({ course, style }) {
+function PanelCourseItem({ course, style }) {
   let history = useHistory();
   const [isHover, setIsHover] = useState(false);
-  let countLessons = 0;
-  course?.topics.map((topic) => {
-    countLessons += topic.lessons.length;
-  });
   return (
     <Card
       onMouseEnter={() => {
@@ -51,11 +47,11 @@ function ListCourseItem({ course, style }) {
               borderTopRightRadius: 8,
               width: "100%",
             }}
-            src={course.courseImageLink}
+            src={course.course.courseImageLink}
             alt=""
           />
         </CardButtonItem>
-        {isHover ? <ActionLinksHover id={course.id} /> : <div></div>}
+        {isHover ? <ActionLinksHover id={course.course.id} /> : <div></div>}
       </div>
       <div
         style={{
@@ -68,7 +64,7 @@ function ListCourseItem({ course, style }) {
             alignItems: "center",
           }}
         >
-          {course.teacher.avatarLink !== null ? (
+          {course.course.teacher.avatarLink !==null ? (
             <img
               src={course.teacher.avatarLink}
               alt=""
@@ -81,8 +77,8 @@ function ListCourseItem({ course, style }) {
           ) : (
             <Avatar src="/broken-image.jpg" />
           )}
-          <BlackText style={{ fontSize: 14.5, fontWeight: 500, marginLeft: 8 }}>
-            {`${course.teacher.firstName} ${course.teacher.lastName}`}
+          <BlackText style={{ fontSize: 14.5, fontWeight: 500,marginLeft:8 }}>
+            {`${course.course.teacher.firstName} ${course.course.teacher.lastName}`}
           </BlackText>
         </div>
         <CardButtonText
@@ -93,11 +89,11 @@ function ListCourseItem({ course, style }) {
             lineHeight: 1.5,
           }}
           onClick={() => {
-            history.push(`/course-detail/${course.id}`);
+            history.push(`/course-detail/${course.course.id}`);
             window.scrollTo({ top: 0 });
           }}
         >
-          {course.courseName}
+          {course.course.courseName}
         </CardButtonText>
         <div
           style={{
@@ -144,15 +140,15 @@ function ListCourseItem({ course, style }) {
             </div>
             <div style={{ display: "flex", alignItems: "center" }}>
               <ImportContactsIcon></ImportContactsIcon>
-              <div style={{ marginLeft: 5 }}>{`${countLessons} lessons`}</div>
+              <div style={{ marginLeft: 5 }}>{`6 lessons`}</div>
             </div>
             <RedText
               style={{ fontSize: 18, fontWeight: 500 }}
-            >{`$${course.fee}`}</RedText>
+            >{`$${course.course.fee}`}</RedText>
           </div>
         </div>
       </div>
     </Card>
   );
 }
-export default ListCourseItem;
+export default PanelCourseItem;

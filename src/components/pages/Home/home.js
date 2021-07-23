@@ -4,31 +4,52 @@ import ListCourse from "./ListCourse/list-course";
 import SlideBackground from "./SlideBackground/slide-background";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import {   ApiGetFavoriteCourses, ApiGetTopNewCourses, ApiGetTopRegisterCourses } from "../../../lib/redux/actions/courses";
+import {
+  ApiGetCoursesFromCart,
+  ApiGetFavoriteCourses,
+  ApiGetTopNewCourses,
+  ApiGetTopRateInWeek,
+  ApiGetTopRegisterCourses,
+} from "../../../lib/redux/actions/courses";
 
 function Home() {
   const history = useHistory();
   const dispatch = useDispatch();
+  let loadingNewCourses=true;
 
-  const accessToken = useSelector((state) => state.Authentication.accessToken);
   const topNewCourses = useSelector((state) => state.Courses.topNewCourses);
-  const topRegisterCourses = useSelector((state) => state.Courses.topRegisterCourses);
-  const categories = useSelector((state)=>state.Courses.categories);
-  
+  const topRegisterCourses = useSelector(
+    (state) => state.Courses.topRegisterCourses
+  );
+  const topRateInWeek = useSelector((state) => state.Courses.topRateInWeek);
+  const categories = useSelector((state) => state.Courses.categories);
 
   useEffect(() => {
-    console.log("Home: ", accessToken);
-    dispatch(ApiGetTopNewCourses( 1, 10));
-    dispatch(ApiGetTopRegisterCourses(1,10));  
-    dispatch(ApiGetFavoriteCourses(accessToken,1,10));
-    console.log("Home new courses: ", topNewCourses);
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      console.log("Home: ", accessToken);
+      dispatch(ApiGetFavoriteCourses(accessToken, 1, 10));
+      dispatch(ApiGetCoursesFromCart(accessToken,"unpaid", 1, 10));
+      dispatch(ApiGetCoursesFromCart(accessToken,"paid", 1, 10));
+    }
+
+    dispatch(ApiGetTopNewCourses(1, 10)).then((response)=>{
+      if(response===200){
+        loadingNewCourses=false;
+      }
+    })
+    console.log("Home register courses: ", topNewCourses);
+    dispatch(ApiGetTopRegisterCourses(1, 10));
+
+    dispatch(ApiGetTopRateInWeek(1, 4));
     console.log("Home categories: ", categories);
   }, []);
 
   return (
     <div>
       <SlideBackground />
-      <ListCourse title={"New Courses"} courses={topNewCourses} />
+      <ListCourse title={"Top Rate In Week"} courses={topRateInWeek} />
+      <ListCourse title={"New Courses"} courses={topNewCourses}  />
       <ListCourse title={"Register Courses"} courses={topRegisterCourses} />
     </div>
   );

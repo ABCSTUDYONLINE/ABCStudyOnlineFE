@@ -1,9 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import UserSectionItem from "./UserSectionItem/user-section-item";
 import { BlackText } from "../../../../globals/index";
+import { useDispatch, useSelector } from "react-redux";
+import { ApiGetRatesCourse } from "../../../../lib/redux/actions/courses";
 
-function Comments() {
-  const temp = [1, 2, 3];
+function Comments({courseId}) {
+  const dispatch=useDispatch();
+  const accessToken=localStorage.getItem("accessToken");
+  const rates=useSelector((state)=>state.Courses.rates);
+  console.log("rates: ",rates);
+  
+  useEffect(() => {
+    dispatch((ApiGetRatesCourse(accessToken,courseId,1,10)))
+  }, [])
   return (
     <div style={{ marginTop: 30 }}>
       <BlackText
@@ -14,10 +23,10 @@ function Comments() {
           borderBottom: "1px solid #f3f3f3",
         }}
       >
-        3 Reviews
+        {`${rates?.length} Reviews`}
       </BlackText>
-      {temp.map((i) => (
-        <UserSectionItem key={temp[i]} />
+      {rates.map((rate) => (
+        <UserSectionItem key={rate.id} rate={rate} />
       ))}
     </div>
   );

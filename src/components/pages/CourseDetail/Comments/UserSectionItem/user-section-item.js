@@ -2,7 +2,7 @@ import React from "react";
 import { BlackText } from "../../../../../globals/index";
 import StarRatings from "react-star-ratings";
 
-function UserSectionItem() {
+function UserSectionItem({ rate }) {
   return (
     <div
       style={{
@@ -28,7 +28,7 @@ function UserSectionItem() {
           James Anderson
         </BlackText>
         <StarRatings
-          rating={5}
+          rating={rate?.rateNumber}
           starRatedColor="#ffc107"
           numberOfStars={5}
           starDimension="16px"
@@ -42,8 +42,7 @@ function UserSectionItem() {
             marginTop: 10,
           }}
         >
-          James Anderson is a celebrated photographer, author, and teacher who
-          brings passion to everything he does.
+          {rate?.message}
         </BlackText>
       </div>
     </div>

@@ -159,6 +159,13 @@ const styles = {
     },
     borderColor: "white",
   },
+  cardSectionItem: {
+    backgroundColor: "#fff",
+    boxShadow: "-9px 10px 30px -5px rgba(0,0,0,0.06)",
+    "&:hover": {
+      background: "#e9e9e9",
+    },
+  },
 };
 
 function CardActionContainer({ classes, className, ...props }) {
@@ -223,6 +230,9 @@ function CardActionReverseHoverContainer({ classes, className, ...props }) {
     ></IconButton>
   );
 }
+function CardSectionItemContainer({ classes, ...props }) {
+  return <div className={classes.cardSectionItem} {...props}></div>;
+}
 
 export const CardAction = withStyles(styles)(CardActionContainer);
 export const CardButton = injectSheet(styles)(CardButtonContainer);
@@ -244,3 +254,4 @@ export const CardSocialMediaDashboard = injectSheet(styles)(
 );
 export const CardActionHover = withStyles(styles)(CardActionHoverContainer);
 export const CardActionReverseHover = withStyles(styles)(CardActionReverseHoverContainer);
+export const CardSectionItem = injectSheet(styles)(CardSectionItemContainer);

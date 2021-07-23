@@ -178,3 +178,4 @@ export const ApiForgetPasswordUpdateNewPassword =
         dispatch({ type: TYPES.FORGET_PASSWORD_UPDATE_NEW_PASSWORD_FAILED });
       });
   };
+

@@ -1,23 +1,35 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Search from "./Search/search";
 import { BlackText, CardButton } from "../../../globals/index";
 import DropCategory from "./DropCategory/drop-category";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { ApiGetCategories, ApiGetFavoriteCourse } from "../../../lib/redux/actions/courses";
+import {
+  ApiGetCategories,
+  ApiGetFavoriteCourse,
+} from "../../../lib/redux/actions/courses";
+import Avatar from "@material-ui/core/Avatar";
+import DropHeart from "./DropHeart/drop-heart";
+import DropCart from "./DropCart/drop-cart";
 
 function Header() {
-  const temp = false;
+  const loginStatus = useSelector((state) => state.Authentication.loginStatus);
+
   const history = useHistory();
-
   const dispatch = useDispatch();
-  const categories = useSelector((state)=>state.Courses.categories);
-
-  useEffect(() => {
-    dispatch(ApiGetCategories( 1, 10));
-  }, []);
-
+  const [accessToken,setAccessToken]=useState("")
+  
+  const categories = useSelector((state) => state.Courses.categories);
+  
+  
+  useEffect(()=>{
+    setAccessToken(localStorage.getItem("accessToken"));
+    if (categories.length === 0) {
+    
+      dispatch(ApiGetCategories(1, 10));
+    }
+  },[])
   // useEffect(() => {
   //     dispatch(ApiGetFavoriteCourse(accessToken,1,10));
   //     console.log("Favorites list: ",favoriteCourses)
@@ -27,7 +39,7 @@ function Header() {
     <div
       style={{
         display: "flex",
-        padding: "30px 75px 30px 75px",
+        padding: "30px 75px 15px 75px",
         justifyContent: "space-between",
         zIndex: 2010,
         background: "white",
@@ -64,27 +76,27 @@ function Header() {
         </div>
         <Search />
       </div>
-      {temp ? (
-        <CardButton>Log In</CardButton>
+      {!accessToken ? (
+        <CardButton
+          onClick={() => {
+            history.push("/login");
+            window.scrollTo({ top: 0 });
+          }}
+        >
+          Log In
+        </CardButton>
       ) : (
         <div style={{ display: "flex", alignItems: "center" }}>
-          <FavoriteBorderIcon
-            style={{
-              fontSize: 30,
-              marginRight: 10,
-              color: "#ff1949",
-              cursor: "pointer",
-            }}
-          ></FavoriteBorderIcon>
-          <img
-            src="/assets/user1.jpg"
-            alt=""
+          <DropHeart />
+          <DropCart />
+          <Avatar
+            src="/broken-image.jpg"
             style={{
               width: 50,
               height: 50,
               marginRight: 4,
-              borderRadius: "50%",
               cursor: "pointer",
+              marginLeft: 40,
             }}
             onClick={() => {
               history.push("/myDashboardPage");
