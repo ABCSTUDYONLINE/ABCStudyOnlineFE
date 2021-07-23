@@ -235,25 +235,41 @@ export const ApiRemoveCourseFromCart =
   };
 
 export const ApiGetCoursesFromCart =
-  (accessToken, page, limit) => (dispatch, getStore) => {
+  (accessToken, status, page, limit) => (dispatch, getStore) => {
     return axios
-      .get(apiUrl + `/learn?status=unpaid&page=${page}&limit=${limit}`, {
+      .get(apiUrl + `/learn?status=${status}&page=${page}&limit=${limit}`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
       .then((response) => {
-        if (response.status === 200) {
-          dispatch({
-            type: TYPES.GET_COURSES_FROM_CART_SUCCESSED,
-            payload: response.data,
-          });
+        if (status === "unpaid") {
+          if (response.status === 200) {
+            dispatch({
+              type: TYPES.GET_COURSES_FROM_CART_SUCCESSED,
+              payload: response.data,
+            });
+          } else {
+            dispatch({ type: TYPES.GET_COURSES_FROM_CART_FAILED });
+          }
+          console.log("carrt res: ", response);
         } else {
-          dispatch({ type: TYPES.GET_COURSES_FROM_CART_FAILED });
+          if (response.status === 200) {
+            dispatch({
+              type: TYPES.GET_COURSES_FROM_DASHBOARD_SUCCESSED,
+              payload: response.data,
+            });
+          } else {
+            dispatch({ type: TYPES.GET_COURSES_FROM_DASHBOARD_FAILED });
+          }
+          console.log("dash response: ", response);
         }
-        console.log("carrt res: ", response);
       })
       .catch((error) => {
         console.log(error);
-        dispatch({ type: TYPES.GET_COURSES_FROM_CART_FAILED });
+        if (status === "unpaid") {
+          dispatch({ type: TYPES.GET_COURSES_FROM_CART_FAILED });
+        } else {
+          dispatch({ type: TYPES.GET_COURSES_FROM_DASHBOARD_FAILED });
+        }
       });
   };
 export const ApiGetDetailCategory = (categoryId) => (dispatch, getStore) => {
@@ -323,5 +339,59 @@ export const ApiChargeCourse =
       .then((error) => {
         console.log(error);
         dispatch({ type: TYPES.CHARGE_COURSE_FAILED });
+      });
+  };
+
+//Rate course
+export const ApiRateCourse =
+  (accessToken, courseId, rateNumber, message) => (dispatch, getStore) => {
+    return axios
+      .post(
+        apiUrl + "/rates",
+        {
+          courseId: "ccc8e184-c439-4e72-9784-fd751d1ff658",
+          rateNumber: 5,
+          message: "good lam",
+        },
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+      )
+      .then((response) => {
+        if (response.status === 201) {
+          dispatch({
+            type: TYPES.RATE_COURSE_SUCCESSED,
+            payload: response.data,
+          });
+        } else {
+          dispatch({ type: TYPES.RATE_COURSE_FAILED });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        dispatch({ type: TYPES.RATE_COURSE_FAILED });
+      });
+  };
+export const ApiGetRatesCourse =
+  (accessToken, courseId, page, limit) => (dispatch, getStore) => {
+    return axios
+      .get(apiUrl + `/rates?courseId=${courseId}&page=${page}&limit=${limit}`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          dispatch({
+            type: TYPES.GET_RATES_COURSE_SUCCESSED,
+            payload: response.data,
+          });
+        } else {
+          dispatch({ type: TYPES.GET_RATES_COURSE_FAILED });
+        }
+        console.log("Get rates by idcourse, ", response);
+        return response;
+      })
+      .catch((error) => {
+        console.log(error);
+        dispatch({ type: TYPES.GET_RATES_COURSE_FAILED });
       });
   };

@@ -60,12 +60,12 @@ function InstructorSection({ teacher }) {
               <BlackText
                 style={{ fontSize: 17, fontWeight: 600, marginBottom: 5 }}
               >
-                {`${teacher.firstName} ${teacher.lastName}`}
+                {`${teacher?.firstName} ${teacher?.lastName}`}
               </BlackText>
               <BlackText
                 style={{ fontSize: 14, fontWeight: 400, color: "#0eb582" }}
               >
-                Reactjs
+                {teacher?.role}
               </BlackText>
             </div>
             <CardButton style={{ borderRadius: 4 }}>
@@ -80,7 +80,7 @@ function InstructorSection({ teacher }) {
               marginTop: 15,
             }}
           >
-            Short bio
+            {teacher?.shortBio}
           </BlackText>
         </div>
       </div>

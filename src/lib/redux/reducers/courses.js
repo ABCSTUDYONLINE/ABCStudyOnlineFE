@@ -7,9 +7,11 @@ let initState = {
   categories: [],
   favoriteCourses: [],
   cart: [],
+  myDash: [],
   courseDetail: null,
   categoryDetail: null,
   listCoursesBySearch: [],
+  rates: [],
   getTopNewCourseStatus: false,
   getTopRegisterCoursesStatus: false,
   getTopRateInWeekStatus: false,
@@ -21,9 +23,12 @@ let initState = {
   addCourseToCartStatus: false,
   removeCourseFromCartStatus: false,
   getCoursesFromCartStatus: false,
+  getCoursesFromDashStatus: false,
   getCategoryDetailStatus: false,
   searchCoursesStatus: false,
   chargeCourseStatus: false,
+  rateCourseStatus: false,
+  getRatesCourseStatus: false,
 };
 
 export function Courses(prevState = initState, action) {
@@ -108,6 +113,14 @@ export function Courses(prevState = initState, action) {
       };
     case TYPES.GET_COURSES_FROM_CART_FAILED:
       return { ...prevState, getCoursesFromCartStatus: false };
+    case TYPES.GET_COURSES_FROM_DASHBOARD_SUCCESSED:
+      return {
+        ...prevState,
+        getCoursesFromDashStatus: true,
+        myDash: action.payload.data.list,
+      };
+    case TYPES.GET_COURSES_FROM_DASHBOARD_FAILED:
+      return { ...prevState, getCoursesFromDashStatus: false };
     case TYPES.GET_CATEGORY_DETAIL_SUCCESSED:
       return {
         ...prevState,
@@ -131,6 +144,21 @@ export function Courses(prevState = initState, action) {
       };
     case TYPES.CHARGE_COURSE_FAILED:
       return { ...prevState, chargeCourseStatus: false };
+    case TYPES.RATE_COURSE_SUCCESSED:
+      return {
+        ...prevState,
+        rateCourseStatus: true,
+      };
+    case TYPES.RATE_COURSE_FAILED:
+      return { ...prevState, rateCourseStatus: false };
+    case TYPES.GET_RATES_COURSE_SUCCESSED:
+      return {
+        ...prevState,
+        getRatesCourseStatus: true,
+        rates: action.payload.data.list,
+      };
+    case TYPES.GET_RATES_COURSE_FAILED:
+      return { ...prevState, getRatesCourseStatus: false };
     default:
       return prevState;
   }

@@ -90,12 +90,12 @@ function CourseDetail() {
   const { id } = useParams();
 
   const courseDetail = useSelector((state) => state.Courses.courseDetail);
+  console.log("Course detail", courseDetail);
 
   useEffect(() => {
     dispatch(ApiGetCourseDetail(id)).then((response) => {
       if (response?.status === 200) {
         setLoading(false);
-        console.log("Course detail", courseDetail);
       }
     });
   }, []);
@@ -361,7 +361,7 @@ function CourseDetail() {
                       marginRight: 10,
                     }}
                   >
-                    {courseDetail.fee}
+                    {`$${courseDetail.fee}`}
                   </BlackText>
                   <CardButton style={{ borderRadius: 4 }}>
                     <div>Buy Course</div>
@@ -375,7 +375,7 @@ function CourseDetail() {
               >
                 <CourseAdditionalInformation course={courseDetail} />
                 <InstructorSection teacher={courseDetail.teacher} />
-                <Comments />
+                <Comments courseId={courseDetail.id} />
                 {/* <RelatedCourses caseTitle={'Related Courses'}/> */}
               </div>
               <CourseContent

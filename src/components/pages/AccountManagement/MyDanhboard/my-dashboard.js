@@ -24,9 +24,10 @@ import AccountDetailPanel from "./TabPanel/AccountDetailPanel/account-detail-pan
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import FormComment from "./TabPanel/FormComment/form-comment";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import TabCart from "./TabCart/tab-cart";
+import TabDash from "./TabDash/tab-dash";
+import FormComment from "./TabPanel/formComment/form-comment";
 
 function MyDashboard() {
   const [value, setValue] = useState(0);
@@ -260,7 +261,7 @@ function MyDashboard() {
         </Tabs>
       </Paper>
       {/* <TabPanel value={value} index={0} content={"hello dashboard"} courses></TabPanel> */}
-      <FormComment value={value} index={0}></FormComment>
+      <TabDash value={value} index={0}></TabDash>
       <TabCart value={value} index={1}></TabCart>
       <TabPanel
         value={value}

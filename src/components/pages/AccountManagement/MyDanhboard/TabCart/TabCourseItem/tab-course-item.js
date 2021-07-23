@@ -7,9 +7,13 @@ import {
   CardSectionItem,
   RedText,
 } from "../../../../../../globals";
-import { ApiGetCoursesFromCart, ApiRemoveCourseFromCart } from "../../../../../../lib/redux/actions/courses";
+import {
+  ApiGetCoursesFromCart,
+  ApiRemoveCourseFromCart,
+} from "../../../../../../lib/redux/actions/courses";
+import CommentButton from "../../TabDash/comment-button";
 
-function TabCourseItem({ course }) {
+function TabCourseItem({ course, isDashBoard }) {
   const dispatch = useDispatch();
   const accessToken = localStorage.getItem("accessToken");
   return (
@@ -62,30 +66,46 @@ function TabCourseItem({ course }) {
           </BlackText>
         </div>
       </div>
-      <CardButton
-        style={{
-          borderRadius: 32,
-          width: 70,
-          height: 30,
-          padding: 5,
-          fontSize: 16,
-          fontWeight: 500,
-        }}
-        onClick={() => {
-          dispatch(ApiRemoveCourseFromCart(accessToken, course.id)).then((response)=>{
-            if(response?.status===200){
-              dispatch(ApiGetCoursesFromCart(accessToken,1,10))
-            } else {
-              console.log("remove cart add error: ", response.data.message);
-            }
-          })
-        }}
-      >
-        <div>Delete</div>
-      </CardButton>
-      <RedText
-        style={{ fontSize: 18, fontWeight: 500, marginRight: 30 }}
-      >{`$${course.course.fee}`}</RedText>
+      {isDashBoard ? (
+        <div style={{display:'flex',justifyContent:'space-between',width:300,alignItems:'center'}}>
+          <RedText
+            style={{ fontSize: 18, fontWeight: 500, marginRight: 30 }}
+          >{`$${course.course.fee}`}</RedText>
+          <CommentButton courseId={course.course.id} />
+        </div>
+      ) : (
+        <div>
+          <CardButton
+            style={{
+              borderRadius: 32,
+              width: 70,
+              height: 30,
+              padding: 5,
+              fontSize: 16,
+              fontWeight: 500,
+            }}
+            onClick={() => {
+              dispatch(ApiRemoveCourseFromCart(accessToken, course.id)).then(
+                (response) => {
+                  if (response?.status === 200) {
+                    dispatch(ApiGetCoursesFromCart(accessToken,"unpaid", 1, 10));
+                  } else {
+                    console.log(
+                      "remove cart add error: ",
+                      response.data.message
+                    );
+                  }
+                }
+              );
+            }}
+          >
+            <div>Delete</div>
+          </CardButton>
+          <RedText
+            style={{ fontSize: 18, fontWeight: 500, marginRight: 30 }}
+          >{`$${course.course.fee}`}</RedText>
+        </div>
+      )}
     </div>
   );
 }

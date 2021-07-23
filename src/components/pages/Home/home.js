@@ -29,7 +29,8 @@ function Home() {
     if (accessToken) {
       console.log("Home: ", accessToken);
       dispatch(ApiGetFavoriteCourses(accessToken, 1, 10));
-      dispatch(ApiGetCoursesFromCart(accessToken, 1, 10));
+      dispatch(ApiGetCoursesFromCart(accessToken,"unpaid", 1, 10));
+      dispatch(ApiGetCoursesFromCart(accessToken,"paid", 1, 10));
     }
 
     dispatch(ApiGetTopNewCourses(1, 10)).then((response)=>{

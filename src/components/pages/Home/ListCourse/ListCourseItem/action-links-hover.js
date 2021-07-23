@@ -84,7 +84,7 @@ function ActionLinksHover({ id }) {
       dispatch(ApiRemoveCourseFromCart(accessToken,foundedCourseFromCart.id)).then((response)=>{
         if(response?.status===200){
           loadingCart=false
-          dispatch(ApiGetCoursesFromCart(accessToken,1,10))
+          dispatch(ApiGetCoursesFromCart(accessToken,"unpaid",1,10))
         } else {
           console.log("action link add error: ", response.data.message);
         }
@@ -94,7 +94,7 @@ function ActionLinksHover({ id }) {
       dispatch(ApiAddCourseToCart(accessToken,id)).then((response)=>{
         if(response?.status===201){
           loadingCart=false
-          dispatch(ApiGetCoursesFromCart(accessToken,1,10))
+          dispatch(ApiGetCoursesFromCart(accessToken,"unpaid",1,10))
         }else {
           console.log("action link remove error: ", response.data.message);
         }
