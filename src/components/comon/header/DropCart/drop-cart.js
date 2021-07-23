@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import { Fade, Paper, Popper } from "@material-ui/core";
 import SectionCourse from "../../../pages/SectionCourse/section-course";
 import { useSelector } from "react-redux";
+import { GrayText } from "../../../../globals";
 
 function Dropbox({ open, anchorEl }) {
   const cart = useSelector((state) => state.Courses.cart);
-  console.log("CART: ",cart);
+  console.log("CART: ", cart);
   return (
     <Popper
       open={open}
@@ -23,11 +24,26 @@ function Dropbox({ open, anchorEl }) {
             ) : (
               <div
                 style={{
-                  padding: "20px 10px 10px 10px",
+                  padding: "20px 30px 20px 30px",
                   boxShadow: "-9px 10px 30px -5px rgba(0,0,0,0.06)",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  display: "flex",
+                  flexDirection: "column",
                 }}
               >
-                You don't have any course in cart
+                <img
+                  style={{
+                    objectFit: "cover",
+                    width: 100,
+                    height: 100,
+                  }}i
+                  src={"/assets/empty-box.png"}
+                  alt=""
+                />
+                <GrayText style={{ fontSize: 16 }}>
+                  You don't have any course in cart
+                </GrayText>
               </div>
             )}
           </Paper>
@@ -52,7 +68,7 @@ function DropCart() {
         style={{
           fontSize: 30,
           marginRight: 20,
-          marginLeft:20,
+          marginLeft: 20,
           cursor: "pointer",
         }}
       ></ShoppingCartIcon>
