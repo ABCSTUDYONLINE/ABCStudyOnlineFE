@@ -22,22 +22,33 @@ import TabPanel from "./TabPanel/tab-panel";
 import EditIcon from "@material-ui/icons/Edit";
 import AccountDetailPanel from "./TabPanel/AccountDetailPanel/account-detail-panel";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
-import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import TabCart from "./TabCart/tab-cart";
 import TabDash from "./TabDash/tab-dash";
 import FormComment from "./TabPanel/formComment/form-comment";
+import { useHistory, useLocation } from "react-router-dom";
 
 function MyDashboard() {
-  const [value, setValue] = useState(0);
+  const location = useLocation();
+  const history = useHistory();
+  const val=location.search?.slice(5, location.search?.length);
+  const [value, setValue] = useState(
+    val === "favorite"
+      ? 2
+      : val === "cart"
+      ? 1
+      : 0
+  );
+
+  console.log("value: ",value);
   const dispatch = useDispatch();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
   const favoriteCourses = useSelector((state) => state.Courses.favoriteCourses);
-  const history = useHistory();
+
   return (
     <div style={{ padding: "100px 0px 100px 0px " }}>
       <div
@@ -236,7 +247,6 @@ function MyDashboard() {
                   localStorage.removeItem("accessToken");
                   dispatch({ type: "LOGOUT" });
                   history.push("");
-                  
                 }}
               >
                 <div>Logout</div>

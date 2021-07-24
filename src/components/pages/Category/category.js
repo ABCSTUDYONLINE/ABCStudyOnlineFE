@@ -27,14 +27,15 @@ function Category() {
   };
 
   const { categoryName, keyWord } = useParams();
-  console.log("keyWord : ", keyWord);
-  console.log("categoryName : ", categoryName);
+  console.log("keyWord 111: ", keyWord);
+  console.log("categoryName 111: ", categoryName);
   // dispatch(ApiGetDetailCategory(id));
 
   let listCoursesBySearch = useSelector(
     (state) => state.Courses.listCoursesBySearch
   );
   console.log("listCoursesBySearch: ", listCoursesBySearch);
+  
 
   // const topNewCourses = useSelector((state) => state.Courses.topNewCourses);
   // const topRegisterCourses = useSelector(
@@ -43,15 +44,16 @@ function Category() {
   // const topRateInWeek = useSelector((state) => state.Courses.topRateInWeek);
 
   useEffect(() => {
-    if(!keyWord){
-      console.log("log loaction",location.state.title);
-    }
-    else if (keyWord === "category") {
-      dispatch(ApiSearchCourses("category", categoryName, 1, 10));
-    }
-    else{
-      dispatch(ApiSearchCourses("name", keyWord, 1, 10));
-    }
+    // if(!keyWord){
+    //   console.log("log loaction",location.state.title);
+    // }
+    // else if (keyWord === "category") {
+    //   dispatch(ApiSearchCourses("category", categoryName, 1, 10));
+    // }
+    // else{
+    //   dispatch(ApiSearchCourses("name", keyWord, 1, 10));
+    // }
+    dispatch(ApiSearchCourses("name", keyWord, 1, 10));
   }, [keyWord,categoryName]);
 
   // Cho courses vao state

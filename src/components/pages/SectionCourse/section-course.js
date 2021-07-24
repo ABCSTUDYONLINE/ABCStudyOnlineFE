@@ -1,9 +1,11 @@
 import { Typography } from "@material-ui/core";
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import { CardDropCategory } from "../../../globals";
 import SectionCourseItem from "./SectionCourseItem/section-course-item";
 
-function SectionCourse({ title, courses }) {
+function SectionCourse({ title, courses, tab }) {
+  const history = useHistory();
   return (
     <div
       style={{
@@ -14,7 +16,12 @@ function SectionCourse({ title, courses }) {
       {courses.map((course, index) => (
         <SectionCourseItem key={index} course={course} />
       ))}
-      <CardDropCategory style={{ fontSize: 18, textAlign: "end" }}>
+      <CardDropCategory
+        style={{ fontSize: 18, textAlign: "end" }}
+        onClick={() => {
+          history.push(`/myDashboardPage?tab=${tab}`);
+        }}
+      >
         {title}
       </CardDropCategory>
     </div>
