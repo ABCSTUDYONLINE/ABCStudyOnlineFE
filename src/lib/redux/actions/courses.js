@@ -316,6 +316,29 @@ export const ApiSearchCourses =
       });
   };
 
+  export const ApiGetsearchTopCourses = (type,page, limit) => (dispatch, getStore) => {
+    return axios
+      .get(apiUrl + `/courses/sorts?type=${type}&page=${page}&limit=${limit}`)
+      .then((response) => {
+        if (response.status === 200) {
+          dispatch({
+            type: TYPES.GET_SEARCH_TOP_COURSES_SUCCESSED,
+            payload: response.data,
+          });
+        } else {
+          dispatch({ type: TYPES.GET_SEARCH_TOP_COURSES_FAILED });
+        }
+        console.log("RESPONSE: ", response);
+        return response;
+      })
+      .catch((error) => {
+        console.log(" Search TOP courses error: ", error);
+        dispatch({ type: TYPES.GET_SEARCH_TOP_COURSES_FAILED });
+      });
+  };
+  
+
+
 export const ApiChargeCourse =
   (accessToken, learnIds) => (dispatch, getStore) => {
     return axios

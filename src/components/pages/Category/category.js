@@ -11,6 +11,7 @@ import Select from "@material-ui/core/Select";
 import { useSelector, useDispatch } from "react-redux";
 import {
   ApiGetDetailCategory,
+  ApiGetsearchTopCourses,
   ApiSearchCourses,
 } from "../../../lib/redux/actions/courses";
 import { CircularProgress } from "@material-ui/core";
@@ -18,7 +19,7 @@ import { CircularProgress } from "@material-ui/core";
 function Category() {
   let history = useHistory();
   const dispatch = useDispatch();
-  const location=useLocation();
+  const location = useLocation();
 
   const [sort, setSort] = React.useState(0);
 
@@ -35,26 +36,30 @@ function Category() {
     (state) => state.Courses.listCoursesBySearch
   );
   console.log("listCoursesBySearch: ", listCoursesBySearch);
-  
 
   // const topNewCourses = useSelector((state) => state.Courses.topNewCourses);
   // const topRegisterCourses = useSelector(
   //   (state) => state.Courses.topRegisterCourses
   // );
   // const topRateInWeek = useSelector((state) => state.Courses.topRateInWeek);
+  const titleLocation = location.state.title;
 
   useEffect(() => {
-    // if(!keyWord){
-    //   console.log("log loaction",location.state.title);
-    // }
-    // else if (keyWord === "category") {
-    //   dispatch(ApiSearchCourses("category", categoryName, 1, 10));
-    // }
-    // else{
-    //   dispatch(ApiSearchCourses("name", keyWord, 1, 10));
-    // }
-    dispatch(ApiSearchCourses("name", keyWord, 1, 10));
-  }, [keyWord,categoryName]);
+    if (!keyWord) {
+      console.log("log loaction", titleLocation);
+      if (titleLocation === "Top Rate In Week") {
+        dispatch(ApiGetsearchTopCourses("rateInWeek", 1, 10));
+      } else if (titleLocation === "New Courses") {
+        dispatch(ApiGetsearchTopCourses("newest", 1, 10));
+      } else if (titleLocation === "Register Courses") {
+        dispatch(ApiGetsearchTopCourses("register", 1, 10));
+      }
+    } else if (keyWord === "category") {
+      dispatch(ApiSearchCourses("category", categoryName, 1, 10));
+    } else {
+      dispatch(ApiSearchCourses("name", keyWord, 1, 10));
+    }
+  }, [keyWord, categoryName]);
 
   // Cho courses vao state
   const [page, setpage] = useState(1);
@@ -143,7 +148,9 @@ function Category() {
           alignItems: "center",
         }}
       >
-        <div style={{ fontSize: 20, color: "#212529" }}>{`${listCoursesBySearch?.length} results`}</div>
+        <div
+          style={{ fontSize: 20, color: "#212529" }}
+        >{`${listCoursesBySearch?.length} results`}</div>
         <FormControl style={{ minWidth: 200 }}>
           <InputLabel htmlFor="age-native-simple">Sort</InputLabel>
           <Select
