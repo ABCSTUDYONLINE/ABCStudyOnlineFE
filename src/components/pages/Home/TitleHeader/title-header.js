@@ -39,6 +39,7 @@ function TitleHeader({ title }) {
         }}
         onClick={()=>{
           history.push("/search",{title:title})
+          window.scrollTo({ top: 0 });
         }}
       >
         <div>View Courses</div>

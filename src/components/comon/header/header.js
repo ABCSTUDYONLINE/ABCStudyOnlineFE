@@ -18,18 +18,15 @@ function Header() {
 
   const history = useHistory();
   const dispatch = useDispatch();
-  const [accessToken,setAccessToken]=useState("")
-  
+
   const categories = useSelector((state) => state.Courses.categories);
-  
-  
-  useEffect(()=>{
-    setAccessToken(localStorage.getItem("accessToken"));
+  const accessToken = useSelector((state) => state.Authentication.accessToken);
+
+  useEffect(() => {
     if (categories.length === 0) {
-    
       dispatch(ApiGetCategories(1, 10));
     }
-  },[])
+  }, []);
   // useEffect(() => {
   //     dispatch(ApiGetFavoriteCourse(accessToken,1,10));
   //     console.log("Favorites list: ",favoriteCourses)

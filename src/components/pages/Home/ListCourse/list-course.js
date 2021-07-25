@@ -6,7 +6,7 @@ import "react-multi-carousel/lib/styles.css";
 import { CircularProgress } from "@material-ui/core";
 import { GrayText } from "../../../../globals";
 
-function ListCourse({ title, courses }) {
+function ListCourse({ title, courses,loadingCourses }) {
   const responsive = {
     superLargeDesktop: {
       // the naming can be any, depends on you.
@@ -35,47 +35,50 @@ function ListCourse({ title, courses }) {
       }}
     >
       <TitleHeader title={title} />
-      {!courses || courses?.length === 0  ? (
-        <div
-          style={{
-            height: 100,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <CircularProgress />
-        </div>
-      ) : courses?.length === 0 ? (
-        <div
-          style={{
-            padding: "20px 30px 20px 30px",
-            alignItems: "center",
-            justifyContent: "center",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <img
+      {
+        loadingCourses  ? (
+          <div
             style={{
-              objectFit: "cover",
-              width: 100,
               height: 100,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
             }}
-            src={"/assets/empty-box.png"}
-            alt=""
-          />
-          <GrayText style={{ fontSize: 16, marginTop: 10 }}>
-            Nothing to show
-          </GrayText>
-        </div>
-      ) : (
-        <Carousel responsive={responsive} showDots={true}>
-          {courses.map((course) => (
-            <ListCourseItem key={course.id} course={course} />
-          ))}
-        </Carousel>
-      )}
+          >
+            <CircularProgress />
+          </div>
+        ) :
+        courses?.length === 0 ? (
+          <div
+            style={{
+              padding: "20px 30px 20px 30px",
+              alignItems: "center",
+              justifyContent: "center",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <img
+              style={{
+                objectFit: "cover",
+                width: 100,
+                height: 100,
+              }}
+              src={"/assets/empty-box.png"}
+              alt=""
+            />
+            <GrayText style={{ fontSize: 16, marginTop: 10 }}>
+              Nothing to show
+            </GrayText>
+          </div>
+        ) : (
+          <Carousel responsive={responsive} showDots={true}>
+            {courses.map((course) => (
+              <ListCourseItem key={course.id} course={course} />
+            ))}
+          </Carousel>
+        )
+      }
     </div>
   );
 }

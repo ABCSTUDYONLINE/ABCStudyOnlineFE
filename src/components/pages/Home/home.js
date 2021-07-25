@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Instruction from "./instruction/instruction";
 import ListCourse from "./ListCourse/list-course";
 import SlideBackground from "./SlideBackground/slide-background";
@@ -15,7 +15,9 @@ import {
 function Home() {
   const history = useHistory();
   const dispatch = useDispatch();
-  let loadingNewCourses=true;
+  const [loadingNewCourses, setloaLingNewCourses] = useState(false);
+  const [loadingRateInWeek, setLoadingRateInWeek] = useState(false);
+  const [loadingRegisterCourses, setLoadingRegisterCourses] = useState(false);
 
   const topNewCourses = useSelector((state) => state.Courses.topNewCourses);
   const topRegisterCourses = useSelector(
@@ -29,28 +31,49 @@ function Home() {
     if (accessToken) {
       console.log("Home: ", accessToken);
       dispatch(ApiGetFavoriteCourses(accessToken, 1, 10));
-      dispatch(ApiGetCoursesFromCart(accessToken,"unpaid", 1, 10));
-      dispatch(ApiGetCoursesFromCart(accessToken,"paid", 1, 10));
+      dispatch(ApiGetCoursesFromCart(accessToken, "unpaid", 1, 10));
+      dispatch(ApiGetCoursesFromCart(accessToken, "paid", 1, 10));
     }
 
-    dispatch(ApiGetTopNewCourses(1, 10)).then((response)=>{
-      if(response===200){
-        loadingNewCourses=false;
-      }
-    })
-    console.log("Home register courses: ", topNewCourses);
-    dispatch(ApiGetTopRegisterCourses(1, 10));
+    setloaLingNewCourses(true);
+    dispatch(ApiGetTopNewCourses(1, 10)).finally(() => {
+      setloaLingNewCourses(false);
+    });
 
-    dispatch(ApiGetTopRateInWeek(1, 4));
+    console.log("Home topNewCourses courses: ", topNewCourses);
+
+    setLoadingRegisterCourses(true)
+    dispatch(ApiGetTopRegisterCourses(1, 10)).finally(()=>{
+      setLoadingRegisterCourses(false)
+    })
+
+    setLoadingRateInWeek(true)
+    dispatch(ApiGetTopRateInWeek(1, 4)).finally(()=>{
+      setLoadingRateInWeek(false)
+    })
     console.log("Home categories: ", categories);
   }, []);
 
   return (
     <div>
       <SlideBackground />
-      <ListCourse title={"Top Rate In Week"} courses={topRateInWeek} />
-      <ListCourse title={"New Courses"} courses={topNewCourses}  />
-      <ListCourse title={"Register Courses"} courses={topRegisterCourses} />
+      <ListCourse
+        title={"Top Rate In Week"}
+        courses={topRateInWeek}
+        loadingCourses={loadingRateInWeek}
+      />
+
+      <ListCourse
+        title={"New Courses"}
+        courses={topNewCourses}
+        loadingCourses={loadingNewCourses}
+      />
+
+      <ListCourse
+        title={"Register Courses"}
+        courses={topRegisterCourses}
+        loadingCourses={loadingRegisterCourses}
+      />
     </div>
   );
 }

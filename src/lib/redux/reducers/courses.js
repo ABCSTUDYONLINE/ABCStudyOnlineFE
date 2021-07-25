@@ -26,6 +26,7 @@ let initState = {
   getCoursesFromDashStatus: false,
   getCategoryDetailStatus: false,
   searchCoursesStatus: false,
+  getSearchTopCoursesStatus: false,
   chargeCourseStatus: false,
   rateCourseStatus: false,
   getRatesCourseStatus: false,
@@ -137,6 +138,14 @@ export function Courses(prevState = initState, action) {
       };
     case TYPES.SEARCH_COURSES_FAILED:
       return { ...prevState, searchCoursesStatus: false };
+    case TYPES.GET_SEARCH_TOP_COURSES_SUCCESSED:
+      return {
+        ...prevState,
+        getSearchTopCoursesStatus: true,
+        listCoursesBySearch: action.payload.data.list,
+      };
+    case TYPES.GET_SEARCH_TOP_COURSES_FAILED:
+      return { ...prevState, getSearchTopCoursesStatus: false };
     case TYPES.CHARGE_COURSE_SUCCESSED:
       return {
         ...prevState,

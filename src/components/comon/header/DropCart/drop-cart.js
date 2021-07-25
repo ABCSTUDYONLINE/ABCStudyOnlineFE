@@ -20,7 +20,7 @@ function Dropbox({ open, anchorEl }) {
         <Fade {...TransitionProps} timeout={350}>
           <Paper>
             {cart.length !== 0 ? (
-              <SectionCourse title={"See all"} courses={cart} />
+              <SectionCourse title={"See all"} courses={cart} tab={"cart"} />
             ) : (
               <div
                 style={{
