@@ -26,7 +26,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import TabCart from "./TabCart/tab-cart";
 import TabDash from "./TabDash/tab-dash";
-import FormComment from "./TabPanel/formComment/form-comment";
+import FormComment from "./TabPanel/FormComment/form-comment";
 import { useHistory, useLocation } from "react-router-dom";
 
 function MyDashboard() {

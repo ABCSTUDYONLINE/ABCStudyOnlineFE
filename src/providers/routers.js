@@ -13,6 +13,7 @@ import {
   InstructorDetailPage,
   ForgetPasswordPage,
 } from "../pages/index";
+import MessengerCustomerChat from 'react-messenger-customer-chat';
 
 export function Routers() {
   return (
@@ -55,6 +56,11 @@ export function Routers() {
           </Switch>
         </div>
       </Router>
+      
+      <MessengerCustomerChat
+        pageId="101052528872104"
+        appId="324581205839872"
+      />
       <Footer />
       <ButtonScrollTop />
     </div>
