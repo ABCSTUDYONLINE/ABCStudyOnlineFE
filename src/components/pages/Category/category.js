@@ -21,6 +21,8 @@ function Category() {
   const dispatch = useDispatch();
   const location = useLocation();
 
+  const [loadingCategories,setLoadingCategories]=useState(true);
+
   const [sort, setSort] = React.useState(0);
 
   const handleChange = (event) => {
@@ -45,19 +47,30 @@ function Category() {
   const titleLocation = location.state.title;
 
   useEffect(() => {
+    setLoadingCategories(true);
     if (!keyWord) {
       console.log("log loaction", titleLocation);
       if (titleLocation === "Top Rate In Week") {
-        dispatch(ApiGetsearchTopCourses("rateInWeek", 1, 10));
+        dispatch(ApiGetsearchTopCourses("rateInWeek", 1, 10)).finally(()=>{
+          setLoadingCategories(false);
+        })
       } else if (titleLocation === "New Courses") {
-        dispatch(ApiGetsearchTopCourses("newest", 1, 10));
+        dispatch(ApiGetsearchTopCourses("newest", 1, 10)).finally(()=>{
+          setLoadingCategories(false);
+        })
       } else if (titleLocation === "Register Courses") {
-        dispatch(ApiGetsearchTopCourses("register", 1, 10));
+        dispatch(ApiGetsearchTopCourses("register", 1, 10)).finally(()=>{
+          setLoadingCategories(false);
+        })
       }
     } else if (keyWord === "category") {
-      dispatch(ApiSearchCourses("category", categoryName, 1, 10));
+      dispatch(ApiSearchCourses("category", categoryName, 1, 10)).finally(()=>{
+        setLoadingCategories(false);
+      })
     } else {
-      dispatch(ApiSearchCourses("name", keyWord, 1, 10));
+      dispatch(ApiSearchCourses("name", keyWord, 1, 10)).finally(()=>{
+        setLoadingCategories(false);
+      })
     }
   }, [keyWord, categoryName]);
 
@@ -169,7 +182,7 @@ function Category() {
           </Select>
         </FormControl>
       </div>
-      {!listCoursesBySearch || listCoursesBySearch?.length === 0 ? (
+      {loadingCategories ? (
         <div
           style={{
             height: 500,
@@ -188,6 +201,7 @@ function Category() {
             justifyContent: "center",
             display: "flex",
             flexDirection: "column",
+            height:500
           }}
         >
           <img

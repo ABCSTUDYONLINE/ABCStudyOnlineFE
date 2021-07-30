@@ -12,6 +12,7 @@ import {
 import Avatar from "@material-ui/core/Avatar";
 import DropHeart from "./DropHeart/drop-heart";
 import DropCart from "./DropCart/drop-cart";
+import { ApiUsersMe } from "../../../lib/redux/actions/authentication";
 
 function Header() {
   const loginStatus = useSelector((state) => state.Authentication.loginStatus);
@@ -20,9 +21,14 @@ function Header() {
   const dispatch = useDispatch();
 
   const categories = useSelector((state) => state.Courses.categories);
-  const accessToken = useSelector((state) => state.Authentication.accessToken);
+  const userInfo = useSelector((state) => state.Authentication.userInfo);
+  let accessToken;
 
   useEffect(() => {
+    accessToken = localStorage.getItem("accessToken");
+    dispatch(ApiUsersMe(accessToken)).then(() => {
+      console.log("user info: ", userInfo);
+    });
     if (categories.length === 0) {
       dispatch(ApiGetCategories(1, 10));
     }
@@ -73,7 +79,7 @@ function Header() {
         </div>
         <Search />
       </div>
-      {!accessToken ? (
+      {localStorage.getItem("accessToken") === null ? (
         <CardButton
           onClick={() => {
             history.push("/login");

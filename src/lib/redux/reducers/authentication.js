@@ -20,7 +20,7 @@ export function Authentication(prevState = initState, action) {
       return {
         ...prevState,
         loginStatus: true,
-        accessToken: action.payload.access_token,
+        accessToken: action.payload.data.access_token,
       };
     case TYPES.LOGIN_FAILED:
       return { ...prevState, loginStatus: false };

@@ -12,6 +12,7 @@ export const ApiRegister =
         lastName: lastName,
         username: username,
         password: password,
+        birthDay: "01/01/2000",
         email: email,
         phoneNumber: phoneNumber,
         address: address,
@@ -23,6 +24,7 @@ export const ApiRegister =
         } else {
           dispatch({ type: TYPES.REGISTER_FAILED });
         }
+        console.log("register: ", response);
         return response;
       })
       .catch((error) => {
@@ -178,4 +180,3 @@ export const ApiForgetPasswordUpdateNewPassword =
         dispatch({ type: TYPES.FORGET_PASSWORD_UPDATE_NEW_PASSWORD_FAILED });
       });
   };
-

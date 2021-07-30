@@ -12,7 +12,6 @@ import {
 } from "../../../../globals";
 import {
   ApiLogin,
-  ApiUsersMe,
 } from "../../../../lib/redux/actions/authentication";
 
 function Login() {
@@ -42,14 +41,13 @@ function Login() {
     const isValid = validateAll();
     if (!isValid) return;
     dispatch(ApiLogin(username, password)).then((response) => {
-      if (response?.status === 201) {
+      if (response?.status === 201 && response?.data.data) {
         console.log("login thanh cong voi response: ", response);
         console.log(
           "login thanh cong voi accessToken: ",
           response.data.access_token
         );
-        localStorage.setItem('accessToken', response.data.access_token)
-        dispatch(ApiUsersMe(response.data.access_token));
+        localStorage.setItem('accessToken', response.data.data.access_token)
         history.push("/");
       } else {
         console.log("login that bai voi response: ", response);
