@@ -99,7 +99,7 @@ function SubDropbox({ items, open, anchorEl }) {
               {(items || []).map((sub) => (
                 <ListItem
                   onClick={() => {
-                    history.push(`/search/category/${sub.categoryName}`);
+                    history.push(`/search/category/${sub.categoryName}`,{title:""});
                     window.scrollTo({ top: 0 });
                   }}
                   key={sub.id}
