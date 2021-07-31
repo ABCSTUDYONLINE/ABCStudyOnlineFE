@@ -92,20 +92,39 @@ function Header() {
         <div style={{ display: "flex", alignItems: "center" }}>
           <DropHeart />
           <DropCart />
-          <Avatar
-            src="/broken-image.jpg"
-            style={{
-              width: 50,
-              height: 50,
-              marginRight: 4,
-              cursor: "pointer",
-              marginLeft: 40,
-            }}
-            onClick={() => {
-              history.push("/myDashboardPage");
-              window.scrollTo({ top: 0 });
-            }}
-          />
+          {userInfo?.avatarLink ? (
+            <img
+              src={userInfo.avatarLink}
+              alt=""
+              style={{
+                width: 50,
+                height: 50,
+                marginRight: 4,
+                cursor: "pointer",
+                marginLeft: 40,
+                borderRadius:"50%"
+              }}
+              onClick={() => {
+                history.push("/myDashboardPage");
+                window.scrollTo({ top: 0 });
+              }}
+            />
+          ) : (
+            <Avatar
+              src="/broken-image.jpg"
+              style={{
+                width: 50,
+                height: 50,
+                marginRight: 4,
+                cursor: "pointer",
+                marginLeft: 40,
+              }}
+              onClick={() => {
+                history.push("/myDashboardPage");
+                window.scrollTo({ top: 0 });
+              }}
+            />
+          )}
         </div>
       )}
     </div>

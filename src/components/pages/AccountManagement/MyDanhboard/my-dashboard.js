@@ -30,6 +30,7 @@ import FormComment from "./TabPanel/FormComment/form-comment";
 import { useHistory, useLocation } from "react-router-dom";
 import { ApiUpdateAvatar } from "../../../../lib/redux/actions/account-management";
 import { ApiUsersMe } from "../../../../lib/redux/actions/authentication";
+import { CircularProgress } from "@material-ui/core";
 
 function MyDashboard() {
   const location = useLocation();
@@ -38,6 +39,7 @@ function MyDashboard() {
   const [value, setValue] = useState(
     val === "favorite" ? 2 : val === "cart" ? 1 : 0
   );
+  const [loadingUploadAvatar, setLoadingUploadAvatar] = useState(false);
 
   console.log("value: ", value);
   const dispatch = useDispatch();
@@ -125,66 +127,86 @@ function MyDashboard() {
         }}
       >
         <div style={{ display: "flex" }}>
-          <label style={{
+          {loadingUploadAvatar ? (
+            <div
+              style={{
+                height: 300,
                 width: "35%",
                 marginRight: 4,
                 borderRadius: 5,
-                cursor:'pointer'
-              }} >
-            <img 
-              src={
-                userInfo?.avatarLink
-                  ? userInfo?.avatarLink
-                  : "https://portal.staralliance.com/imagelibrary/aux-pictures/prototype-images/avatar-default.png/@@images/image.png"
-              }
-              alt=""
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <CircularProgress />
+            </div>
+          ) : (
+            <label
               style={{
-                width: "100%",
+                width: "35%",
                 marginRight: 4,
                 borderRadius: 5,
+                cursor: "pointer",
               }}
-            />
-            <input
-              type="file"
-              hidden
-              onChange={(event) => {
-                const file = event.target.files[0];
-
-                if (file) {
-                  const apiData = new FormData();
-                  apiData.append("file", file);
-
-                  // fetch("https://abcstudyonline.herokuapp.com/auth/avatar", {
-                  //   method: "PUT",
-                  //   headers: {
-                  //     Authorization: `Bearer ${accessToken}`,
-                  //   },
-                  //   body: apiData,
-                  // }).then(
-                  //   function (res) {
-                  //     if (res.ok) {
-                  //       alert("Perfect! ");
-                  //     } else if (res.status == 401) {
-                  //       alert("Oops! ");
-                  //     }
-                  //   },
-                  //   function (e) {
-                  //     console.log("Error submitting form!", e);
-                  //   }
-                  // );
-                  dispatch(ApiUpdateAvatar(accessToken, apiData)).then(
-                    (response) => {
-                      if (response?.status === 200) {
-                        dispatch(ApiUsersMe(accessToken));
-                      }
-                    }
-                  );
+            >
+              <img
+                src={
+                  userInfo?.avatarLink
+                    ? userInfo?.avatarLink
+                    : "https://portal.staralliance.com/imagelibrary/aux-pictures/prototype-images/avatar-default.png/@@images/image.png"
                 }
+                alt=""
+                style={{
+                  width: "100%",
+                  marginRight: 4,
+                  borderRadius: 5,
+                }}
+              />
+              <input
+                type="file"
+                hidden
+                onChange={(event) => {
+                  const file = event.target.files[0];
+                  setLoadingUploadAvatar(true);
+                  if (file) {
+                    const apiData = new FormData();
+                    apiData.append("file", file);
 
-                event.target.value = "";
-              }}
-            />
-          </label>
+                    // fetch("https://abcstudyonline.herokuapp.com/auth/avatar", {
+                    //   method: "PUT",
+                    //   headers: {
+                    //     Authorization: `Bearer ${accessToken}`,
+                    //   },
+                    //   body: apiData,
+                    // }).then(
+                    //   function (res) {
+                    //     if (res.ok) {
+                    //       alert("Perfect! ");
+                    //     } else if (res.status == 401) {
+                    //       alert("Oops! ");
+                    //     }
+                    //   },
+                    //   function (e) {
+                    //     console.log("Error submitting form!", e);
+                    //   }
+                    // );
+                    dispatch(ApiUpdateAvatar(accessToken, apiData)).then(
+                      (response) => {
+                        if (response?.status === 200) {
+                          dispatch(ApiUsersMe(accessToken)).finally(() => {
+                            setLoadingUploadAvatar(false);
+                          });
+                        }
+                      }
+                    );
+                  }
+
+                  event.target.value = "";
+                }}
+              />
+            </label>
+          )}
 
           <div
             style={{
