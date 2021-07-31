@@ -32,3 +32,27 @@ export const ApiChangePassword =
         dispatch({ type: TYPES.CHANGE_PASSWORD_FAILED });
       });
   };
+
+export const ApiUpdateAvatar =
+  (accessToken, apiData) => (dispatch, getStore) => {
+    return axios
+      .put(apiUrl + "/auth/avatar", apiData, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "content-type": "multipart/form-data",
+        },
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          dispatch({ type: TYPES.UPDATE_AVATAR_SUCCESSED });
+        } else {
+          dispatch({ type: TYPES.UPDATE_AVATAR_FAILED });
+        }
+        console.log("response avatar: ", response);
+        return response;
+      })
+      .catch((error) => {
+        console.log("UPDATE_AVATAR_FAILED: ", error);
+        dispatch({ type: TYPES.UPDATE_AVATAR_FAILED });
+      });
+  };

@@ -12,6 +12,7 @@ import {
 import Avatar from "@material-ui/core/Avatar";
 import DropHeart from "./DropHeart/drop-heart";
 import DropCart from "./DropCart/drop-cart";
+import { ApiUsersMe } from "../../../lib/redux/actions/authentication";
 
 function Header() {
   const loginStatus = useSelector((state) => state.Authentication.loginStatus);
@@ -20,9 +21,14 @@ function Header() {
   const dispatch = useDispatch();
 
   const categories = useSelector((state) => state.Courses.categories);
-  const accessToken = useSelector((state) => state.Authentication.accessToken);
+  const userInfo = useSelector((state) => state.Authentication.userInfo);
+  let accessToken;
 
   useEffect(() => {
+    accessToken = localStorage.getItem("accessToken");
+    dispatch(ApiUsersMe(accessToken)).then(() => {
+      console.log("user info: ", userInfo);
+    });
     if (categories.length === 0) {
       dispatch(ApiGetCategories(1, 10));
     }
@@ -73,7 +79,7 @@ function Header() {
         </div>
         <Search />
       </div>
-      {!accessToken ? (
+      {localStorage.getItem("accessToken") === null ? (
         <CardButton
           onClick={() => {
             history.push("/login");
@@ -86,20 +92,39 @@ function Header() {
         <div style={{ display: "flex", alignItems: "center" }}>
           <DropHeart />
           <DropCart />
-          <Avatar
-            src="/broken-image.jpg"
-            style={{
-              width: 50,
-              height: 50,
-              marginRight: 4,
-              cursor: "pointer",
-              marginLeft: 40,
-            }}
-            onClick={() => {
-              history.push("/myDashboardPage");
-              window.scrollTo({ top: 0 });
-            }}
-          />
+          {userInfo?.avatarLink ? (
+            <img
+              src={userInfo.avatarLink}
+              alt=""
+              style={{
+                width: 50,
+                height: 50,
+                marginRight: 4,
+                cursor: "pointer",
+                marginLeft: 40,
+                borderRadius:"50%"
+              }}
+              onClick={() => {
+                history.push("/myDashboardPage");
+                window.scrollTo({ top: 0 });
+              }}
+            />
+          ) : (
+            <Avatar
+              src="/broken-image.jpg"
+              style={{
+                width: 50,
+                height: 50,
+                marginRight: 4,
+                cursor: "pointer",
+                marginLeft: 40,
+              }}
+              onClick={() => {
+                history.push("/myDashboardPage");
+                window.scrollTo({ top: 0 });
+              }}
+            />
+          )}
         </div>
       )}
     </div>

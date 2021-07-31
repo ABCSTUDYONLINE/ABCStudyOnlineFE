@@ -20,7 +20,7 @@ export function Authentication(prevState = initState, action) {
       return {
         ...prevState,
         loginStatus: true,
-        accessToken: action.payload.access_token,
+        accessToken: action.payload.data.access_token,
       };
     case TYPES.LOGIN_FAILED:
       return { ...prevState, loginStatus: false };
@@ -39,8 +39,8 @@ export function Authentication(prevState = initState, action) {
     case TYPES.GET_USERINFO_SUCCESSED:
       return {
         ...prevState,
-        getUserInfoStatus: true,
-        userInfo: action.payload,
+        getUserInfoStatus: true,  
+        userInfo: action.payload.data,
       };
     case TYPES.GET_USERINFO_FAILED:
       return { ...prevState, getUserInfoStatus: false };
