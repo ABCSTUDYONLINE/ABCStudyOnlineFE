@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TextField, Typography } from "@material-ui/core";
 import { CardButton } from "../../../../../../globals/index";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,18 +6,24 @@ import isEmpty from "validator/lib/isEmpty";
 import { ApiChangePassword } from "../../../../../../lib/redux/actions/account-management";
 
 function AccountDetailPanel({ value, index, content }) {
-  const userInfo = useSelector((state)=>state.Authentication.userInfo);
-  const [firstName,setFirstName]=useState(userInfo.data.firstName);
-  const [email,setEmail]=useState(userInfo.data.email);
-  const [phoneNumber,setPhoneNumber]=useState(userInfo.data.phoneNumber);
+  const userInfo = useSelector((state) => state.Authentication.userInfo);
+  const [firstName, setFirstName] = useState(userInfo?.firstName);
+  const [email, setEmail] = useState(userInfo?.email);
+  const [phoneNumber, setPhoneNumber] = useState(userInfo?.phoneNumber);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [validationMsg, setValidationMsg] = useState({});
 
+  useEffect(() => {
+    setFirstName(userInfo?.firstName);
+    setEmail(userInfo?.email);
+    setPhoneNumber(userInfo?.phoneNumber);
+  }, [userInfo]);
+
   const dispatch = useDispatch();
   const accessToken = localStorage.getItem("accessToken");
-  console.log("userInfo: ",userInfo);
+  console.log("userInfo: ", userInfo);
 
   const onSubmitSaveChanges = () => {
     if (
@@ -54,7 +60,7 @@ function AccountDetailPanel({ value, index, content }) {
           setNewPassword("");
           setConfirmNewPassword("");
         }
-        console.log("notify",response?.data.message)
+        console.log("notify", response?.data.message);
       });
     }
   };

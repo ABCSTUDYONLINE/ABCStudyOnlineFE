@@ -39,8 +39,8 @@ export function Authentication(prevState = initState, action) {
     case TYPES.GET_USERINFO_SUCCESSED:
       return {
         ...prevState,
-        getUserInfoStatus: true,
-        userInfo: action.payload,
+        getUserInfoStatus: true,  
+        userInfo: action.payload.data,
       };
     case TYPES.GET_USERINFO_FAILED:
       return { ...prevState, getUserInfoStatus: false };

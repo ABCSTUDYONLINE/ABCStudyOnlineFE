@@ -28,26 +28,26 @@ import TabCart from "./TabCart/tab-cart";
 import TabDash from "./TabDash/tab-dash";
 import FormComment from "./TabPanel/FormComment/form-comment";
 import { useHistory, useLocation } from "react-router-dom";
+import { ApiUpdateAvatar } from "../../../../lib/redux/actions/account-management";
+import { ApiUsersMe } from "../../../../lib/redux/actions/authentication";
 
 function MyDashboard() {
   const location = useLocation();
   const history = useHistory();
-  const val=location.search?.slice(5, location.search?.length);
+  const val = location.search?.slice(5, location.search?.length);
   const [value, setValue] = useState(
-    val === "favorite"
-      ? 2
-      : val === "cart"
-      ? 1
-      : 0
+    val === "favorite" ? 2 : val === "cart" ? 1 : 0
   );
 
-  console.log("value: ",value);
+  console.log("value: ", value);
   const dispatch = useDispatch();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
   const favoriteCourses = useSelector((state) => state.Courses.favoriteCourses);
+  const userInfo = useSelector((state) => state.Authentication.userInfo);
+  const accessToken = localStorage.getItem("accessToken");
 
   return (
     <div style={{ padding: "100px 0px 100px 0px " }}>
@@ -125,15 +125,67 @@ function MyDashboard() {
         }}
       >
         <div style={{ display: "flex" }}>
-          <img
-            src="/assets/user1.jpg"
-            alt=""
-            style={{
-              width: "33%",
-              marginRight: 4,
-              borderRadius: 5,
-            }}
-          />
+          <label style={{
+                width: "35%",
+                marginRight: 4,
+                borderRadius: 5,
+                cursor:'pointer'
+              }} >
+            <img 
+              src={
+                userInfo?.avatarLink
+                  ? userInfo?.avatarLink
+                  : "https://portal.staralliance.com/imagelibrary/aux-pictures/prototype-images/avatar-default.png/@@images/image.png"
+              }
+              alt=""
+              style={{
+                width: "100%",
+                marginRight: 4,
+                borderRadius: 5,
+              }}
+            />
+            <input
+              type="file"
+              hidden
+              onChange={(event) => {
+                const file = event.target.files[0];
+
+                if (file) {
+                  const apiData = new FormData();
+                  apiData.append("file", file);
+
+                  // fetch("https://abcstudyonline.herokuapp.com/auth/avatar", {
+                  //   method: "PUT",
+                  //   headers: {
+                  //     Authorization: `Bearer ${accessToken}`,
+                  //   },
+                  //   body: apiData,
+                  // }).then(
+                  //   function (res) {
+                  //     if (res.ok) {
+                  //       alert("Perfect! ");
+                  //     } else if (res.status == 401) {
+                  //       alert("Oops! ");
+                  //     }
+                  //   },
+                  //   function (e) {
+                  //     console.log("Error submitting form!", e);
+                  //   }
+                  // );
+                  dispatch(ApiUpdateAvatar(accessToken, apiData)).then(
+                    (response) => {
+                      if (response?.status === 200) {
+                        dispatch(ApiUsersMe(accessToken));
+                      }
+                    }
+                  );
+                }
+
+                event.target.value = "";
+              }}
+            />
+          </label>
+
           <div
             style={{
               marginLeft: 15,
@@ -143,7 +195,7 @@ function MyDashboard() {
             }}
           >
             <BlackText style={{ fontSize: 22, fontWeight: 600 }}>
-              James Anderson
+              {userInfo?.firstName}
             </BlackText>
             <BlackText
               style={{
@@ -153,8 +205,7 @@ function MyDashboard() {
                 marginTop: 15,
               }}
             >
-              James Anderson is a celebrated photographer, author, and teacher
-              who brings passion to everything he does.
+              {userInfo?.username}
             </BlackText>
             <div
               style={{
@@ -173,7 +224,7 @@ function MyDashboard() {
                   color: "#727695",
                 }}
               >
-                ABCStudyOnline@hotmail.com
+                {userInfo?.email}
               </CardFooterText>
             </div>
             <div
@@ -193,7 +244,7 @@ function MyDashboard() {
                   marginLeft: 5,
                 }}
               >
-                +84357004545
+                {userInfo?.phoneNumber}
               </CardFooterText>
             </div>
             <div
@@ -213,7 +264,7 @@ function MyDashboard() {
                   color: "#727695",
                 }}
               >
-                227 Nguyen Van Cu, Phuong 4, Quan 5, Ho Chi Minh, Viet Nam
+                {userInfo?.address}
               </CardFooterText>
             </div>
             <div
