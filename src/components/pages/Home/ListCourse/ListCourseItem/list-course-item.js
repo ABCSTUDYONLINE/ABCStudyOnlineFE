@@ -43,6 +43,9 @@ function ListCourseItem({ course, style }) {
           onClick={() => {
             console.log("image clicked");
           }}
+          style={{
+            width: "100%",
+          }}
         >
           <img
             style={{
@@ -50,6 +53,7 @@ function ListCourseItem({ course, style }) {
               borderTopLeftRadius: 8,
               borderTopRightRadius: 8,
               width: "100%",
+              height:280
             }}
             src={course.courseImageLink}
             alt=""

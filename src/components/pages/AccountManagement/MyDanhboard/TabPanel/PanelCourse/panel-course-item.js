@@ -66,7 +66,7 @@ function PanelCourseItem({ course, style }) {
         >
           {course.course.teacher.avatarLink !==null ? (
             <img
-              src={course.teacher.avatarLink}
+              src={course.course.teacher.avatarLink}
               alt=""
               style={{
                 width: 37,

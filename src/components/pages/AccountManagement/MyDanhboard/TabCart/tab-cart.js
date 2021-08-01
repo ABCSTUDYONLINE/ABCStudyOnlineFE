@@ -74,13 +74,24 @@ function TabCart({ value, index }) {
             <CardButton
               style={{ borderRadius: 4, marginLeft: 20 }}
               onClick={() => {
-                dispatch(ApiChargeCourse(accessToken,learnIds)).then((response)=>{
-                  if(response?.status===200){
-                    dispatch(ApiGetCoursesFromCart(accessToken,"unpaid",1,10))
-                  } else {
-                    console.log("remove cart add error: ", response.data.message);
+                dispatch(ApiChargeCourse(accessToken, learnIds)).then(
+                  (response) => {
+                    if (response?.status === 200) {
+                      dispatch(
+                        ApiGetCoursesFromCart(accessToken, "unpaid", 1, 10)
+                      );
+
+                      dispatch(
+                        ApiGetCoursesFromCart(accessToken, "paid", 1, 10)
+                      );
+                    } else {
+                      console.log(
+                        "remove cart add error: ",
+                        response?.data.message
+                      );
+                    }
                   }
-                })
+                );
               }}
             >
               <div>Checkout</div>

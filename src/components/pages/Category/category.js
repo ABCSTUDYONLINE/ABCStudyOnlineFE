@@ -21,7 +21,7 @@ function Category() {
   const dispatch = useDispatch();
   const location = useLocation();
 
-  const [loadingCategories,setLoadingCategories]=useState(true);
+  const [loadingCategories, setLoadingCategories] = useState(true);
 
   const [sort, setSort] = React.useState(0);
 
@@ -44,33 +44,35 @@ function Category() {
   //   (state) => state.Courses.topRegisterCourses
   // );
   // const topRateInWeek = useSelector((state) => state.Courses.topRateInWeek);
-  const titleLocation = location.state.title;
+  const titleLocation = location.state?.title;
 
   useEffect(() => {
     setLoadingCategories(true);
     if (!keyWord) {
       console.log("log loaction", titleLocation);
       if (titleLocation === "Top Rate In Week") {
-        dispatch(ApiGetsearchTopCourses("rateInWeek", 1, 10)).finally(()=>{
+        dispatch(ApiGetsearchTopCourses("rateInWeek", 1, 10)).finally(() => {
           setLoadingCategories(false);
-        })
+        });
       } else if (titleLocation === "New Courses") {
-        dispatch(ApiGetsearchTopCourses("newest", 1, 10)).finally(()=>{
+        dispatch(ApiGetsearchTopCourses("newest", 1, 10)).finally(() => {
           setLoadingCategories(false);
-        })
+        });
       } else if (titleLocation === "Register Courses") {
-        dispatch(ApiGetsearchTopCourses("register", 1, 10)).finally(()=>{
+        dispatch(ApiGetsearchTopCourses("register", 1, 10)).finally(() => {
           setLoadingCategories(false);
-        })
+        });
       }
     } else if (keyWord === "category") {
-      dispatch(ApiSearchCourses("category", categoryName, 1, 10)).finally(()=>{
-        setLoadingCategories(false);
-      })
+      dispatch(ApiSearchCourses("category", categoryName, 1, 10)).finally(
+        () => {
+          setLoadingCategories(false);
+        }
+      );
     } else {
-      dispatch(ApiSearchCourses("name", keyWord, 1, 10)).finally(()=>{
+      dispatch(ApiSearchCourses("name", keyWord, 1, 10)).finally(() => {
         setLoadingCategories(false);
-      })
+      });
     }
   }, [keyWord, categoryName]);
 
@@ -148,7 +150,7 @@ function Category() {
             marginLeft: 91,
           }}
         >
-          {categoryName ? categoryName : `Search keyword ${keyWord}`}
+          {categoryName? categoryName : keyWord ? `Search keyword ${keyWord}` : ""}
         </div>
       </div>
       <div
@@ -201,7 +203,7 @@ function Category() {
             justifyContent: "center",
             display: "flex",
             flexDirection: "column",
-            height:500
+            height: 500,
           }}
         >
           <img

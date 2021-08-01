@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import isEmpty from "validator/lib/isEmpty";
 import { ApiChangePassword } from "../../../../../../lib/redux/actions/account-management";
 
-function AccountDetailPanel({ value, index, content }) {
+function AccountDetailPanel({ value, index }) {
   const userInfo = useSelector((state) => state.Authentication.userInfo);
   const [firstName, setFirstName] = useState(userInfo?.firstName);
   const [email, setEmail] = useState(userInfo?.email);

@@ -13,7 +13,11 @@ function UserSectionItem({ rate }) {
       }}
     >
       <img
-        src="/assets/user1.jpg"
+        src={
+          rate?.user.avatarLink
+            ? rate?.user.avatarLink
+            : "https://portal.staralliance.com/imagelibrary/aux-pictures/prototype-images/avatar-default.png/@@images/image.png"
+        }
         alt=""
         style={{
           width: 90,
@@ -25,7 +29,7 @@ function UserSectionItem({ rate }) {
       />
       <div>
         <BlackText style={{ fontSize: 17, fontWeight: 600, marginBottom: 10 }}>
-          James Anderson
+          {`${rate?.user.firstName} ${rate?.user.lastName}`}
         </BlackText>
         <StarRatings
           rating={rate?.rateNumber}
