@@ -53,12 +53,29 @@ function ListCourseItem({ course, style }) {
               borderTopLeftRadius: 8,
               borderTopRightRadius: 8,
               width: "100%",
-              height:280
+              height: 280,
             }}
             src={course.courseImageLink}
             alt=""
           />
         </CardButtonItem>
+        {course?.promotion == null ? null : (
+          <div
+            style={{
+              position: "absolute",
+              background: "#0eb582",
+              padding: "1px 8px",
+              top: 25,
+              left: 5,
+              borderRadius: "8px 0 8px 0",
+              color: "white",
+              fontWeight: 700,
+              fontSize: 20,
+            }}
+          >
+            {100 - course?.promotion.percent * 100}%
+          </div>
+        )}
         {isHover ? <ActionLinksHover id={course.id} /> : <div></div>}
       </div>
       <div
@@ -150,9 +167,13 @@ function ListCourseItem({ course, style }) {
               <ImportContactsIcon></ImportContactsIcon>
               <div style={{ marginLeft: 5 }}>{`${countLessons} lessons`}</div>
             </div>
-            <RedText
-              style={{ fontSize: 18, fontWeight: 500 }}
-            >{`$${course.fee}`}</RedText>
+            <div style={{display:'flex',alignItems:'center'}}>
+              {course.promotion ? <div style={{color:'#81868a',textDecoration:"line-through",fontSize:16,fontWeight:400, marginRight:5}} >{`$${course.fee}`}</div> : null}
+               
+              <RedText
+                style={{ fontSize: 18, fontWeight: 500 }}
+              >{`$${course.fee*(course.promotion?.percent||1)}`}</RedText>
+            </div>
           </div>
         </div>
       </div>

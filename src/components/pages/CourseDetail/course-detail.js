@@ -30,7 +30,10 @@ import LessonItem from "./CourseContent/LessonItem/lesson-item";
 
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import { useDispatch, useSelector } from "react-redux";
-import { ApiGetCourseDetail, ApiGetCoursesFromCart } from "../../../lib/redux/actions/courses";
+import {
+  ApiGetCourseDetail,
+  ApiGetCoursesFromCart,
+} from "../../../lib/redux/actions/courses";
 
 import { CircularProgress } from "@material-ui/core";
 
@@ -353,7 +356,8 @@ function CourseDetail() {
                     {`(${courseDetail.rates.total} reviews)`}
                   </GrayText>
                 </div>
-                <div style={{ display: "flex" }}>
+                <div style={{ display: "flex",alignItems:'center' }}>
+                {courseDetail.promotion ? <div style={{color:'#81868a',textDecoration:"line-through",fontSize:35,fontWeight:600, marginRight:10}} >{`$${courseDetail.fee}`}</div> : null}
                   <BlackText
                     style={{
                       fontSize: 35,
@@ -361,9 +365,12 @@ function CourseDetail() {
                       marginRight: 10,
                     }}
                   >
-                    {`$${courseDetail.fee}`}
+                    {`$${
+                      courseDetail.fee * (courseDetail.promotion?.percent || 1)
+                    }`}
                   </BlackText>
-                  <CardButton style={{ borderRadius: 4 }} >
+
+                  <CardButton style={{ borderRadius: 4 }}>
                     <div>Buy Course</div>
                   </CardButton>
                 </div>
@@ -371,12 +378,19 @@ function CourseDetail() {
             </div>
             <div style={{ display: "flex" }}>
               <div
-                style={{ justifyContent: "space-between", paddingRight: 60,maxWidth:1000 }}
+                style={{
+                  justifyContent: "space-between",
+                  paddingRight: 60,
+                  maxWidth: 1000,
+                }}
               >
                 <CourseAdditionalInformation course={courseDetail} />
                 <InstructorSection teacher={courseDetail.teacher} />
                 <Comments courseId={courseDetail.id} />
-                <RelatedCourses caseTitle={'Related Courses'} relatedCourses={courseDetail?.courses}/>
+                <RelatedCourses
+                  caseTitle={"Related Courses"}
+                  relatedCourses={courseDetail?.courses}
+                />
               </div>
               <CourseContent
                 course={courseDetail}
