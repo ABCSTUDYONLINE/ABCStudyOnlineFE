@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import isEmpty from "validator/lib/isEmpty";
+import GoogleLogin from 'react-google-login';
 import {
   BlackText,
   CardButton,
@@ -12,6 +13,7 @@ import {
 } from "../../../../globals";
 import {
   ApiLogin,
+  ApiGoogleLogin,
 } from "../../../../lib/redux/actions/authentication";
 
 function Login() {
@@ -58,6 +60,24 @@ function Login() {
       }
     });
   };
+
+  const responseGoogle = (response) => {
+    console.log(response.profileObj);
+    dispatch(ApiGoogleLogin({
+      email: response.profileObj.email,
+      firstName: response.profileObj.familyName,
+      lastName: response.profileObj.givenName,
+      avatarLink: response.profileObj.imageUrl
+    })).then((response) => {
+      console.log("login thanh cong voi response: ", response);
+        console.log(
+          "login thanh cong voi accessToken: ",
+          response.data.access_token
+        );
+        localStorage.setItem('accessToken', response.data.data.access_token)
+        history.push("/");
+    });
+  }
 
   return (
     <div style={{ display: "flex" }}>
@@ -174,18 +194,27 @@ function Login() {
         </form>
         <div>
           <div style={{}}>Or</div>
-          <CardButton
+          {/* <CardButton
+            
+          > */}
+          <div 
             style={{
-              borderRadius: 4,
+              // borderRadius: 4,
               marginTop: 40,
               marginBottom: 20,
-              width: "100%",
-              borderColor: "#3b5998",
-              boxShadow: "0 5px 28.5px 1.5px rgb(59 89 152 / 20%)",
+              // width: 'auto',
+              // borderColor: "#3b5998",
+              // boxShadow: "0 5px 28.5px 1.5px rgb(59 89 152 / 20%)",
             }}
           >
-            <div>Connect With Google</div>
-          </CardButton>
+            <GoogleLogin
+              clientId="541991112150-15p2feifqisv6r011av4hqrgsndfvute.apps.googleusercontent.com"
+              buttonText="Login With Google"
+              onSuccess={responseGoogle}
+              cookiePolicy={'single_host_origin'}
+            />
+          {/* </CardButton> */}
+          </div>
         </div>
       </div>
     </div>
