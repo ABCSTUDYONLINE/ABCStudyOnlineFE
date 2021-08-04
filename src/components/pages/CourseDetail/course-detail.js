@@ -30,7 +30,7 @@ import LessonItem from "./CourseContent/LessonItem/lesson-item";
 
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import { useDispatch, useSelector } from "react-redux";
-import { ApiGetCourseDetail } from "../../../lib/redux/actions/courses";
+import { ApiGetCourseDetail, ApiGetCoursesFromCart } from "../../../lib/redux/actions/courses";
 
 import { CircularProgress } from "@material-ui/core";
 

@@ -65,17 +65,19 @@ function Category() {
     if (!keyWord) {
       console.log("log loaction", titleLocation);
       if (titleLocation === "Top Rate In Week") {
-        dispatch(ApiGetsearchTopCourses("rateInWeek", 1, 10)).finally(
-          () => {
-            setLoadingCategories(false);
-          }
-        );
+        dispatch(ApiGetsearchTopCourses("rateInWeek", 1, 10)).finally(() => {
+          setLoadingCategories(false);
+        });
       } else if (titleLocation === "New Courses") {
-        dispatch(ApiGetsearchTopCourses("newest",  1, 10)).finally(() => {
+        dispatch(ApiGetsearchTopCourses("newest", 1, 10)).finally(() => {
           setLoadingCategories(false);
         });
       } else if (titleLocation === "Register Courses") {
         dispatch(ApiGetsearchTopCourses("register", 1, 10)).finally(() => {
+          setLoadingCategories(false);
+        });
+      } else if (titleLocation === "All") {
+        dispatch(ApiGetsearchTopCourses("all", 1, 10)).finally(() => {
           setLoadingCategories(false);
         });
       } else {
