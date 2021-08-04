@@ -91,6 +91,24 @@ export const ApiLogin = (username, password) => (dispatch, getStore) => {
       dispatch({ type: TYPES.LOGIN_FAILED });
     });
 };
+
+export const ApiGoogleLogin = (payload) => (dispatch, getStore) => {
+  return axios
+    .post(apiUrl + "/auth/login/google", payload)
+    .then((response) => {
+      if (response.status === 201) {
+        dispatch({ type: TYPES.LOGIN_SUCCESSED, payload: response.data });
+      } else {
+        dispatch({ type: TYPES.LOGIN_FAILED });
+      }
+      return response;
+    })
+    .catch((error) => {
+      console.log("Login Error: ", error);
+      dispatch({ type: TYPES.LOGIN_FAILED });
+    });
+};
+
 export const ApiUsersMe = (accessToken) => (dispatch, getStore) => {
   return axios
     .get(apiUrl + "/users/me", {
