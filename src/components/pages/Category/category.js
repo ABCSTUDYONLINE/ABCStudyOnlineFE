@@ -27,7 +27,20 @@ function Category() {
 
   const handleChange = (event) => {
     setSort(event.target.value);
-    console.log("Sort id: ",sort);
+    setLoadingCategories(true);
+    if (event.target.value === 1) {
+      console.log("value: ", event.target.value);
+      dispatch(ApiGetsearchTopCourses("mount", "ASC", 1, 10)).finally(() => {
+        setLoadingCategories(false);
+      });
+    } else if (event.target.value === 2) {
+      console.log("value: ", sort);
+      dispatch(ApiGetsearchTopCourses("mount", "DESC", 1, 10)).finally(() => {
+        setLoadingCategories(false);
+      });
+    } else {
+      setLoadingCategories(false);
+    }
   };
 
   const { categoryName, keyWord } = useParams();
@@ -52,17 +65,21 @@ function Category() {
     if (!keyWord) {
       console.log("log loaction", titleLocation);
       if (titleLocation === "Top Rate In Week") {
-        dispatch(ApiGetsearchTopCourses("rateInWeek", 1, 10)).finally(() => {
-          setLoadingCategories(false);
-        });
+        dispatch(ApiGetsearchTopCourses("rateInWeek", 1, 10)).finally(
+          () => {
+            setLoadingCategories(false);
+          }
+        );
       } else if (titleLocation === "New Courses") {
-        dispatch(ApiGetsearchTopCourses("newest", 1, 10)).finally(() => {
+        dispatch(ApiGetsearchTopCourses("newest",  1, 10)).finally(() => {
           setLoadingCategories(false);
         });
       } else if (titleLocation === "Register Courses") {
         dispatch(ApiGetsearchTopCourses("register", 1, 10)).finally(() => {
           setLoadingCategories(false);
         });
+      } else {
+        setLoadingCategories(false);
       }
     } else if (keyWord === "category") {
       dispatch(ApiSearchCourses("category", categoryName, 1, 10)).finally(
@@ -151,7 +168,11 @@ function Category() {
             marginLeft: 91,
           }}
         >
-          {categoryName? categoryName : keyWord ? `Search keyword ${keyWord}` : ""}
+          {categoryName
+            ? categoryName
+            : keyWord
+            ? `Search keyword ${keyWord}`
+            : ""}
         </div>
       </div>
       <div

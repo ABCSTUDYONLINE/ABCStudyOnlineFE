@@ -372,9 +372,9 @@ export const ApiRateCourse =
       .post(
         apiUrl + "/rates",
         {
-          courseId: "ccc8e184-c439-4e72-9784-fd751d1ff658",
-          rateNumber: 5,
-          message: "good lam",
+          courseId,
+          rateNumber,
+          message,
         },
         {
           headers: { Authorization: `Bearer ${accessToken}` },

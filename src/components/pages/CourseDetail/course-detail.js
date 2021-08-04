@@ -363,7 +363,7 @@ function CourseDetail() {
                   >
                     {`$${courseDetail.fee}`}
                   </BlackText>
-                  <CardButton style={{ borderRadius: 4 }}>
+                  <CardButton style={{ borderRadius: 4 }} >
                     <div>Buy Course</div>
                   </CardButton>
                 </div>
@@ -376,7 +376,7 @@ function CourseDetail() {
                 <CourseAdditionalInformation course={courseDetail} />
                 <InstructorSection teacher={courseDetail.teacher} />
                 <Comments courseId={courseDetail.id} />
-                {/* <RelatedCourses caseTitle={'Related Courses'}/> */}
+                <RelatedCourses caseTitle={'Related Courses'} relatedCourses={courseDetail?.courses}/>
               </div>
               <CourseContent
                 course={courseDetail}
