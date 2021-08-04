@@ -12,7 +12,7 @@ function secondsToms(d) {
   return  mDisplay + sDisplay; 
 }
 
-function LessonItem({ lesson, index, handleClickOpen, activeId }) {
+function LessonItem({ lesson, index, handleClickOpen, activeId,foundedCourseFromDash }) {
   const time=secondsToms(lesson.duration);
   return (
     <div style={{ marginTop: 10, display: "flex" }}>
@@ -26,15 +26,15 @@ function LessonItem({ lesson, index, handleClickOpen, activeId }) {
           </BlackText> */}
       <CardButtonText
         style={{
-          cursor:  index===1 ? "pointer" : "",
+          cursor:  index===1 || foundedCourseFromDash ? "pointer" : "",
           fontSize: 15,
           fontWeight:  (activeId !== lesson.id ? 500 : " bold"),
           margin: 0,
           marginLeft: 5,
-          color: index===1 ? "" : "#727965" 
+          color: index===1 || foundedCourseFromDash ? "" : "#727965" 
         }}
         onClick={() => {
-          if(index===1){
+          if(index===1 || foundedCourseFromDash){
             handleClickOpen(lesson.videoLink, lesson.id);
           }
         }}

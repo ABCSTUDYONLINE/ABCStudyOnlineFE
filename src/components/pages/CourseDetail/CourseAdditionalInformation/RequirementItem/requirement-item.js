@@ -23,7 +23,7 @@ function RequirementItem({item}) {
           color: "#727695",
         }}
       >
-        item
+        {item}
       </BlackText>
     </div>
   );

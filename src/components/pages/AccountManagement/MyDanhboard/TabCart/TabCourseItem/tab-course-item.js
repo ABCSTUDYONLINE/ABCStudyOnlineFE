@@ -1,5 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import {
   BlackText,
   CardButton,
@@ -14,8 +15,10 @@ import {
 import CommentButton from "../../TabDash/comment-button";
 
 function TabCourseItem({ course, isDashBoard }) {
+  const history=useHistory();
   const dispatch = useDispatch();
   const accessToken = localStorage.getItem("accessToken");
+  console.log("Course in tab: ",course)
   return (
     <div
       style={{
@@ -55,7 +58,7 @@ function TabCourseItem({ course, isDashBoard }) {
               cursor: "pointer",
             }}
             onClick={() => {
-              // history.push(`/course-detail/${course.id}`,{course:course});
+              history.push(`/course-detail/${course.course.id}`);
               window.scrollTo({ top: 0 });
             }}
           >

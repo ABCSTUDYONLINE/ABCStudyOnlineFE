@@ -3,15 +3,8 @@ import { BlackText } from "../../../../globals/index";
 import ListCourseItem from "../../Home/ListCourse/ListCourseItem/list-course-item";
 import Carousel from "react-multi-carousel";
 
-function RelatedCourses({caseTitle,style}) {
-  const temp = [1, 2, 3, 4];
-  const course = {
-    title: "Raque Professional IT Expert Certificate Course",
-    ratedPoint: 5,
-    ratedNumber: 5,
-    studentNumber: 10,
-    price: 200,
-  };
+function RelatedCourses({caseTitle,style,relatedCourses}) {
+  
   const responsive = {
     superLargeDesktop: {
       // the naming can be any, depends on you.
@@ -49,9 +42,9 @@ function RelatedCourses({caseTitle,style}) {
         showDots={true}
         style={{ marginTop: 15, display: "flex" }}
       >
-        {temp.map((i) => (
+        {relatedCourses.map((course,index) => (
           <ListCourseItem
-            key={temp[i]}
+            key={index}
             course={course}
             style={{ maxWidth: 360 }}
           />

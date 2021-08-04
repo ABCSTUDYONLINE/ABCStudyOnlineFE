@@ -349,13 +349,11 @@ function MyDashboard() {
       <TabPanel
         value={value}
         index={2}
-        content={"hello favorites"}
         favoriteCourses={favoriteCourses}
       ></TabPanel>
       <AccountDetailPanel
         value={value}
         index={3}
-        content={"hello Account details"}
       ></AccountDetailPanel>
     </div>
   );

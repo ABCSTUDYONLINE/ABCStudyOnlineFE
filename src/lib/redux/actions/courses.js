@@ -316,7 +316,8 @@ export const ApiSearchCourses =
       });
   };
 
-  export const ApiGetsearchTopCourses = (type,page, limit) => (dispatch, getStore) => {
+export const ApiGetsearchTopCourses =
+  (type, page, limit) => (dispatch, getStore) => {
     return axios
       .get(apiUrl + `/courses/sorts?type=${type}&page=${page}&limit=${limit}`)
       .then((response) => {
@@ -336,8 +337,6 @@ export const ApiSearchCourses =
         dispatch({ type: TYPES.GET_SEARCH_TOP_COURSES_FAILED });
       });
   };
-  
-
 
 export const ApiChargeCourse =
   (accessToken, learnIds) => (dispatch, getStore) => {
@@ -357,9 +356,10 @@ export const ApiChargeCourse =
         } else {
           dispatch({ type: TYPES.CHARGE_COURSE_FAILED });
         }
+        console.log("char: ", response);
         return response;
       })
-      .then((error) => {
+      .catch((error) => {
         console.log(error);
         dispatch({ type: TYPES.CHARGE_COURSE_FAILED });
       });
@@ -372,9 +372,9 @@ export const ApiRateCourse =
       .post(
         apiUrl + "/rates",
         {
-          courseId: "ccc8e184-c439-4e72-9784-fd751d1ff658",
-          rateNumber: 5,
-          message: "good lam",
+          courseId,
+          rateNumber,
+          message,
         },
         {
           headers: { Authorization: `Bearer ${accessToken}` },

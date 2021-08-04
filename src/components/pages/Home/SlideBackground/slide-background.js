@@ -8,6 +8,7 @@ import {
   CardImageBackground,
   CardButton,
 } from "../../../../globals";
+import { useHistory } from "react-router-dom";
 
 function SlideBackground() {
   const [isHover, setIsHover] = useState(false);
@@ -49,6 +50,12 @@ function SlideBackground() {
         <GrNext href="#" />
       </CardAction>
     ),
+  };
+  const history = useHistory();
+  const ViewAllCourse = () => {
+    console.log("slide background");
+    history.push("/search", { title: "All" });
+    window.scrollTo({ top: 0 });
   };
   return (
     <div
@@ -97,7 +104,7 @@ function SlideBackground() {
                 Ednuv supports students by introducing collaborators outside R,
                 internships and research experience abroad.
               </div>
-              <CardButton>
+              <CardButton onClick={ViewAllCourse}>
                 <div>View Courses</div>
               </CardButton>
             </div>
@@ -131,7 +138,7 @@ function SlideBackground() {
                 Ednuv supports students by introducing collaborators outside R,
                 internships and research experience abroad.
               </div>
-              <CardButton>
+              <CardButton onClick={ViewAllCourse}>
                 <div>View Courses</div>
               </CardButton>
             </div>

@@ -6,7 +6,7 @@ import {
   List,
   ListItem,
 } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import { CardDropCategory } from "../../../../globals/index";
 import KeyboardArrowRightIcon from "@material-ui/icons/KeyboardArrowRight";
@@ -21,7 +21,13 @@ function Dropbox({ open, anchorEl }) {
   const mobiles = categories.filter(
     (category) => category.levelCategory === "mobile"
   );
-  console.log("items: ", mobiles);
+useEffect(() => {
+  console.log("mounted");
+  
+  return () => {
+  }
+}, [ ])
+
   return (
     <Popper
       open={open}

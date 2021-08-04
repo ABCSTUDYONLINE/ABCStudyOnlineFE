@@ -85,6 +85,7 @@ function Register() {
           history.push("/verify", {
             email: email,
           });
+          window.scrollTo({ top: 0 });
         });
       } else {
         const msg = {};

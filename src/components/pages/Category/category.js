@@ -21,12 +21,29 @@ function Category() {
   const dispatch = useDispatch();
   const location = useLocation();
 
-  const [loadingCategories,setLoadingCategories]=useState(true);
+  const [loadingCategories, setLoadingCategories] = useState(true);
 
   const [sort, setSort] = React.useState(0);
 
   const handleChange = (event) => {
     setSort(event.target.value);
+    setLoadingCategories(true);
+    console.log("xxx: ", event.target.value);
+    const value = +(event.target.value)
+    if (value === 1) {
+      console.log("xxx1: ", value);
+      dispatch(ApiGetsearchTopCourses("mount", "ASC", 1, 10)).finally(() => {
+        setLoadingCategories(false);
+      });
+    } else if (value === 2) {
+      console.log("xxx2: ", value);
+      dispatch(ApiGetsearchTopCourses("mount", "DESC", 1, 10)).finally(() => {
+        setLoadingCategories(false);
+      });
+    } else {
+      console.log("xxx3: ", value);
+      setLoadingCategories(false);
+    }
   };
 
   const { categoryName, keyWord } = useParams();
@@ -44,44 +61,56 @@ function Category() {
   //   (state) => state.Courses.topRegisterCourses
   // );
   // const topRateInWeek = useSelector((state) => state.Courses.topRateInWeek);
-  const titleLocation = location.state.title;
+  const titleLocation = location.state?.title;
+  
+  const [page, setpage] = useState(1);
+  const coursePerPage = 6;
 
   useEffect(() => {
     setLoadingCategories(true);
     if (!keyWord) {
       console.log("log loaction", titleLocation);
       if (titleLocation === "Top Rate In Week") {
-        dispatch(ApiGetsearchTopCourses("rateInWeek", 1, 10)).finally(()=>{
+        dispatch(ApiGetsearchTopCourses("rateInWeek", 1, 10)).finally(() => {
           setLoadingCategories(false);
-        })
+        });
       } else if (titleLocation === "New Courses") {
-        dispatch(ApiGetsearchTopCourses("newest", 1, 10)).finally(()=>{
+        dispatch(ApiGetsearchTopCourses("newest", 1, 10)).finally(() => {
           setLoadingCategories(false);
-        })
+        });
       } else if (titleLocation === "Register Courses") {
-        dispatch(ApiGetsearchTopCourses("register", 1, 10)).finally(()=>{
+        dispatch(ApiGetsearchTopCourses("register", 1, 10)).finally(() => {
           setLoadingCategories(false);
-        })
+        });
+      } else if (titleLocation === "All") {
+        dispatch(ApiGetsearchTopCourses("all", 1, 10)).finally(() => {
+          setLoadingCategories(false);
+        });
+      } else {
+        setLoadingCategories(false);
       }
     } else if (keyWord === "category") {
-      dispatch(ApiSearchCourses("category", categoryName, 1, 10)).finally(()=>{
-        setLoadingCategories(false);
-      })
+      dispatch(ApiSearchCourses("category", categoryName, 1, 10)).finally(
+        () => {
+          setLoadingCategories(false);
+        }
+      );
     } else {
-      dispatch(ApiSearchCourses("name", keyWord, 1, 10)).finally(()=>{
+      dispatch(ApiSearchCourses("name", keyWord, 1, 10)).finally(() => {
         setLoadingCategories(false);
-      })
+      });
     }
-  }, [keyWord, categoryName]);
+  }, [keyWord, categoryName,page]);
 
   // Cho courses vao state
-  const [page, setpage] = useState(1);
-  const coursePerPage = 8;
+  // skip = limit * (3 - 1) ; limit = 8 
 
   const courseToShow = listCoursesBySearch?.slice(
     (page - 1) * coursePerPage,
     page * coursePerPage
   );
+
+
   return (
     <div>
       <div
@@ -148,7 +177,11 @@ function Category() {
             marginLeft: 91,
           }}
         >
-          {categoryName ? categoryName : `Search keyword ${keyWord}`}
+          {categoryName
+            ? categoryName
+            : keyWord
+            ? `Search keyword ${keyWord}`
+            : ""}
         </div>
       </div>
       <div
@@ -177,8 +210,7 @@ function Category() {
           >
             <option aria-label="None" value="" />
             <option value={1}>Price low to high</option>
-            <option value={2}>Score rate high to low</option>
-            <option value={3}>Best selling</option>
+            <option value={2}>Price high to low</option>
           </Select>
         </FormControl>
       </div>
@@ -201,7 +233,7 @@ function Category() {
             justifyContent: "center",
             display: "flex",
             flexDirection: "column",
-            height:500
+            height: 500,
           }}
         >
           <img
@@ -228,12 +260,12 @@ function Category() {
             }}
           >
             <Grid container spacing={0}>
-              {courseToShow.map((course) => {
+              {courseToShow?.map((course) => {
                 return (
-                  <Grid item xs={3}>
+                  <Grid item xs={4}>
                     <ListCourseItem
                       key={course.id}
-                      style={{ maxWidth: 360 }}
+                      style={{ maxWidth:400}}
                       course={course}
                     />
                   </Grid>
@@ -248,9 +280,11 @@ function Category() {
               paddingBottom: 100,
             }}
           >
+            {console.log(page)}
             <Pagination
-              count={Math.ceil(listCoursesBySearch.length / 8)}
+              count={Math.ceil(listCoursesBySearch.length / coursePerPage)}
               shape="rounded"
+              page={page}
               onChange={(e, value) => {
                 setpage(value);
               }}

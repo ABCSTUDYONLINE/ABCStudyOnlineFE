@@ -15,7 +15,6 @@ import {
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import isEmpty from "validator/lib/isEmpty";
 
-
 function Verify() {
   const [code, setCode] = useState("");
   const [openPopup, setopenPopup] = useState(false);
@@ -29,13 +28,13 @@ function Verify() {
   // );
 
   const onSubmitOtpEmaill = () => {
-    if(isEmpty(code)){
+    if (isEmpty(code)) {
       setValidationMsg("Please input code");
       return;
     }
     dispatch(ApiConfirmOtpEmail(location.state.email, Number(code))).then(
       (response) => {
-        if (response?.data.data!==null && response?.status === 201) {
+        if (response?.data.data !== null && response?.status === 201) {
           setopenPopup(true);
         } else {
           console.log(response);
@@ -64,7 +63,30 @@ function Verify() {
       />
       {!openPopup ? (
         <div style={{ textAlign: "center", width: "50%", padding: 60 }}>
-          <BlackText>LOGO Team</BlackText>
+          <div
+            style={{
+              display: "flex",
+              cursor: "pointer",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            onClick={() => {
+              history.push("/");
+              window.scrollTo({ top: 0 });
+            }}
+          >
+            <img
+              src="/assets/logo-team.png"
+              alt=""
+              style={{
+                width: 100,
+                height: 100,
+                marginRight: 4,
+                objectFit: "cover",
+              }}
+            />
+            <BlackText style={{ fontSize: 32 }}>ABCStudy</BlackText>
+          </div>
           <BlackText style={{ fontSize: 35, fontWeight: 700, marginTop: 30 }}>
             Verify Your Identify
           </BlackText>
