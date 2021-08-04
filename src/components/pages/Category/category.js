@@ -27,6 +27,7 @@ function Category() {
 
   const handleChange = (event) => {
     setSort(event.target.value);
+    console.log("Sort id: ",sort);
   };
 
   const { categoryName, keyWord } = useParams();
@@ -179,8 +180,7 @@ function Category() {
           >
             <option aria-label="None" value="" />
             <option value={1}>Price low to high</option>
-            <option value={2}>Score rate high to low</option>
-            <option value={3}>Best selling</option>
+            <option value={2}>Price high to low</option>
           </Select>
         </FormControl>
       </div>
@@ -251,7 +251,7 @@ function Category() {
             }}
           >
             <Pagination
-              count={Math.ceil(listCoursesBySearch.length / 8)}
+              count={Math.ceil(listCoursesBySearch.length / coursePerPage)}
               shape="rounded"
               onChange={(e, value) => {
                 setpage(value);

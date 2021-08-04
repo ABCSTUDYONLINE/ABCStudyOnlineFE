@@ -6,7 +6,7 @@ function Search() {
   const items = [
     {
       id: 0,
-      name: "Cobol",
+      name: "Android",
     },
     {
       id: 1,
@@ -14,7 +14,7 @@ function Search() {
     },
     {
       id: 2,
-      name: "Basic",
+      name: "Web",
     },
     {
       id: 3,
@@ -43,6 +43,7 @@ function Search() {
   const handleOnSelect = (item) => {
     // the item selected
     console.log(item);
+    history.push(`/search/${item.name}`);
   };
 
   const handleOnFocus = () => {
