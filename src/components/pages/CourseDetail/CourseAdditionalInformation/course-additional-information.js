@@ -4,7 +4,6 @@ import LearnItem from "./LearnItem/learn-item";
 import RequirementItem from "./RequirementItem/requirement-item";
 
 function CourseAdditionalInformation({ course }) {
-  const temp = [1, 2, 3, 4, 5, 6];
   const whatYouWillLearns = course.whatWillLearn.split("/");
   console.log("whatYouWillLearns", whatYouWillLearns);
 

@@ -371,7 +371,7 @@ function CourseDetail() {
             </div>
             <div style={{ display: "flex" }}>
               <div
-                style={{ justifyContent: "space-between", paddingRight: 60 }}
+                style={{ justifyContent: "space-between", paddingRight: 60,maxWidth:1000 }}
               >
                 <CourseAdditionalInformation course={courseDetail} />
                 <InstructorSection teacher={courseDetail.teacher} />
