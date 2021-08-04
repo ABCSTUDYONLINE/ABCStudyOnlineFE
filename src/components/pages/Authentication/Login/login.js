@@ -83,6 +83,10 @@ function Login() {
     })
   }
 
+  const responseGoogleFailure = (response) => {
+    console.log(response)
+  }
+
   return (
     <div style={{ display: "flex" }}>
       <img
@@ -212,9 +216,10 @@ function Login() {
             }}
           >
             <GoogleLogin
-              clientId="541991112150-15p2feifqisv6r011av4hqrgsndfvute.apps.googleusercontent.com"
+              clientId="310536133366-vefh39st26o6t4hl63veqjjtg6n80pcu.apps.googleusercontent.com"
               buttonText="Login With Google"
               onSuccess={responseGoogle}
+              onFailure={responseGoogleFailure}
               cookiePolicy={'single_host_origin'}
             />
           {/* </CardButton> */}
