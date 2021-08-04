@@ -69,14 +69,18 @@ function Login() {
       lastName: response.profileObj.givenName,
       avatarLink: response.profileObj.imageUrl
     })).then((response) => {
-      console.log("login thanh cong voi response: ", response);
+      if (response?.status === 201 && response?.data.data) {
+        console.log("login thanh cong voi response: ", response);
         console.log(
           "login thanh cong voi accessToken: ",
           response.data.access_token
         );
         localStorage.setItem('accessToken', response.data.data.access_token)
         history.push("/");
-    });
+      } else {
+        console.log("login that bai voi response: ", response);
+      }
+    })
   }
 
   return (
