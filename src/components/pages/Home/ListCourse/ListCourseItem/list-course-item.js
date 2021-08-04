@@ -63,11 +63,11 @@ function ListCourseItem({ course, style }) {
           <div
             style={{
               position: "absolute",
-              background: "#0eb582",
-              padding: "1px 8px",
-              top: 25,
-              left: 5,
-              borderRadius: "8px 0 8px 0",
+              background: "#ff1949",
+              padding: "16px 4px",
+              top: 0,
+              left: 8,
+              borderRadius: "0 0 32px 32px",
               color: "white",
               fontWeight: 700,
               fontSize: 20,

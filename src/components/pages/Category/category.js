@@ -28,17 +28,20 @@ function Category() {
   const handleChange = (event) => {
     setSort(event.target.value);
     setLoadingCategories(true);
-    if (event.target.value === 1) {
-      console.log("value: ", event.target.value);
+    console.log("xxx: ", event.target.value);
+    const value = +(event.target.value)
+    if (value === 1) {
+      console.log("xxx1: ", value);
       dispatch(ApiGetsearchTopCourses("mount", "ASC", 1, 10)).finally(() => {
         setLoadingCategories(false);
       });
-    } else if (event.target.value === 2) {
-      console.log("value: ", sort);
+    } else if (value === 2) {
+      console.log("xxx2: ", value);
       dispatch(ApiGetsearchTopCourses("mount", "DESC", 1, 10)).finally(() => {
         setLoadingCategories(false);
       });
     } else {
+      console.log("xxx3: ", value);
       setLoadingCategories(false);
     }
   };
@@ -59,6 +62,9 @@ function Category() {
   // );
   // const topRateInWeek = useSelector((state) => state.Courses.topRateInWeek);
   const titleLocation = location.state?.title;
+  
+  const [page, setpage] = useState(1);
+  const coursePerPage = 6;
 
   useEffect(() => {
     setLoadingCategories(true);
@@ -94,16 +100,17 @@ function Category() {
         setLoadingCategories(false);
       });
     }
-  }, [keyWord, categoryName]);
+  }, [keyWord, categoryName,page]);
 
   // Cho courses vao state
-  const [page, setpage] = useState(1);
-  const coursePerPage = 8;
+  // skip = limit * (3 - 1) ; limit = 8 
 
   const courseToShow = listCoursesBySearch?.slice(
     (page - 1) * coursePerPage,
     page * coursePerPage
   );
+
+
   return (
     <div>
       <div
@@ -253,12 +260,12 @@ function Category() {
             }}
           >
             <Grid container spacing={0}>
-              {courseToShow.map((course) => {
+              {courseToShow?.map((course) => {
                 return (
-                  <Grid item xs={3}>
+                  <Grid item xs={4}>
                     <ListCourseItem
                       key={course.id}
-                      style={{ maxWidth: 360 }}
+                      style={{ maxWidth:400}}
                       course={course}
                     />
                   </Grid>
@@ -273,9 +280,11 @@ function Category() {
               paddingBottom: 100,
             }}
           >
+            {console.log(page)}
             <Pagination
               count={Math.ceil(listCoursesBySearch.length / coursePerPage)}
               shape="rounded"
+              page={page}
               onChange={(e, value) => {
                 setpage(value);
               }}
