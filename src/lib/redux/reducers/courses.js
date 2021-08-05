@@ -4,6 +4,7 @@ let initState = {
   topNewCourses: [],
   topRegisterCourses: [],
   topRateInWeek: [],
+  topViewsCourses: [],
   categories: [],
   favoriteCourses: [],
   cart: [],
@@ -30,6 +31,11 @@ let initState = {
   chargeCourseStatus: false,
   rateCourseStatus: false,
   getRatesCourseStatus: false,
+  sortCourseByPriceStatus: false,
+  sortCoursesCategoryStatus: false,
+  sortCoursesAllStatus: false,
+  putCoursesViewStatus: false,
+  getTopViewsCoursesStatus: false,
 };
 
 export function Courses(prevState = initState, action) {
@@ -168,6 +174,45 @@ export function Courses(prevState = initState, action) {
       };
     case TYPES.GET_RATES_COURSE_FAILED:
       return { ...prevState, getRatesCourseStatus: false };
+    case TYPES.SORT_COURSES_BY_PRICE_SUCCESSED:
+      return {
+        ...prevState,
+        sortCourseByPriceStatus: true,
+        listCoursesBySearch: action.payload.data.list,
+      };
+    case TYPES.SORT_COURSES_BY_PRICE_FAILED:
+      return { ...prevState, sortCourseByPriceStatus: false };
+    case TYPES.SORT_COURSES_CATEGORY_SUCCESSED:
+      return {
+        ...prevState,
+        sortCoursesCategoryStatus: true,
+        listCoursesBySearch: action.payload.data.list,
+      };
+    case TYPES.SORT_COURSES_CATEGORY_FAILED:
+      return { ...prevState, sortCoursesCategoryStatus: false };
+    case TYPES.SORT_COURSES_ALL_SUCCESSED:
+      return {
+        ...prevState,
+        sortCoursesAllStatus: true,
+        listCoursesBySearch: action.payload.data.list,
+      };
+    case TYPES.SORT_COURSES_ALL_FAILED:
+      return { ...prevState, sortCoursesAllStatus: false };
+    case TYPES.PUT_COURSES_VIEW_SUCCESSED:
+      return {
+        ...prevState,
+        putCoursesViewStatus: true,
+      };
+    case TYPES.PUT_COURSES_VIEW_FAILED:
+      return { ...prevState, putCoursesViewStatus: false };
+    case TYPES.GET_TOP_VIEWS_SUCCESSED:
+      return {
+        ...prevState,
+        getTopViewsCoursesStatus: true,
+        topViewsCourses: action.payload.data.list,
+      };
+    case TYPES.GET_TOP_NEW_COURSE_FAILED:
+      return { ...prevState, getTopViewsCoursesStatus: false };
     default:
       return prevState;
   }

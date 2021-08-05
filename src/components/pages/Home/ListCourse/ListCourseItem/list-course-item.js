@@ -13,14 +13,20 @@ import ImportContactsIcon from "@material-ui/icons/ImportContacts";
 import { useHistory } from "react-router-dom";
 import ActionLinksHover from "./action-links-hover";
 import Avatar from "@material-ui/core/Avatar";
+import { useDispatch } from "react-redux";
+import { ApiCoursesView } from "../../../../../lib/redux/actions/courses";
 
 function ListCourseItem({ course, style }) {
   let history = useHistory();
+  const dispatch=useDispatch();
   const [isHover, setIsHover] = useState(false);
   let countLessons = 0;
   course?.topics.map((topic) => {
     countLessons += topic.lessons.length;
   });
+  // .toLocaleString().slice(0,8)
+  const curTime = new Date();
+  const expireTime = new Date(course.promotion?.expireTime);
   return (
     <Card
       onMouseEnter={() => {
@@ -59,7 +65,7 @@ function ListCourseItem({ course, style }) {
             alt=""
           />
         </CardButtonItem>
-        {course?.promotion == null ? null : (
+        {course?.promotion && expireTime >= curTime ? (
           <div
             style={{
               position: "absolute",
@@ -75,7 +81,7 @@ function ListCourseItem({ course, style }) {
           >
             {100 - course?.promotion.percent * 100}%
           </div>
-        )}
+        ) : null}
         {isHover ? <ActionLinksHover id={course.id} /> : <div></div>}
       </div>
       <div
@@ -114,6 +120,7 @@ function ListCourseItem({ course, style }) {
             lineHeight: 1.5,
           }}
           onClick={() => {
+            dispatch(ApiCoursesView(course.id));
             history.push(`/course-detail/${course.id}`);
             window.scrollTo({ top: 0 });
           }}
@@ -167,12 +174,27 @@ function ListCourseItem({ course, style }) {
               <ImportContactsIcon></ImportContactsIcon>
               <div style={{ marginLeft: 5 }}>{`${countLessons} lessons`}</div>
             </div>
-            <div style={{display:'flex',alignItems:'center'}}>
-              {course.promotion ? <div style={{color:'#81868a',textDecoration:"line-through",fontSize:16,fontWeight:400, marginRight:5}} >{`$${course.fee}`}</div> : null}
-               
-              <RedText
-                style={{ fontSize: 18, fontWeight: 500 }}
-              >{`$${course.fee*(course.promotion?.percent||1)}`}</RedText>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              {course.promotion && expireTime >= curTime ? (
+                <div
+                  style={{
+                    color: "#81868a",
+                    textDecoration: "line-through",
+                    fontSize: 16,
+                    fontWeight: 400,
+                    marginRight: 5,
+                  }}
+                >{`$${course.fee}`}</div>
+              ) : null}
+              {expireTime >= curTime ? (
+                <RedText style={{ fontSize: 18, fontWeight: 500 }}>{`$${
+                  course.fee * (course.promotion?.percent || 1)
+                }`}</RedText>
+              ) : (
+                <RedText
+                  style={{ fontSize: 18, fontWeight: 500 }}
+                >{`$${course.fee}`}</RedText>
+              )}
             </div>
           </div>
         </div>
