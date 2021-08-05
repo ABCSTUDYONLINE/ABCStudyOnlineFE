@@ -109,10 +109,18 @@ function CourseDetail() {
     setActiveId(id);
   };
   const handleClose = () => {
+    setActiveId("");
     setOpen(false);
   };
   const curTime = new Date();
   const expireTime = new Date(courseDetail?.promotion?.expireTime);
+  const myDash=useSelector((state)=>state.Courses.myDash)
+  console.log("MYDASH: ",myDash);
+  let foundedCourseFromDash = myDash.find(
+    (dashItem) => dashItem.course.id === courseDetail.id
+  );
+  
+  console.log(" found MYDASH: ",foundedCourseFromDash);
   return (
     <div>
       {loading ? (
@@ -421,6 +429,7 @@ function CourseDetail() {
                 course={courseDetail}
                 handleClickOpen={handleClickOpen}
                 activeId={activeId}
+                foundedCourseFromDash={foundedCourseFromDash}
               />
               <Dialog
                 onClose={handleClose}
@@ -460,6 +469,7 @@ function CourseDetail() {
                             index={++index}
                             handleClickOpen={handleClickOpen}
                             activeId={activeId}
+                            foundedCourseFromDash={foundedCourseFromDash}
                           />
                         ))}
                       </div>

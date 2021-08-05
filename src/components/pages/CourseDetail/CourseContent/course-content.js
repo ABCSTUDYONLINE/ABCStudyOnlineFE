@@ -3,14 +3,8 @@ import { useSelector } from "react-redux";
 import { BlackText, RedText } from "../../../../globals/index";
 import LessonItem from "./LessonItem/lesson-item";
 
-function CourseContent({ course,handleClickOpen,activeId }) {
-  const myDash=useSelector((state)=>state.Courses.myDash)
-  console.log("MYDASH: ",myDash);
-  let foundedCourseFromDash = myDash.find(
-    (dashItem) => dashItem.course.id === course.id
-  );
+function CourseContent({ course,handleClickOpen,activeId,foundedCourseFromDash }) {
   
-  console.log(" found MYDASH: ",foundedCourseFromDash);
   return (
     <div style={{ paddingLeft: 20, paddingRight: 20,boxShadow:"0 8px 16px 0 rgb(146 184 255 / 20%)",borderRadius:'1px solid #f3f3f3',width:'30%'  }}>
       <div style={{ padding: 20 }}>
