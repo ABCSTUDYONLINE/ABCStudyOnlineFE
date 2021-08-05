@@ -111,6 +111,8 @@ function CourseDetail() {
   const handleClose = () => {
     setOpen(false);
   };
+  const curTime = new Date();
+  const expireTime = new Date(courseDetail?.promotion?.expireTime);
   return (
     <div>
       {loading ? (
@@ -356,19 +358,42 @@ function CourseDetail() {
                     {`(${courseDetail.rates.total} reviews)`}
                   </GrayText>
                 </div>
-                <div style={{ display: "flex",alignItems:'center' }}>
-                {courseDetail.promotion ? <div style={{color:'#81868a',textDecoration:"line-through",fontSize:35,fontWeight:600, marginRight:10}} >{`$${courseDetail.fee}`}</div> : null}
-                  <BlackText
-                    style={{
-                      fontSize: 35,
-                      fontWeight: 600,
-                      marginRight: 10,
-                    }}
-                  >
-                    {`$${
-                      courseDetail.fee * (courseDetail.promotion?.percent || 1)
-                    }`}
-                  </BlackText>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  {courseDetail.promotion && expireTime >= curTime ? (
+                    <div
+                      style={{
+                        color: "#81868a",
+                        textDecoration: "line-through",
+                        fontSize: 35,
+                        fontWeight: 600,
+                        marginRight: 10,
+                      }}
+                    >{`$${courseDetail.fee}`}</div>
+                  ) : null}
+                  {expireTime >= curTime ? (
+                    <BlackText
+                      style={{
+                        fontSize: 35,
+                        fontWeight: 600,
+                        marginRight: 10,
+                      }}
+                    >
+                      {`$${
+                        courseDetail.fee *
+                        (courseDetail.promotion?.percent || 1)
+                      }`}
+                    </BlackText>
+                  ) : (
+                    <BlackText
+                      style={{
+                        fontSize: 35,
+                        fontWeight: 600,
+                        marginRight: 10,
+                      }}
+                    >
+                      {`$${courseDetail.fee}`}
+                    </BlackText>
+                  )}
 
                   <CardButton style={{ borderRadius: 4 }}>
                     <div>Buy Course</div>

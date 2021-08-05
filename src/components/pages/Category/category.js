@@ -13,6 +13,9 @@ import {
   ApiGetDetailCategory,
   ApiGetsearchTopCourses,
   ApiSearchCourses,
+  ApiSortAll,
+  ApiSortByPriceCategory,
+  ApiSortCategory,
 } from "../../../lib/redux/actions/courses";
 import { CircularProgress } from "@material-ui/core";
 
@@ -24,32 +27,57 @@ function Category() {
   const [loadingCategories, setLoadingCategories] = useState(true);
 
   const [sort, setSort] = React.useState(0);
-
-  const handleChange = (event) => {
-    setSort(event.target.value);
-    setLoadingCategories(true);
-    console.log("xxx: ", event.target.value);
-    const value = +(event.target.value)
-    if (value === 1) {
-      console.log("xxx1: ", value);
-      dispatch(ApiGetsearchTopCourses("mount", "ASC", 1, 10)).finally(() => {
-        setLoadingCategories(false);
-      });
-    } else if (value === 2) {
-      console.log("xxx2: ", value);
-      dispatch(ApiGetsearchTopCourses("mount", "DESC", 1, 10)).finally(() => {
-        setLoadingCategories(false);
-      });
-    } else {
-      console.log("xxx3: ", value);
-      setLoadingCategories(false);
-    }
-  };
+  const categories = useSelector((state) => state.Courses.categories);
 
   const { categoryName, keyWord } = useParams();
   console.log("keyWord 111: ", keyWord);
   console.log("categoryName 111: ", categoryName);
   // dispatch(ApiGetDetailCategory(id));
+  let foundIdCategory = categories.find(
+    (categoryItem) => categoryItem.categoryName === categoryName
+  );
+  console.log("Found id category: ", foundIdCategory);
+
+  const titleLocation = location.state?.title;
+  const handleChange = (event) => {
+    setSort(event.target.value);
+    setLoadingCategories(true);
+    console.log("xxx: ", event.target.value);
+    const value = +event.target.value;
+
+    if (titleLocation === "All") {
+      if (value === 1) {
+        dispatch(ApiSortAll("mount", "ASC", 1, 10)).finally(() => {
+          setLoadingCategories(false);
+        });
+      } else if (value === 2) {
+        dispatch(ApiSortAll("mount", "DESC", 1, 10)).finally(() => {
+          setLoadingCategories(false);
+        });
+      } else {
+        setLoadingCategories(false);
+      }
+    } else {
+      if (value === 1) {
+        console.log("xxx1: ", value);
+        dispatch(
+          ApiSortByPriceCategory("mount", "ASC", foundIdCategory?.id, 1, 10)
+        ).finally(() => {
+          setLoadingCategories(false);
+        });
+      } else if (value === 2) {
+        console.log("xxx2: ", value);
+        dispatch(
+          ApiSortByPriceCategory("mount", "DESC", foundIdCategory?.id, 1, 10)
+        ).finally(() => {
+          setLoadingCategories(false);
+        });
+      } else {
+        console.log("xxx3: ", value);
+        setLoadingCategories(false);
+      }
+    }
+  };
 
   let listCoursesBySearch = useSelector(
     (state) => state.Courses.listCoursesBySearch
@@ -61,13 +89,13 @@ function Category() {
   //   (state) => state.Courses.topRegisterCourses
   // );
   // const topRateInWeek = useSelector((state) => state.Courses.topRateInWeek);
-  const titleLocation = location.state?.title;
-  
+
   const [page, setpage] = useState(1);
   const coursePerPage = 6;
 
   useEffect(() => {
     setLoadingCategories(true);
+    setSort(0);
     if (!keyWord) {
       console.log("log loaction", titleLocation);
       if (titleLocation === "Top Rate In Week") {
@@ -90,7 +118,7 @@ function Category() {
         setLoadingCategories(false);
       }
     } else if (keyWord === "category") {
-      dispatch(ApiSearchCourses("category", categoryName, 1, 10)).finally(
+      dispatch(ApiSortCategory("category", foundIdCategory?.id, 1, 10)).finally(
         () => {
           setLoadingCategories(false);
         }
@@ -100,22 +128,21 @@ function Category() {
         setLoadingCategories(false);
       });
     }
-  }, [keyWord, categoryName,page]);
+  }, [keyWord, categoryName]);
 
   // Cho courses vao state
-  // skip = limit * (3 - 1) ; limit = 8 
+  // skip = limit * (3 - 1) ; limit = 8
 
   const courseToShow = listCoursesBySearch?.slice(
     (page - 1) * coursePerPage,
     page * coursePerPage
   );
 
-
   return (
     <div>
       <div
         style={{
-          marginTop: 120,
+          marginTop: 100,
           alignContent: "flex-end",
           backgroundPosition: "50%",
           backgroundSize: "cover",
@@ -265,7 +292,7 @@ function Category() {
                   <Grid item xs={4}>
                     <ListCourseItem
                       key={course.id}
-                      style={{ maxWidth:400}}
+                      style={{ maxWidth: 400 }}
                       course={course}
                     />
                   </Grid>

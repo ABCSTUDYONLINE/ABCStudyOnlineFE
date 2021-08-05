@@ -10,6 +10,7 @@ import {
   ApiGetTopNewCourses,
   ApiGetTopRateInWeek,
   ApiGetTopRegisterCourses,
+  ApiGetTopViewsCourses,
 } from "../../../lib/redux/actions/courses";
 
 function Home() {
@@ -18,12 +19,14 @@ function Home() {
   const [loadingNewCourses, setloaLingNewCourses] = useState(false);
   const [loadingRateInWeek, setLoadingRateInWeek] = useState(false);
   const [loadingRegisterCourses, setLoadingRegisterCourses] = useState(false);
+  const [loadingViewsCourses, setLoadingViewsCourses] = useState(false);
 
   const topNewCourses = useSelector((state) => state.Courses.topNewCourses);
   const topRegisterCourses = useSelector(
     (state) => state.Courses.topRegisterCourses
   );
   const topRateInWeek = useSelector((state) => state.Courses.topRateInWeek);
+  const topViewsCourses = useSelector((state) => state.Courses.topViewsCourses)
   const categories = useSelector((state) => state.Courses.categories);
 
   useEffect(() => {
@@ -51,6 +54,10 @@ function Home() {
     dispatch(ApiGetTopRateInWeek(1, 4)).finally(()=>{
       setLoadingRateInWeek(false)
     })
+    setLoadingViewsCourses(true)
+    dispatch(ApiGetTopViewsCourses(1, 10)).finally(()=>{
+      setLoadingViewsCourses(false)
+    })
     console.log("Home categories: ", categories);
   }, []);
 
@@ -73,6 +80,11 @@ function Home() {
         title={"Register Courses"}
         courses={topRegisterCourses}
         loadingCourses={loadingRegisterCourses}
+      />
+      <ListCourse
+        title={"View Courses"}
+        courses={topViewsCourses}
+        loadingCourses={loadingViewsCourses}
       />
     </div>
   );

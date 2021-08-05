@@ -74,7 +74,7 @@ function SlideBackground() {
               height: 1000,
               width: "100%",
               position: "relative",
-              backgroundImage: `url(${"assets/main-banner1.jpg"})`,
+              backgroundImage: `url(${"assets/road.jpg"})`,
             }}
           >
             <div
@@ -92,17 +92,17 @@ function SlideBackground() {
                   fontWeight: 700,
                   color: "#fff",
                 }}
-              >{`Transformative Courses for those who learn differently`}</div>
+              >{`Learn Without Limits`}</div>
               <div
                 style={{
                   maxWidth: 650,
                   lineHeight: 1.9,
                   fontSize: 16,
-                  marginTop: 20,
+                  marginTop: 40,
+                  marginBottom:20
                 }}
               >
-                Ednuv supports students by introducing collaborators outside R,
-                internships and research experience abroad.
+                Build skills with courses, certificates, and degrees online from world-class universities and companies.
               </div>
               <CardButton onClick={ViewAllCourse}>
                 <div>View Courses</div>
@@ -126,17 +126,17 @@ function SlideBackground() {
                   fontWeight: 700,
                   maxWidth: 650,
                 }}
-              >{`Think out of the box and create a learning learner`}</div>
+              >{`Become a Professional Programmer`}</div>
               <div
                 style={{
                   maxWidth: 650,
                   lineHeight: 1.9,
                   fontSize: 16,
-                  marginTop: 20,
+                  marginTop: 40,
+                  marginBottom:20
                 }}
               >
-                Ednuv supports students by introducing collaborators outside R,
-                internships and research experience abroad.
+                Master Java, Python, Spring Framework, SQL, OOP, Data Structures and Algorithms!
               </div>
               <CardButton onClick={ViewAllCourse}>
                 <div>View Courses</div>
