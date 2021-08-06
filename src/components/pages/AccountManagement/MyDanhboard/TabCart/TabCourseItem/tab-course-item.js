@@ -15,10 +15,12 @@ import {
 import CommentButton from "../../TabDash/comment-button";
 
 function TabCourseItem({ course, isDashBoard }) {
-  const history=useHistory();
+  const history = useHistory();
   const dispatch = useDispatch();
   const accessToken = localStorage.getItem("accessToken");
-  console.log("Course in tab: ",course)
+  console.log("Course in tab: ", course);
+  const curTime = new Date();
+  const expireTime = new Date(course?.course.promotion?.expireTime);
   return (
     <div
       style={{
@@ -70,14 +72,28 @@ function TabCourseItem({ course, isDashBoard }) {
         </div>
       </div>
       {isDashBoard ? (
-        <div style={{display:'flex',justifyContent:'space-between',width:300,alignItems:'center'}}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            width: 300,
+            alignItems: "center",
+          }}
+        >
           <RedText
             style={{ fontSize: 18, fontWeight: 500, marginRight: 30 }}
           >{`$${course.course.fee}`}</RedText>
           <CommentButton courseId={course.course.id} />
         </div>
       ) : (
-        <div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            width: 300,
+            alignItems: "center",
+          }}
+        >
           <CardButton
             style={{
               borderRadius: 32,
@@ -91,7 +107,9 @@ function TabCourseItem({ course, isDashBoard }) {
               dispatch(ApiRemoveCourseFromCart(accessToken, course.id)).then(
                 (response) => {
                   if (response?.status === 200) {
-                    dispatch(ApiGetCoursesFromCart(accessToken,"unpaid", 1, 10));
+                    dispatch(
+                      ApiGetCoursesFromCart(accessToken, "unpaid", 1, 10)
+                    );
                   } else {
                     console.log(
                       "remove cart add error: ",
@@ -104,9 +122,32 @@ function TabCourseItem({ course, isDashBoard }) {
           >
             <div>Delete</div>
           </CardButton>
-          <RedText
-            style={{ fontSize: 18, fontWeight: 500, marginRight: 30 }}
-          >{`$${course.course.fee}`}</RedText>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            {course.course.promotion && expireTime >= curTime ? (
+              <div
+                style={{
+                  color: "#81868a",
+                  textDecoration: "line-through",
+                  fontSize: 16,
+                  fontWeight: 400,
+                  marginRight: 5,
+                }}
+              >{`$${course.course.fee}`}</div>
+            ) : null}
+            {course.course.promotion && expireTime >= curTime ? (
+              <RedText
+                style={{ fontSize: 18, fontWeight: 500, marginRight: 30 }}
+              >{`$${
+                (course.course.fee *
+                  (100 - course.course.promotion?.percent * 100 || 100)) /
+                100
+              }`}</RedText>
+            ) : (
+              <RedText
+                style={{ fontSize: 18, fontWeight: 500 }}
+              >{`$${course.course.fee}`}</RedText>
+            )}
+          </div>
         </div>
       )}
     </div>

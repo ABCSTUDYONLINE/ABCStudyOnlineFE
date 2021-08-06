@@ -116,8 +116,8 @@ function CourseDetail() {
   const expireTime = new Date(courseDetail?.promotion?.expireTime);
   const myDash=useSelector((state)=>state.Courses.myDash)
   console.log("MYDASH: ",myDash);
-  let foundedCourseFromDash = myDash.find(
-    (dashItem) => dashItem.course.id === courseDetail.id
+  let foundedCourseFromDash = myDash?.find(
+    (dashItem) => dashItem.course.id === courseDetail?.id
   );
   
   console.log(" found MYDASH: ",foundedCourseFromDash);
@@ -378,7 +378,7 @@ function CourseDetail() {
                       }}
                     >{`$${courseDetail.fee}`}</div>
                   ) : null}
-                  {expireTime >= curTime ? (
+                  {courseDetail.promotion && expireTime >= curTime ? (
                     <BlackText
                       style={{
                         fontSize: 35,
@@ -387,8 +387,7 @@ function CourseDetail() {
                       }}
                     >
                       {`$${
-                        courseDetail.fee *
-                        (courseDetail.promotion?.percent || 1)
+                        (courseDetail.fee * (100-courseDetail.promotion?.percent*100 || 100))/100
                       }`}
                     </BlackText>
                   ) : (

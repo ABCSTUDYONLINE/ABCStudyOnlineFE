@@ -79,7 +79,7 @@ function ListCourseItem({ course, style }) {
               fontSize: 20,
             }}
           >
-            {100 - course?.promotion.percent * 100}%
+            {course?.promotion.percent * 100}%
           </div>
         ) : null}
         {isHover ? <ActionLinksHover id={course.id} /> : <div></div>}
@@ -186,9 +186,9 @@ function ListCourseItem({ course, style }) {
                   }}
                 >{`$${course.fee}`}</div>
               ) : null}
-              {expireTime >= curTime ? (
+              {course.promotion && expireTime >= curTime ? (
                 <RedText style={{ fontSize: 18, fontWeight: 500 }}>{`$${
-                  course.fee * (course.promotion?.percent || 1)
+                  (course.fee * (100-course.promotion?.percent*100 || 100))/100
                 }`}</RedText>
               ) : (
                 <RedText

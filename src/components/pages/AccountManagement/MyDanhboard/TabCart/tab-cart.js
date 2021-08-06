@@ -14,8 +14,17 @@ function TabCart({ value, index }) {
   console.log("cart: ", cart);
   let totalPrice = 0;
   let learnIds = "";
+  const curTime = new Date();
   cart.map((course) => {
-    totalPrice += course.course.fee;
+    const expireTime = new Date(course?.course.promotion?.expireTime);
+    if (course?.course.promotion && expireTime >= curTime) {
+      totalPrice +=
+        (course.course.fee *
+          (100 - course.course.promotion?.percent * 100 || 100)) /
+        100;
+    } else {
+      totalPrice += course.course.fee;
+    }
     learnIds += `${course.id},`;
   });
   learnIds = learnIds.substring(0, learnIds.length - 1);
