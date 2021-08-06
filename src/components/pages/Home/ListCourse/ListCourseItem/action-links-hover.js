@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { AiOutlineHeart } from "react-icons/ai";
 import CardMembershipIcon from "@material-ui/icons/CardMembership";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { green } from '@material-ui/core/colors';
+import { makeStyles } from '@material-ui/core/styles';
 import {
   CardActionHover,
   CardActionReverseHover,
@@ -17,7 +20,19 @@ import {
 } from "../../../../../lib/redux/actions/courses";
 import { useHistory } from "react-router-dom";
 
+const useStyles = makeStyles((theme) => ({
+  buttonProgress: {
+    color: green[500],
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
+  },
+}));
+
 function ActionLinksHover({ id }) {
+  const classes = useStyles();
   const favoriteCourses = useSelector((state) => state.Courses.favoriteCourses);
   const cart = useSelector((state) => state.Courses.cart);
   const history = useHistory();
@@ -27,6 +42,8 @@ function ActionLinksHover({ id }) {
   let loading = false;
   let loadingCart = false;
   const [isCart, setIsCart] = useState(false);
+  const [circleHeartLoading, setCircleHeartLoading] = useState(false)
+  const [circleShopLoading, setCircleShopLoading] = useState(false)
 
   const accessToken = localStorage.getItem("accessToken");
 
@@ -52,6 +69,7 @@ function ActionLinksHover({ id }) {
     console.log("foundedCourse: ", foundedCourse);
     // if (!loading) {
     loading = true;
+    setCircleHeartLoading(true)
     if (foundedCourse) {
       dispatch(ApiRemoveFavoriteCourse(accessToken, foundedCourse.id)).then(
         (response) => {
@@ -61,6 +79,7 @@ function ActionLinksHover({ id }) {
           } else {
             console.log("action link remove error: ", response?.data.message);
           }
+          setCircleHeartLoading(false)
         }
       );
     } else {
@@ -71,6 +90,7 @@ function ActionLinksHover({ id }) {
         } else {
           console.log("action link add error: ", response.data.message);
         }
+        setCircleHeartLoading(false)
       });
     }
     // }
@@ -88,6 +108,7 @@ function ActionLinksHover({ id }) {
     console.log("foundedCourseFromCart: ", foundedCourseFromCart);
     // if (!loading) {
     loadingCart = true;
+    setCircleShopLoading(true)
     if (foundedCourseFromCart) {
       dispatch(
         ApiRemoveCourseFromCart(accessToken, foundedCourseFromCart.id)
@@ -98,6 +119,7 @@ function ActionLinksHover({ id }) {
         } else {
           console.log("action link add error: ", response.data.message);
         }
+        setCircleShopLoading(false)
       });
     } else {
       dispatch(ApiAddCourseToCart(accessToken, id)).then((response) => {
@@ -107,6 +129,7 @@ function ActionLinksHover({ id }) {
         } else {
           console.log("action link remove error: ", response.data.message);
         }
+        setCircleShopLoading(false)
       });
     }
   };
@@ -123,22 +146,26 @@ function ActionLinksHover({ id }) {
       }}
     >
       {foundedCourse ? (
-        <CardActionReverseHover onClick={handleClickHeart}>
-          <AiOutlineHeart title="Wishlist" />
+        <CardActionReverseHover disabled={circleHeartLoading} onClick={handleClickHeart}>
+          <AiOutlineHeart disabled={circleHeartLoading} title="Wishlist" />
+          {circleHeartLoading && <CircularProgress size={24} className={classes.buttonProgress} />}
         </CardActionReverseHover>
       ) : (
-        <CardActionHover onClick={handleClickHeart}>
-          <AiOutlineHeart title="Wishlist" />
+        <CardActionHover disabled={circleHeartLoading} onClick={handleClickHeart}>
+          <AiOutlineHeart disabled={circleHeartLoading} title="Wishlist" />
+          {circleHeartLoading && <CircularProgress size={24} className={classes.buttonProgress} />}
         </CardActionHover>
       )}
 
       {foundedCourseFromCart ? (
-        <CardActionReverseHover onClick={handleClickCart}>
-          <ShoppingCartIcon title="Cart" />
+        <CardActionReverseHover disabled={circleShopLoading} onClick={handleClickCart}>
+          <ShoppingCartIcon disabled={circleShopLoading} title="Cart" />
+          {circleShopLoading && <CircularProgress size={24} className={classes.buttonProgress} />}
         </CardActionReverseHover>
       ) : (
-        <CardActionHover onClick={handleClickCart}>
-          <ShoppingCartIcon title="Cart" />
+        <CardActionHover disabled={circleShopLoading} onClick={handleClickCart}>
+          <ShoppingCartIcon disabled={circleShopLoading} title="Cart" />
+          {circleShopLoading && <CircularProgress size={24} className={classes.buttonProgress} />}
         </CardActionHover>
       )}
     </div>
