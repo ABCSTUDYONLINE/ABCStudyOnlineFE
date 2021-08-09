@@ -17,7 +17,7 @@ export const ApiChangePassword =
         }
       )
       .then((response) => {
-        if (response.status === 200) {
+        if (response?.status === 200 && response?.data.data !== null) {
           dispatch({
             type: TYPES.CHANGE_PASSWORD_SUCCESSED,
           });

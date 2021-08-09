@@ -4,6 +4,14 @@ import { CardButton } from "../../../../../../globals/index";
 import { useDispatch, useSelector } from "react-redux";
 import isEmpty from "validator/lib/isEmpty";
 import { ApiChangePassword } from "../../../../../../lib/redux/actions/account-management";
+import DialogSuccessfully from "../../../../../comon/dialog/dialog-sucessfully";
+
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import Dialog from "@material-ui/core/Dialog";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import Button from "@material-ui/core/Button";
 
 function AccountDetailPanel({ value, index }) {
   const userInfo = useSelector((state) => state.Authentication.userInfo);
@@ -24,6 +32,19 @@ function AccountDetailPanel({ value, index }) {
   const dispatch = useDispatch();
   const accessToken = localStorage.getItem("accessToken");
   console.log("userInfo: ", userInfo);
+  const changePasswordStatus = useSelector(
+    (state) => state.AccountManagement.changePasswordStatus
+  );
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const onSubmitSaveChanges = () => {
     if (
@@ -54,13 +75,15 @@ function AccountDetailPanel({ value, index }) {
       dispatch(
         ApiChangePassword(accessToken, currentPassword, newPassword)
       ).then((response) => {
+        setOpen(true);
         if (response?.status === 200 && response?.data.data !== null) {
           console.log("Show diaglog Change password thanh cong");
           setCurrentPassword("");
           setNewPassword("");
           setConfirmNewPassword("");
+        } else {
+          console.log("notify", response?.data.message);
         }
-        console.log("notify", response?.data.message);
       });
     }
   };
@@ -196,6 +219,41 @@ function AccountDetailPanel({ value, index }) {
           >
             Save Changes
           </CardButton>
+          <div style={{ textAlign: "center" }}>
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              {changePasswordStatus ? (
+                <CheckCircleIcon
+                  style={{
+                    fontSize: 100,
+                    marginTop: 20,
+                    color: "#0eb582",
+                    alignSelf: "center",
+                  }}
+                />
+              ) : null}
+
+              <DialogContent>
+                <DialogContentText
+                  style={{ fontSize: 28, fontWeight: 600, color: "#252525",textAlign:'center' }}
+                  id="alert-dialog-description"
+                >
+                  {changePasswordStatus
+                    ? "Update password successfully!!!"
+                    : "your password not true! Please check it again!"}
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose} color="primary" autoFocus>
+                  Ok
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </div>
         </div>
       )}
     </div>
