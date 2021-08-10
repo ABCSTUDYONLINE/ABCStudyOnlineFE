@@ -7,6 +7,12 @@ import {
 } from "../../../../../lib/redux/actions/courses";
 import TabCourseItem from "./TabCourseItem/tab-course-item";
 
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import Dialog from "@material-ui/core/Dialog";
+import Button from "@material-ui/core/Button";
+
 function TabCart({ value, index }) {
   const cart = useSelector((state) => state.Courses.cart);
   const dispatch = useDispatch();
@@ -29,6 +35,17 @@ function TabCart({ value, index }) {
   });
   learnIds = learnIds.substring(0, learnIds.length - 1);
   console.log("learnIds: ", learnIds);
+
+  const chargeCourseStatus = useSelector(
+    (state) => state.Courses.chargeCourseStatus
+  );
+  const [open, setOpen] = React.useState(false);
+  const handleOpenDialog = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <div role="tabpanel" hidden={value !== index} id={index}>
       {value === index && (
@@ -85,6 +102,7 @@ function TabCart({ value, index }) {
               onClick={() => {
                 dispatch(ApiChargeCourse(accessToken, learnIds)).then(
                   (response) => {
+                    setOpen(true);
                     if (response?.status === 200) {
                       dispatch(
                         ApiGetCoursesFromCart(accessToken, "unpaid", 1, 10)
@@ -105,6 +123,35 @@ function TabCart({ value, index }) {
             >
               <div>Checkout</div>
             </CardButton>
+          </div>
+          <div style={{ textAlign: "center" }}>
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogContent>
+                <DialogContentText
+                  style={{
+                    fontSize: 28,
+                    fontWeight: 600,
+                    color: "#252525",
+                    textAlign: "center",
+                  }}
+                  id="alert-dialog-description"
+                >
+                  {chargeCourseStatus
+                    ? "Buy Course Successfully!!!"
+                    : "Buy Course Failed!"}
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose} color="primary" autoFocus>
+                  Ok
+                </Button>
+              </DialogActions>
+            </Dialog>
           </div>
         </div>
       )}

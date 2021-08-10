@@ -14,7 +14,7 @@ import {
 } from "../../../../../../lib/redux/actions/courses";
 import CommentButton from "../../TabDash/comment-button";
 
-function TabCourseItem({ course, isDashBoard }) {
+function TabCourseItem({ course, isDashBoard, handleOpenDialog }) {
   const history = useHistory();
   const dispatch = useDispatch();
   const accessToken = localStorage.getItem("accessToken");
@@ -83,7 +83,7 @@ function TabCourseItem({ course, isDashBoard }) {
           <RedText
             style={{ fontSize: 18, fontWeight: 500, marginRight: 30 }}
           >{`$${course.course.fee}`}</RedText>
-          <CommentButton courseId={course.course.id} />
+          <CommentButton courseId={course.course.id} handleOpenDialog={handleOpenDialog} />
         </div>
       ) : (
         <div

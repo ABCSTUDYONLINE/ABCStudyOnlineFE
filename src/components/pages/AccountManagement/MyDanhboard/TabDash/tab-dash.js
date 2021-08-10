@@ -3,9 +3,27 @@ import {  useSelector } from "react-redux";
 import { GrayText } from "../../../../../globals";
 import TabCourseItem from "../TabCart/TabCourseItem/tab-course-item";
 
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import Dialog from "@material-ui/core/Dialog";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import Button from "@material-ui/core/Button";
+
 function TabDash({ value, index }) {
   const myDash = useSelector((state) => state.Courses.myDash);
   console.log("myDash: ",myDash);
+
+  const rateCourseStatus = useSelector(
+    (state) => state.Courses.rateCourseStatus
+  );
+  const [open, setOpen] = React.useState(false);
+  const handleOpenDialog=()=>{
+    setOpen(true)
+  }
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <div role="tabpanel" hidden={value !== index} id={index}>
       {value === index && (
@@ -23,7 +41,7 @@ function TabDash({ value, index }) {
             {myDash?.length!==0 ?
             <div>
               {myDash.map((course) => (
-                <TabCourseItem course={course} isDashBoard={true} />
+                <TabCourseItem course={course} isDashBoard={true} handleOpenDialog={handleOpenDialog} />
               ))}
             </div>
             :
@@ -52,7 +70,31 @@ function TabDash({ value, index }) {
             </div>
 }
           </div>
-         
+          <div style={{ textAlign: "center" }}>
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+
+              <DialogContent>
+                <DialogContentText
+                  style={{ fontSize: 28, fontWeight: 600, color: "#252525",textAlign:'center' }}
+                  id="alert-dialog-description"
+                >
+                  {rateCourseStatus
+                    ? "Rate Course Successfully!!!"
+                    : "Rate Course Failed!"}
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose} color="primary" autoFocus>
+                  Ok
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </div>
         </div>
       )}
     </div>

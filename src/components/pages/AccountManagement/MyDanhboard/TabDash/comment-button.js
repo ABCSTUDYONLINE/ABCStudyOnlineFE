@@ -12,28 +12,33 @@ import { useDispatch } from "react-redux";
 import { ApiRateCourse } from "../../../../../lib/redux/actions/courses";
 import isEmpty from "validator/lib/isEmpty";
 
-export default function CommentButton({ courseId }) {
+export default function CommentButton({ courseId, handleOpenDialog }) {
   const [open, setOpen] = React.useState(false);
   const [hover, setHover] = React.useState(-1);
   const [rate, setRate] = useState(0);
   const [comment, setComment] = useState("");
-  const [validationMsg,setValidationMsg]=useState("");
+  const [validationMsg, setValidationMsg] = useState("");
   const dispatch = useDispatch();
   const accessToken = localStorage.getItem("accessToken");
 
   const handleClickOpen = () => {
-    setRate(0)
-    setComment("")
+    setRate(0);
+    setComment("");
     setValidationMsg("");
     setOpen(true);
   };
 
   const handleCloseSubmit = () => {
     if (isEmpty(comment)) {
-      setValidationMsg("Please input comment")
+      setValidationMsg("Please input comment");
       return;
     }
-    dispatch(ApiRateCourse(accessToken,courseId,rate,comment));
+    dispatch(ApiRateCourse(accessToken, courseId, rate, comment)).finally(
+      () => {
+        console.log("FDSFDS");
+        handleOpenDialog();
+      }
+    );
     setOpen(false);
   };
   const handleCloseCancel = () => {
@@ -99,7 +104,7 @@ export default function CommentButton({ courseId }) {
             style={{ width: 500 }}
             value={comment}
             error={!!validationMsg}
-            helperText={validationMsg|| ""}
+            helperText={validationMsg || ""}
             onChange={(e) => {
               setComment(e.target.value);
             }}
@@ -114,7 +119,6 @@ export default function CommentButton({ courseId }) {
           </Button>
         </DialogActions>
       </Dialog>
-      
     </div>
   );
 }
