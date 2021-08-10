@@ -31,10 +31,15 @@ import LessonItem from "./CourseContent/LessonItem/lesson-item";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  ApiChargeCourse,
   ApiGetCourseDetail,
   ApiGetCoursesFromCart,
 } from "../../../lib/redux/actions/courses";
 
+import DialogActions from "@material-ui/core/DialogActions";
+// import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import Button from "@material-ui/core/Button";
 import { CircularProgress } from "@material-ui/core";
 
 const styles = (theme) => ({
@@ -114,13 +119,34 @@ function CourseDetail() {
   };
   const curTime = new Date();
   const expireTime = new Date(courseDetail?.promotion?.expireTime);
-  const myDash=useSelector((state)=>state.Courses.myDash)
-  console.log("MYDASH: ",myDash);
+  const myDash = useSelector((state) => state.Courses.myDash);
+  console.log("MYDASH: ", myDash);
   let foundedCourseFromDash = myDash?.find(
     (dashItem) => dashItem.course.id === courseDetail?.id
   );
-  
-  console.log(" found MYDASH: ",foundedCourseFromDash);
+
+  console.log(" found MYDASH: ", foundedCourseFromDash);
+  const chargeCourseStatus = useSelector(
+    (state) => state.Courses.chargeCourseStatus
+  );
+  const accessToken = localStorage.getItem("accessToken");
+  const learnIds = courseDetail?.id+",";
+  const [openSignal, setOpenSignal] = React.useState(false);
+  const handleOpenSignal = () => {
+    dispatch(ApiChargeCourse(accessToken, learnIds)).then((response) => {
+      if (response?.status === 200) {
+        dispatch(ApiGetCoursesFromCart(accessToken, "paid", 1, 10));
+      } else {
+        console.log("remove cart add error: ", response?.data.message);
+      }
+    }).finally(()=>{
+      setOpenSignal(true);
+    })
+  };
+  const handleCloseSignal = () => {
+    setOpenSignal(false);
+  };
+
   return (
     <div>
       {loading ? (
@@ -387,7 +413,10 @@ function CourseDetail() {
                       }}
                     >
                       {`$${
-                        (courseDetail.fee * (100-courseDetail.promotion?.percent*100 || 100))/100
+                        (courseDetail.fee *
+                          (100 - courseDetail.promotion?.percent * 100 ||
+                            100)) /
+                        100
                       }`}
                     </BlackText>
                   ) : (
@@ -402,8 +431,11 @@ function CourseDetail() {
                     </BlackText>
                   )}
 
-                  <CardButton style={{ borderRadius: 4 }}>
-                    <div>Buy Course</div>
+                  <CardButton
+                    style={{ borderRadius: 4 }}
+                    onClick={handleOpenSignal}
+                  >
+                    Buy Course
                   </CardButton>
                 </div>
               </div>
@@ -476,6 +508,40 @@ function CourseDetail() {
                   ))}
                 </DialogContent>
               </Dialog>
+              <div style={{ textAlign: "center" }}>
+                <Dialog
+                  open={openSignal}
+                  onClose={handleCloseSignal}
+                  aria-labelledby="alert-dialog-title"
+                  aria-describedby="alert-dialog-description"
+                >
+                  <DialogContent>
+                    <DialogContentText
+                      style={{
+                        fontSize: 28,
+                        fontWeight: 600,
+                        color: "#252525",
+                        textAlign: "center",
+                        marginTop: 30,
+                      }}
+                      id="alert-dialog-description"
+                    >
+                      {foundedCourseFromDash
+                        ? "Sorry, you  already purchase this course!!"
+                        : chargeCourseStatus ? "Buy course Successfully!!!" : "Sorry, You don't have aenough money!!"}
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button
+                      onClick={handleCloseSignal}
+                      color="primary"
+                      autoFocus
+                    >
+                      Ok
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+              </div>
             </div>
           </div>
         </div>

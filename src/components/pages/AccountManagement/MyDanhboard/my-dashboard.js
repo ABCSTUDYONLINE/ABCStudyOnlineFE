@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BlackText,
   CardFooterText,
@@ -31,10 +31,19 @@ import { useHistory, useLocation } from "react-router-dom";
 import { ApiUpdateAvatar } from "../../../../lib/redux/actions/account-management";
 import { ApiUsersMe } from "../../../../lib/redux/actions/authentication";
 import { CircularProgress } from "@material-ui/core";
+import { ApiGetCoursesFromCart, ApiGetFavoriteCourses } from "../../../../lib/redux/actions/courses";
 
 function MyDashboard() {
   const location = useLocation();
   const history = useHistory();
+
+  const accessToken = localStorage.getItem("accessToken");
+  useEffect(()=>{
+    dispatch(ApiGetFavoriteCourses(accessToken, 1, 10));
+    dispatch(ApiGetCoursesFromCart(accessToken, "unpaid", 1, 10));
+    dispatch(ApiGetCoursesFromCart(accessToken, "paid", 1, 10));
+  },[])
+
   const val = location.search?.slice(5, location.search?.length);
   const [value, setValue] = useState(
     val === "favorite" ? 2 : val === "cart" ? 1 : 0
@@ -49,7 +58,6 @@ function MyDashboard() {
   };
   const favoriteCourses = useSelector((state) => state.Courses.favoriteCourses);
   const userInfo = useSelector((state) => state.Authentication.userInfo);
-  const accessToken = localStorage.getItem("accessToken");
 
   return (
     <div style={{ padding: "100px 0px 100px 0px " }}>
