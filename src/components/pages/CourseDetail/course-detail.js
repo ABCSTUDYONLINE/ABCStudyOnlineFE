@@ -130,18 +130,20 @@ function CourseDetail() {
     (state) => state.Courses.chargeCourseStatus
   );
   const accessToken = localStorage.getItem("accessToken");
-  const learnIds = courseDetail?.id+",";
+  const learnIds = courseDetail?.id;
   const [openSignal, setOpenSignal] = React.useState(false);
   const handleOpenSignal = () => {
-    dispatch(ApiChargeCourse(accessToken, learnIds)).then((response) => {
-      if (response?.status === 200) {
-        dispatch(ApiGetCoursesFromCart(accessToken, "paid", 1, 10));
-      } else {
-        console.log("remove cart add error: ", response?.data.message);
-      }
-    }).finally(()=>{
-      setOpenSignal(true);
-    })
+    dispatch(ApiChargeCourse(accessToken, learnIds))
+      .then((response) => {
+        if (response?.status === 200) {
+          dispatch(ApiGetCoursesFromCart(accessToken, "paid", 1, 10));
+        } else {
+          console.log("remove cart add error: ", response?.data.message);
+        }
+      })
+      .finally(() => {
+        setOpenSignal(true);
+      });
   };
   const handleCloseSignal = () => {
     setOpenSignal(false);
@@ -528,7 +530,9 @@ function CourseDetail() {
                     >
                       {foundedCourseFromDash
                         ? "Sorry, you  already purchase this course!!"
-                        : chargeCourseStatus ? "Buy course Successfully!!!" : "Sorry, You don't have aenough money!!"}
+                        : chargeCourseStatus
+                        ? "Buy course Successfully!!!"
+                        : "Sorry, You don't have aenough money!!"}
                     </DialogContentText>
                   </DialogContent>
                   <DialogActions>

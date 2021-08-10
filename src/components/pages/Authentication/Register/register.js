@@ -59,6 +59,12 @@ function Register() {
     if (password !== confirmPassword) {
       msg.confirmPassword = "Confirm Password doesn't match Password";
     }
+    if (isEmpty(phoneNumber)) {
+      msg.phoneNumber = "Please input your phone Number";
+    }
+    if (isEmpty(address)) {
+      msg.address = "Please input your Address";
+    }
 
     setValidationMsg(msg);
     if (Object.keys(msg).length > 0) return false;
@@ -278,6 +284,8 @@ function Register() {
             onChange={(e) => {
               setAddress(e.target.value);
             }}
+            error={!!validationMsg.address}
+            helperText={validationMsg.address || ""}
           />
 
           <CardButton

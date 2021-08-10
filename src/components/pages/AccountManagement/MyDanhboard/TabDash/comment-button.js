@@ -18,6 +18,8 @@ export default function CommentButton({ courseId, handleOpenDialog }) {
   const [rate, setRate] = useState(0);
   const [comment, setComment] = useState("");
   const [validationMsg, setValidationMsg] = useState("");
+
+  const [validationRatingMsg, setValidationRatingMsg] = useState("");
   const dispatch = useDispatch();
   const accessToken = localStorage.getItem("accessToken");
 
@@ -29,8 +31,13 @@ export default function CommentButton({ courseId, handleOpenDialog }) {
   };
 
   const handleCloseSubmit = () => {
+    setValidationMsg("");
+    setValidationRatingMsg("");
     if (isEmpty(comment)) {
       setValidationMsg("Please input comment");
+      return;
+    } else if (rate === 0) {
+      setValidationRatingMsg("Please choose your rating");
       return;
     }
     dispatch(ApiRateCourse(accessToken, courseId, rate, comment)).finally(
@@ -97,6 +104,18 @@ export default function CommentButton({ courseId, handleOpenDialog }) {
           {rate !== null && (
             <Box ml={2}>{labels[hover !== -1 ? hover : rate]}</Box>
           )}
+          {validationRatingMsg ? (
+            <div
+              style={{
+                color: "#f44336",
+                fontSize: 16,
+                fontWeight: 400,
+                margin: "4px 14px 0px 0px",
+              }}
+            >
+              {validationRatingMsg}
+            </div>
+          ) : null}
           <TextField
             label="Your comment"
             variant="outlined"
