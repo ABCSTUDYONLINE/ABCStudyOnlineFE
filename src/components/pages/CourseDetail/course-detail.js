@@ -138,7 +138,7 @@ function CourseDetail() {
         <div>
           <div
             style={{
-              marginTop: 120,
+              marginTop: 100,
               alignContent: "flex-end",
               backgroundPosition: "50%",
               backgroundSize: "cover",

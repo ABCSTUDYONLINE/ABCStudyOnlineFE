@@ -4,7 +4,6 @@ import { CardButton } from "../../../../../../globals/index";
 import { useDispatch, useSelector } from "react-redux";
 import isEmpty from "validator/lib/isEmpty";
 import { ApiChangePassword } from "../../../../../../lib/redux/actions/account-management";
-import DialogSuccessfully from "../../../../../comon/dialog/dialog-sucessfully";
 
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -37,10 +36,6 @@ function AccountDetailPanel({ value, index }) {
   );
 
   const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
 
   const handleClose = () => {
     setOpen(false);
