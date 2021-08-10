@@ -109,10 +109,18 @@ function CourseDetail() {
     setActiveId(id);
   };
   const handleClose = () => {
+    setActiveId("");
     setOpen(false);
   };
   const curTime = new Date();
   const expireTime = new Date(courseDetail?.promotion?.expireTime);
+  const myDash=useSelector((state)=>state.Courses.myDash)
+  console.log("MYDASH: ",myDash);
+  let foundedCourseFromDash = myDash?.find(
+    (dashItem) => dashItem.course.id === courseDetail?.id
+  );
+  
+  console.log(" found MYDASH: ",foundedCourseFromDash);
   return (
     <div>
       {loading ? (
@@ -130,7 +138,7 @@ function CourseDetail() {
         <div>
           <div
             style={{
-              marginTop: 120,
+              marginTop: 100,
               alignContent: "flex-end",
               backgroundPosition: "50%",
               backgroundSize: "cover",
@@ -370,7 +378,7 @@ function CourseDetail() {
                       }}
                     >{`$${courseDetail.fee}`}</div>
                   ) : null}
-                  {expireTime >= curTime ? (
+                  {courseDetail.promotion && expireTime >= curTime ? (
                     <BlackText
                       style={{
                         fontSize: 35,
@@ -379,8 +387,7 @@ function CourseDetail() {
                       }}
                     >
                       {`$${
-                        courseDetail.fee *
-                        (courseDetail.promotion?.percent || 1)
+                        (courseDetail.fee * (100-courseDetail.promotion?.percent*100 || 100))/100
                       }`}
                     </BlackText>
                   ) : (
@@ -421,6 +428,7 @@ function CourseDetail() {
                 course={courseDetail}
                 handleClickOpen={handleClickOpen}
                 activeId={activeId}
+                foundedCourseFromDash={foundedCourseFromDash}
               />
               <Dialog
                 onClose={handleClose}
@@ -460,6 +468,7 @@ function CourseDetail() {
                             index={++index}
                             handleClickOpen={handleClickOpen}
                             activeId={activeId}
+                            foundedCourseFromDash={foundedCourseFromDash}
                           />
                         ))}
                       </div>

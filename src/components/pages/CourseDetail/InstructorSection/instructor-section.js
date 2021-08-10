@@ -71,7 +71,8 @@ function InstructorSection({ teacher }) {
               </BlackText>
             </div>
             <CardButton style={{ borderRadius: 4 }} onClick={()=>{
-              history.push(`/instructor/${teacher.id}`,{teacher:teacher})
+              history.push(`/instructor/${teacher.id}`,{teacher:teacher}) 
+              window.scrollTo({ top: 0 });
             }} >
               <div>View Profile on Academy</div>
             </CardButton>
