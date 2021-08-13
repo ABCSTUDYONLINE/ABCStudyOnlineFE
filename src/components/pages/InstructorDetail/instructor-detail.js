@@ -17,6 +17,10 @@ import InstagramIcon from "@material-ui/icons/Instagram";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import PinterestIcon from "@material-ui/icons/Pinterest";
 
+import PhoneInTalkIcon from "@material-ui/icons/PhoneInTalk";
+import MailIcon from "@material-ui/icons/Mail";
+import LocationOnIcon from "@material-ui/icons/LocationOn";
+
 
 function InstructorDetail() {
   const history = useHistory();
@@ -119,6 +123,7 @@ function InstructorDetail() {
                     paddingLeft: 10,
                     paddingRight: 20,
                     borderRight: "1px solid #eee ",
+                    textAlign:'start'
                   }}
                 >
                   <RedText style={{ fontSize: 14, fontWeight: 600 }}>
@@ -216,6 +221,67 @@ function InstructorDetail() {
             >
               {teacher?.shortBio}
             </BlackText>
+            <div
+              style={{
+                display: "flex",
+                color: "#727695",
+                alignItems: "flex-start",
+                maxWidth: "75%",
+                marginTop: 25,
+              }}
+            >
+              <MailIcon style={{ fontSize: 18 }} />
+              <CardFooterText
+                style={{
+                  cursor: "pointer",
+                  marginLeft: 5,
+                  color: "#727695",
+                }}
+              >
+                {teacher?.email}
+              </CardFooterText>
+            </div>
+            <div
+              style={{
+                display: "flex",
+                color: "#727695",
+                alignItems: "flex-start",
+                maxWidth: "75%",
+                marginTop: 10,
+              }}
+            >
+              <PhoneInTalkIcon style={{ fontSize: 18 }} />
+              <CardFooterText
+                style={{
+                  cursor: "pointer",
+                  color: "#727695",
+                  marginLeft: 5,
+                }}
+              >
+                {teacher?.phoneNumber}
+              </CardFooterText>
+            </div>
+            <div
+              style={{
+                display: "flex",
+                color: "#727695",
+                alignItems: "flex-start",
+                maxWidth: "75%",
+                marginTop: 10,
+              }}
+            >
+              <LocationOnIcon style={{ fontSize: 18 }} />
+              <CardFooterText
+                style={{
+                  cursor: "pointer",
+                  marginLeft: 5,
+                  color: "#727695",
+                }}
+              >
+                {teacher?.address}
+              </CardFooterText>
+            </div>
+            
           </div>
         </div>
         {/* <RelatedCourses style={{ marginTop: 60,fontSize:37 }} caseTitle={'Courses by Jonkin Jullinor'} /> */}
