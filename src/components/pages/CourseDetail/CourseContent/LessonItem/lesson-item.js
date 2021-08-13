@@ -21,8 +21,12 @@ function LessonItem({
   foundedCourseFromDash,
 }) {
   const time = secondsToms(lesson.duration);
+  const foundLessonStatus =
+    foundedCourseFromDash?.studystatus?.lessonStatus.find(
+      (lessonStatusItem) => lessonStatusItem.lessonId === lesson.id
+    );
   return (
-    <div style={{ marginTop: 10, display: "flex",alignItems:'flex-start' }}>
+    <div style={{ marginTop: 10, display: "flex", alignItems: "flex-start" }}>
       {/* <BlackText
             style={{
               fontSize: 15,
@@ -48,7 +52,11 @@ function LessonItem({
       >
         {`${index}. ${lesson.lessonName} (${time})`}
       </CardButtonText>
-      <CheckIcon style={{color:"rgb(14, 181, 130)",marginTop:-5,marginLeft:5}} />
+      {foundLessonStatus?.status === "seem" ? (
+        <CheckIcon
+          style={{ color: "rgb(14, 181, 130)", marginTop: -5, marginLeft: 5 }}
+        />
+      ) : null }
     </div>
   );
 }

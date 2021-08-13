@@ -36,6 +36,8 @@ let initState = {
   sortCoursesAllStatus: false,
   putCoursesViewStatus: false,
   getTopViewsCoursesStatus: false,
+  postLessonStatus: false,
+  putLessonStatus: false,
 };
 
 export function Courses(prevState = initState, action) {
@@ -211,8 +213,22 @@ export function Courses(prevState = initState, action) {
         getTopViewsCoursesStatus: true,
         topViewsCourses: action.payload.data.list,
       };
-    case TYPES.GET_TOP_NEW_COURSE_FAILED:
+    case TYPES.GET_TOP_VIEWS_FAILED:
       return { ...prevState, getTopViewsCoursesStatus: false };
+    case TYPES.POST_LESSONSTATUS_SUCCESSED:
+      return {
+        ...prevState,
+        postLessonStatus: true,
+      };
+    case TYPES.POST_LESSONSTATUS_FAILED:
+      return { ...prevState, postLessonStatus: false };
+    case TYPES.PUT_LESSONSTATUS_SUCCESSED:
+      return {
+        ...prevState,
+        putLessonStatus: true,
+      };
+    case TYPES.PUT_LESSONSTATUS_FAILED:
+      return { ...prevState, putLessonStatus: false };
     default:
       return prevState;
   }

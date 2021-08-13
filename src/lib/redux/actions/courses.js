@@ -419,88 +419,99 @@ export const ApiGetRatesCourse =
       });
   };
 
-  
 export const ApiSortByPriceCategory =
-(type,value,categoryId, page, limit) => (dispatch, getStore) => {
-  return axios
-    .get(apiUrl + `/courses/sorts?type=${type}&value=${value}&categoryId=${categoryId}&page=${page}&limit=${limit}`)
-    .then((response) => {
-      if (response.status === 200) {
-        dispatch({
-          type: TYPES.SORT_COURSES_BY_PRICE_SUCCESSED,
-          payload: response.data,
-        });
-      } else {
+  (type, value, categoryId, page, limit) => (dispatch, getStore) => {
+    return axios
+      .get(
+        apiUrl +
+          `/courses/sorts?type=${type}&value=${value}&categoryId=${categoryId}&page=${page}&limit=${limit}`
+      )
+      .then((response) => {
+        if (response.status === 200) {
+          dispatch({
+            type: TYPES.SORT_COURSES_BY_PRICE_SUCCESSED,
+            payload: response.data,
+          });
+        } else {
+          dispatch({ type: TYPES.SORT_COURSES_BY_PRICE_FAILED });
+        }
+        console.log("RESPONSE: ", response);
+        return response;
+      })
+      .catch((error) => {
+        console.log(" Search TOP courses error: ", error);
         dispatch({ type: TYPES.SORT_COURSES_BY_PRICE_FAILED });
-      }
-      console.log("RESPONSE: ", response);
-      return response;
-    })
-    .catch((error) => {
-      console.log(" Search TOP courses error: ", error);
-      dispatch({ type: TYPES.SORT_COURSES_BY_PRICE_FAILED });
-    });
-};
+      });
+  };
 
 export const ApiSortCategory =
-(type,categoryId, page, limit) => (dispatch, getStore) => {
-  return axios
-    .get(apiUrl + `/courses/sorts?type=${type}&categoryId=${categoryId}&page=${page}&limit=${limit}`)
-    .then((response) => {
-      if (response.status === 200) {
-        dispatch({
-          type: TYPES.SORT_COURSES_CATEGORY_SUCCESSED,
-          payload: response.data,
-        });
-      } else {
+  (type, categoryId, page, limit) => (dispatch, getStore) => {
+    return axios
+      .get(
+        apiUrl +
+          `/courses/sorts?type=${type}&categoryId=${categoryId}&page=${page}&limit=${limit}`
+      )
+      .then((response) => {
+        if (response.status === 200) {
+          dispatch({
+            type: TYPES.SORT_COURSES_CATEGORY_SUCCESSED,
+            payload: response.data,
+          });
+        } else {
+          dispatch({ type: TYPES.SORT_COURSES_CATEGORY_FAILED });
+        }
+        console.log("RESPONSE: ", response);
+        return response;
+      })
+      .catch((error) => {
+        console.log(" Search TOP courses error: ", error);
         dispatch({ type: TYPES.SORT_COURSES_CATEGORY_FAILED });
-      }
-      console.log("RESPONSE: ", response);
-      return response;
-    })
-    .catch((error) => {
-      console.log(" Search TOP courses error: ", error);
-      dispatch({ type: TYPES.SORT_COURSES_CATEGORY_FAILED });
-    });
-};
- 
+      });
+  };
+
 export const ApiSortAll =
-(type,value, page, limit) => (dispatch, getStore) => {
-  return axios
-    .get(apiUrl + `/courses/sorts?type=${type}&value=${value}&page=${page}&limit=${limit}`)
+  (type, value, page, limit) => (dispatch, getStore) => {
+    return axios
+      .get(
+        apiUrl +
+          `/courses/sorts?type=${type}&value=${value}&page=${page}&limit=${limit}`
+      )
+      .then((response) => {
+        if (response.status === 200) {
+          dispatch({
+            type: TYPES.SORT_COURSES_ALL_SUCCESSED,
+            payload: response.data,
+          });
+        } else {
+          dispatch({ type: TYPES.SORT_COURSES_ALL_FAILED });
+        }
+        console.log("RESPONSE: ", response);
+        return response;
+      })
+      .catch((error) => {
+        console.log(" Search TOP courses error: ", error);
+        dispatch({ type: TYPES.SORT_COURSES_ALL_FAILED });
+      });
+  };
+
+export const ApiCoursesView = (courseId) => (dispatch, getStore) => {
+  axios
+    .put(apiUrl + "/courses/views", {
+      courseId,
+    })
     .then((response) => {
       if (response.status === 200) {
-        dispatch({
-          type: TYPES.SORT_COURSES_ALL_SUCCESSED,
-          payload: response.data,
-        });
+        dispatch({ type: TYPES.PUT_COURSES_VIEW_SUCCESSED });
       } else {
-        dispatch({ type: TYPES.SORT_COURSES_ALL_FAILED });
+        dispatch({ type: TYPES.PUT_COURSES_VIEW_FAILED });
       }
-      console.log("RESPONSE: ", response);
-      return response;
+      console.log("view courses: ", response);
     })
     .catch((error) => {
-      console.log(" Search TOP courses error: ", error);
-      dispatch({ type: TYPES.SORT_COURSES_ALL_FAILED });
+      console.log(" PUT_COURSES_VIEW error: ", error);
+      dispatch({ type: TYPES.PUT_COURSES_VIEW_FAILED });
     });
 };
-
-export const ApiCoursesView=(courseId)=>(dispatch,getStore)=>{
-  axios.put(apiUrl+"/courses/views",{
-    courseId
-  }).then((response)=>{
-    if(response.status===200){
-      dispatch({type:TYPES.PUT_COURSES_VIEW_SUCCESSED})
-    }else{
-      dispatch({type:TYPES.PUT_COURSES_VIEW_FAILED})
-    }
-    console.log("view courses: ", response);
-  }).catch((error)=>{
-    console.log(" PUT_COURSES_VIEW error: ", error);
-      dispatch({ type: TYPES.PUT_COURSES_VIEW_FAILED });
-  })
-}
 
 export const ApiGetTopViewsCourses = (page, limit) => (dispatch, getStore) => {
   return axios
@@ -520,3 +531,60 @@ export const ApiGetTopViewsCourses = (page, limit) => (dispatch, getStore) => {
       dispatch({ type: TYPES.GET_TOP_VIEWS_FAILED });
     });
 };
+
+export const ApiPostLessonStatus =
+  (accessToken, studyStatusId, lessonId,status, timeRecord) =>
+  (dispatch, getStore) => {
+    return axios
+      .post(
+        apiUrl + "/learn/lessonstatus",
+        {
+          studyStatusId,
+          lessonId,
+          status,
+          timeRecord,
+        },
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+      )
+      .then((response) => {
+        if (response.status === 201) {
+          dispatch({ type: TYPES.POST_LESSONSTATUS_SUCCESSED });
+        } else {
+          dispatch({ type: TYPES.POST_LESSONSTATUS_FAILED });
+        }
+      })
+      .catch((error) => {
+        console.log("POST_LESSONSTATUS_FAILED  error: ", error);
+        dispatch({ type: TYPES.POST_LESSONSTATUS_FAILED });
+      });
+  };
+
+// export const ApiPutLessonStatus =
+//   (accessToken, lessonStatusId, status, timeRecord) => (dispatch, getStore) => {
+//     console.log("sao post");
+//     return axios
+//       .put(
+//         apiUrl + "/learn/lessonstatus",
+//         {
+//           lessonStatusId,
+//           status,
+//           timeRecord,
+//         },
+//         {
+//           headers: { Authorization: `Bearer ${accessToken}` },
+//         }
+//       )
+//       .then((response) => {
+//         if (response.status === 2000) {
+//           dispatch({ type: TYPES.PUT_LESSONSTATUS_SUCCESSED });
+//         } else {
+//           dispatch({ type: TYPES.PUT_LESSONSTATUS_FAILED });
+//         }
+//       })
+//       .catch((error) => {
+//         console.log("PUT_LESSONSTATUS_FAILED  error: ", error);
+//         dispatch({ type: TYPES.PUT_LESSONSTATUS_FAILED });
+//       });
+//   };

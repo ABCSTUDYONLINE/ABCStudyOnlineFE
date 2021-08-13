@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Instruction from "./instruction/instruction";
 import ListCourse from "./ListCourse/list-course";
 import SlideBackground from "./SlideBackground/slide-background";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 import {
   ApiGetCoursesFromCart,
   ApiGetFavoriteCourses,
@@ -14,7 +12,6 @@ import {
 } from "../../../lib/redux/actions/courses";
 
 function Home() {
-  const history = useHistory();
   const dispatch = useDispatch();
   const [loadingNewCourses, setloaLingNewCourses] = useState(false);
   const [loadingRateInWeek, setLoadingRateInWeek] = useState(false);
