@@ -3,7 +3,11 @@ import { TextField, Typography } from "@material-ui/core";
 import { CardButton } from "../../../../../../globals/index";
 import { useDispatch, useSelector } from "react-redux";
 import isEmpty from "validator/lib/isEmpty";
-import { ApiChangePassword } from "../../../../../../lib/redux/actions/account-management";
+import {
+  ApiChangePassword,
+  ApiChangeProfile,
+} from "../../../../../../lib/redux/actions/account-management";
+import isEmail from "validator/lib/isEmail";
 
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -15,8 +19,10 @@ import Button from "@material-ui/core/Button";
 function AccountDetailPanel({ value, index }) {
   const userInfo = useSelector((state) => state.Authentication.userInfo);
   const [firstName, setFirstName] = useState(userInfo?.firstName);
+  const [lastName, setLastName] = useState(userInfo?.lastName);
   const [email, setEmail] = useState(userInfo?.email);
   const [phoneNumber, setPhoneNumber] = useState(userInfo?.phoneNumber);
+  const [address, setAddress] = useState(userInfo?.address);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
@@ -24,16 +30,28 @@ function AccountDetailPanel({ value, index }) {
 
   useEffect(() => {
     setFirstName(userInfo?.firstName);
+    setLastName(userInfo?.lastName);
     setEmail(userInfo?.email);
     setPhoneNumber(userInfo?.phoneNumber);
+    setAddress(userInfo?.address);
   }, [userInfo]);
 
   const dispatch = useDispatch();
   const accessToken = localStorage.getItem("accessToken");
+  const changeProfileStatus = useSelector(
+    (state) => state.AccountManagement.changeProfileStatus
+  );
+
   console.log("userInfo: ", userInfo);
   const changePasswordStatus = useSelector(
     (state) => state.AccountManagement.changePasswordStatus
   );
+
+  const [openProfile, setOpenProfile] = React.useState(false);
+
+  const handleCloseProfle = () => {
+    setOpenProfile(false);
+  };
 
   const [open, setOpen] = React.useState(false);
 
@@ -49,6 +67,49 @@ function AccountDetailPanel({ value, index }) {
     ) {
       setValidationMsg({});
       console.log("change profile");
+
+      const msg = {};
+
+      if (isEmpty(firstName)) {
+        msg.firstName = "Please input your first name";
+      }
+      if (isEmpty(lastName)) {
+        msg.lastName = "Please input your last name";
+      }
+
+      if (isEmpty(email)) {
+        msg.email = "Please input your Email";
+      } else if (!isEmail(email)) {
+        msg.email = "Your email is incorrect";
+      }
+      if (isEmpty(phoneNumber)) {
+        msg.phoneNumber = "Please input your phone Number";
+      }
+      if (isEmpty(address)) {
+        msg.address = "Please input your Address";
+      }
+      setValidationMsg(msg);
+      if (Object.keys(msg).length > 0) {
+        return;
+      }
+      dispatch(
+        ApiChangeProfile(
+          accessToken,
+          firstName,
+          lastName,
+          email,
+          phoneNumber,
+          address
+        )
+      )
+        .then((response) => {
+          if (response?.status === 200 && response?.data.data !== null) {
+            setValidationMsg({});
+          }
+        })
+        .finally(() => {
+          setOpenProfile(true);
+        });
     } else {
       const msg = {};
       if (isEmpty(currentPassword)) {
@@ -67,19 +128,22 @@ function AccountDetailPanel({ value, index }) {
       if (Object.keys(msg).length > 0) {
         return;
       }
-      dispatch(
-        ApiChangePassword(accessToken, currentPassword, newPassword)
-      ).then((response) => {
-        setOpen(true);
-        if (response?.status === 200 && response?.data.data !== null) {
-          console.log("Show diaglog Change password thanh cong");
-          setCurrentPassword("");
-          setNewPassword("");
-          setConfirmNewPassword("");
-        } else {
-          console.log("notify", response?.data.message);
-        }
-      });
+      dispatch(ApiChangePassword(accessToken, currentPassword, newPassword))
+        .then((response) => {
+          if (response?.status === 200 && response?.data.data !== null) {
+            console.log("Show diaglog Change password thanh cong");
+            setCurrentPassword("");
+            setNewPassword("");
+            setConfirmNewPassword("");
+
+            setValidationMsg({});
+          } else {
+            console.log("notify", response?.data.message);
+          }
+        })
+        .finally(() => {
+          setOpen(true);
+        });
     }
   };
 
@@ -98,7 +162,7 @@ function AccountDetailPanel({ value, index }) {
           <TextField
             required
             id="outlined-required"
-            label="Full Name"
+            label="First Name"
             defaultValue=""
             variant="outlined"
             value={firstName}
@@ -106,6 +170,22 @@ function AccountDetailPanel({ value, index }) {
             onChange={(e) => {
               setFirstName(e.target.value);
             }}
+            error={!!validationMsg.firstName}
+            helperText={validationMsg.firstName || ""}
+          />
+          <TextField
+            required
+            id="outlined-required"
+            label="Last Name"
+            defaultValue=""
+            variant="outlined"
+            value={lastName}
+            style={{ width: "100%", marginTop: 30 }}
+            onChange={(e) => {
+              setLastName(e.target.value);
+            }}
+            error={!!validationMsg.lastName}
+            helperText={validationMsg.lastName || ""}
           />
           <TextField
             required
@@ -118,6 +198,8 @@ function AccountDetailPanel({ value, index }) {
             onChange={(e) => {
               setEmail(e.target.value);
             }}
+            error={!!validationMsg.email}
+            helperText={validationMsg.email || ""}
           />
           <TextField
             required
@@ -130,6 +212,22 @@ function AccountDetailPanel({ value, index }) {
             onChange={(e) => {
               setPhoneNumber(e.target.value);
             }}
+            error={!!validationMsg.phoneNumber}
+            helperText={validationMsg.phoneNumber || ""}
+          />
+          <TextField
+            required
+            id="outlined-required"
+            label="Address"
+            defaultValue=""
+            variant="outlined"
+            value={address}
+            style={{ width: "100%", marginTop: 30 }}
+            onChange={(e) => {
+              setAddress(e.target.value);
+            }}
+            error={!!validationMsg.address}
+            helperText={validationMsg.address || ""}
           />
           <Typography
             style={{
@@ -234,7 +332,12 @@ function AccountDetailPanel({ value, index }) {
 
               <DialogContent>
                 <DialogContentText
-                  style={{ fontSize: 28, fontWeight: 600, color: "#252525",textAlign:'center' }}
+                  style={{
+                    fontSize: 28,
+                    fontWeight: 600,
+                    color: "#252525",
+                    textAlign: "center",
+                  }}
                   id="alert-dialog-description"
                 >
                   {changePasswordStatus
@@ -244,6 +347,46 @@ function AccountDetailPanel({ value, index }) {
               </DialogContent>
               <DialogActions>
                 <Button onClick={handleClose} color="primary" autoFocus>
+                  Ok
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </div>
+          <div style={{ textAlign: "center" }}>
+            <Dialog
+              open={openProfile}
+              onClose={handleCloseProfle}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              {changeProfileStatus ? (
+                <CheckCircleIcon
+                  style={{
+                    fontSize: 100,
+                    marginTop: 20,
+                    color: "#0eb582",
+                    alignSelf: "center",
+                  }}
+                />
+              ) : null}
+
+              <DialogContent>
+                <DialogContentText
+                  style={{
+                    fontSize: 28,
+                    fontWeight: 600,
+                    color: "#252525",
+                    textAlign: "center",
+                  }}
+                  id="alert-dialog-description"
+                >
+                  {changeProfileStatus
+                    ? "Update profile successfully!!!"
+                    : "Update profile failed!"}
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleCloseProfle} color="primary" autoFocus>
                   Ok
                 </Button>
               </DialogActions>

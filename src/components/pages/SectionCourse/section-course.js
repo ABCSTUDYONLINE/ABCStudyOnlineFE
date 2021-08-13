@@ -1,5 +1,4 @@
-import { Typography } from "@material-ui/core";
-import React, { useState } from "react";
+import React  from "react";
 import { useHistory } from "react-router-dom";
 import { CardDropCategory } from "../../../globals";
 import SectionCourseItem from "./SectionCourseItem/section-course-item";

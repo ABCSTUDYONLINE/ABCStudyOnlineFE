@@ -138,12 +138,13 @@ function TabCart({ value, index }) {
                     fontWeight: 600,
                     color: "#252525",
                     textAlign: "center",
+                    marginTop:30
                   }}
                   id="alert-dialog-description"
                 >
                   {chargeCourseStatus
                     ? "Buy Course Successfully!!!"
-                    : "Buy Course Failed!"}
+                    : "Sorry, You don't have any course in cart!!"}
                 </DialogContentText>
               </DialogContent>
               <DialogActions>

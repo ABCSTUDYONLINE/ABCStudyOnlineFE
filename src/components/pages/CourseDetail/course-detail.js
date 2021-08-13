@@ -31,10 +31,16 @@ import LessonItem from "./CourseContent/LessonItem/lesson-item";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  ApiChargeCourse,
   ApiGetCourseDetail,
   ApiGetCoursesFromCart,
+  ApiPostLessonStatus,
 } from "../../../lib/redux/actions/courses";
 
+import DialogActions from "@material-ui/core/DialogActions";
+// import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import Button from "@material-ui/core/Button";
 import { CircularProgress } from "@material-ui/core";
 
 const styles = (theme) => ({
@@ -88,12 +94,22 @@ function CourseDetail() {
 
   const [open, setOpen] = React.useState(false);
   const [videoUrl, setVideoUrl] = useState("");
+
+  const [duration, setDuration] = useState(null);
+  const [secondsElapsed, setSecondsElapsed] = useState(null);
   const [activeId, setActiveId] = useState("");
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
 
   const courseDetail = useSelector((state) => state.Courses.courseDetail);
   console.log("Course detail", courseDetail);
+  const myDash = useSelector((state) => state.Courses.myDash);
+  console.log("MYDASH: ", myDash);
+  let foundedCourseFromDash = myDash?.find(
+    (dashItem) => dashItem.course.id === courseDetail?.id
+  );
+
+  const accessToken = localStorage.getItem("accessToken");
 
   useEffect(() => {
     dispatch(ApiGetCourseDetail(id)).then((response) => {
@@ -101,26 +117,163 @@ function CourseDetail() {
         setLoading(false);
       }
     });
+    if (myDash.length === 0) {
+      console.log("empty dash");
+      dispatch(ApiGetCoursesFromCart(accessToken, "paid", 1, 10));
+    }
   }, []);
 
+  let foundLessonStatus;
   const handleClickOpen = (url, id) => {
+    console.log("next index: ", nextLesson, nextVideoIndex, nextTopicIndex);
+    foundLessonStatus = foundedCourseFromDash?.studystatus?.lessonStatus.find(
+      (lessonStatusItem) => lessonStatusItem.lessonId === id
+    );
+    console.log("foundLessonStatus ", foundLessonStatus);
     setOpen(true);
-    setVideoUrl(url);
+    if (foundLessonStatus?.timeRecord) {
+      if (
+        foundLessonStatus?.status === "seem" &&
+        foundLessonStatus.timeRecord + 1 > duration
+      ) {
+        setVideoUrl(url);
+      } else {
+        setVideoUrl(`${url}#t=${foundLessonStatus.timeRecord}`);
+      }
+    } else {
+      setVideoUrl(url);
+    }
     setActiveId(id);
   };
   const handleClose = () => {
+    console.log("duration in close: ", duration);
+
+    dispatch(
+      ApiPostLessonStatus(
+        accessToken,
+        foundedCourseFromDash?.studystatus?.id,
+        courseDetail.topics[topicIndex].lessons[videoIndex].id,
+        "seeing",
+        secondsElapsed
+      )
+    ).finally(() => {
+      console.log("send record time in close");
+      dispatch(ApiGetCoursesFromCart(accessToken, "paid", 1, 10));
+    });
+
     setActiveId("");
     setOpen(false);
   };
   const curTime = new Date();
   const expireTime = new Date(courseDetail?.promotion?.expireTime);
-  const myDash=useSelector((state)=>state.Courses.myDash)
-  console.log("MYDASH: ",myDash);
-  let foundedCourseFromDash = myDash?.find(
-    (dashItem) => dashItem.course.id === courseDetail?.id
+
+  const [videoIndex, setVideoIndex] = useState(-1);
+  const [topicIndex, setTopicIndex] = useState(-1);
+  const [nextLesson, setnextLesson] = useState({});
+  const [nextVideoIndex, setNextVideoIndex] = useState(-1);
+  const [nextTopicIndex, setNextTopicIndex] = useState(-1);
+
+  console.log(" found MYDASH: ", foundedCourseFromDash);
+  const chargeCourseStatus = useSelector(
+    (state) => state.Courses.chargeCourseStatus
   );
-  
-  console.log(" found MYDASH: ",foundedCourseFromDash);
+  const learnIds = courseDetail?.id;
+  const [openSignal, setOpenSignal] = React.useState(false);
+  const handleOpenSignal = () => {
+    console.log("learnIds in course detail: ", learnIds);
+    console.log("accesstoken in course detail: ", accessToken);
+    dispatch(ApiChargeCourse(accessToken, learnIds))
+      .then((response) => {
+        if (response?.status === 200) {
+          dispatch(ApiGetCoursesFromCart(accessToken, "paid", 1, 10));
+        } else {
+          console.log("remove cart add error: ", response?.data.message);
+        }
+      })
+      .finally(() => {
+        setOpenSignal(true);
+      });
+  };
+  const handleCloseSignal = () => {
+    setOpenSignal(false);
+  };
+
+  const onDuration = (temp) => {
+    setDuration(temp);
+    console.log("On Duration", temp);
+    // this.p.seekTo(50 / this.state.duration);
+  };
+  const onProgress = (progress) => {
+    if (!duration) {
+      // Sadly we don't have the duration yet so we can't do anything
+      return;
+    }
+
+    // progress.played is the fraction of the video that has been played
+    // so multiply with duration to get number of seconds elapsed
+    const secondsElapsedInFunc = progress.played * duration;
+
+    if (secondsElapsedInFunc !== secondsElapsed) {
+      setSecondsElapsed(secondsElapsedInFunc);
+      console.log("secondsElapsed: ", secondsElapsed);
+    }
+  };
+  const onEnded = () => {
+    // if (courseDetail.topics[topicIndex].lessons[videoIndex + 1]) {
+    //   setnextLesson(courseDetail.topics[topicIndex].lessons[videoIndex + 1]);
+    //   setVideoIndex(videoIndex + 1);
+    // } else if (courseDetail.topics[topicIndex + 1]) {
+    //   setnextLesson(courseDetail.topics[topicIndex + 1].lessons[0]);
+    //   setVideoIndex(0);
+    //   setTopicIndex(topicIndex + 1);
+    // } else {
+    //   setVideoIndex(-1);
+    //   setTopicIndex(-1);
+    // }
+    // if (nextVideoIndex === -1 || nextTopicIndex === -1) {
+    //   return;
+    // }
+    console.log("duration in end: ", duration);
+    dispatch(
+      ApiPostLessonStatus(
+        accessToken,
+        foundedCourseFromDash?.studystatus?.id,
+        courseDetail.topics[topicIndex].lessons[videoIndex].id,
+        "seem",
+        secondsElapsed
+      )
+    ).finally(() => {
+      console.log("send record time in end");
+      dispatch(ApiGetCoursesFromCart(accessToken, "paid", 1, 10));
+    });
+
+    if (videoIndex === 0 || foundedCourseFromDash) {
+      console.log(
+        "foundedCourseFromDash from next video",
+        foundedCourseFromDash
+      );
+      foundLessonStatus = foundedCourseFromDash?.studystatus?.lessonStatus.find(
+        (lessonStatusItem) => lessonStatusItem.lessonId === nextLesson.id
+      );
+      console.log("nexxt :",nextLesson.id,foundLessonStatus)
+
+      if (foundLessonStatus?.timeRecord) {
+        if (
+          foundLessonStatus?.status === "seem" &&
+          foundLessonStatus.timeRecord + 1 > duration
+        ) {
+          setVideoUrl(nextLesson.videoLink);
+        } else {
+          setVideoUrl(
+            `${nextLesson.videoLink}#t=${foundLessonStatus.timeRecord}`
+          );
+        }
+      } else {
+        setVideoUrl(nextLesson.videoLink);
+      }
+      setActiveId(nextLesson.id);
+    }
+  };
   return (
     <div>
       {loading ? (
@@ -387,7 +540,10 @@ function CourseDetail() {
                       }}
                     >
                       {`$${
-                        (courseDetail.fee * (100-courseDetail.promotion?.percent*100 || 100))/100
+                        (courseDetail.fee *
+                          (100 - courseDetail.promotion?.percent * 100 ||
+                            100)) /
+                        100
                       }`}
                     </BlackText>
                   ) : (
@@ -402,8 +558,14 @@ function CourseDetail() {
                     </BlackText>
                   )}
 
-                  <CardButton style={{ borderRadius: 4 }}>
-                    <div>Buy Course</div>
+                  <CardButton
+                    style={{
+                      borderRadius: 4,
+                      background: foundedCourseFromDash ? "gray" : null,
+                    }}
+                    onClick={handleOpenSignal}
+                  >
+                    Buy Course
                   </CardButton>
                 </div>
               </div>
@@ -429,6 +591,15 @@ function CourseDetail() {
                 handleClickOpen={handleClickOpen}
                 activeId={activeId}
                 foundedCourseFromDash={foundedCourseFromDash}
+                topicIndex={topicIndex}
+                setTopicIndex={setTopicIndex}
+                videoIndex={videoIndex}
+                setVideoIndex={setVideoIndex}
+                duration={duration}
+                secondsElapsed={secondsElapsed}
+                setnextLesson={setnextLesson}
+                setNextVideoIndex={setNextVideoIndex}
+                setNextTopicIndex={setNextTopicIndex}
               />
               <Dialog
                 onClose={handleClose}
@@ -444,13 +615,29 @@ function CourseDetail() {
                     width="100%"
                     height="100%"
                     controls
+                    playing
+                    config={{
+                      file: {
+                        attributes: {
+                          disablepictureinpicture: "true",
+                          controlsList: "nodownload",
+                          onContextMenu: (e) => e.preventDefault(),
+                        },
+                      },
+                    }}
+                    onEnded={onEnded}
+                    onDuration={onDuration}
+                    onProgress={onProgress}
+                    onPause={(e) => {
+                      console.log("onPause", e);
+                    }}
                   />
-                  {courseDetail.topics.map((topic, index) => (
-                    <div key={index}>
+                  {courseDetail.topics.map((topic, indexFirst) => (
+                    <div key={indexFirst}>
                       <RedText
                         style={{ fontSize: 18, fontWeight: 600, marginTop: 30 }}
                       >
-                        {`Chapter ${++index}`}
+                        {`Chapter ${indexFirst + 1}`}
                       </RedText>
                       <BlackText
                         style={{
@@ -463,10 +650,59 @@ function CourseDetail() {
                       <div style={{ marginTop: 20 }}>
                         {topic.lessons.map((lesson, index) => (
                           <LessonItem
-                            key={++index}
+                            key={index}
                             lesson={lesson}
-                            index={++index}
-                            handleClickOpen={handleClickOpen}
+                            index={index + 1}
+                            handleClickOpen={(url, id) => {
+                              // setFoundedLessonStatus(
+                              //   foundedCourseFromDash?.studystatus?.lessonStatus.find(
+                              //     (lessonStatusItem) =>
+                              //       lessonStatusItem.lessonId === lesson.id
+                              //   )
+                              // );
+                              if (duration) {
+                                console.log("duration: ", duration);
+                                dispatch(
+                                  ApiPostLessonStatus(
+                                    accessToken,
+                                    foundedCourseFromDash?.studystatus?.id,
+                                    courseDetail.topics[topicIndex].lessons[
+                                      videoIndex
+                                    ].id,
+                                    "seeing",
+                                    secondsElapsed
+                                  )
+                                ).finally(() => {
+                                  console.log("send record time");
+                                  dispatch(
+                                    ApiGetCoursesFromCart(
+                                      accessToken,
+                                      "paid",
+                                      1,
+                                      10
+                                    )
+                                  );
+                                });
+                              }
+                              if (topic.lessons[index + 1]) {
+                                setnextLesson(topic.lessons[index + 1]);
+                                setNextVideoIndex(videoIndex + 1);
+                                setNextTopicIndex(indexFirst);
+                              } else if (courseDetail.topics[topicIndex + 1]) {
+                                setnextLesson(
+                                  courseDetail.topics[topicIndex + 1].lessons[0]
+                                );
+                                setNextVideoIndex(0);
+                                setNextTopicIndex(topicIndex + 1);
+                              } else {
+                                setNextVideoIndex(-1);
+                                setNextTopicIndex(-1);
+                              }
+                              setTopicIndex(indexFirst);
+                              setVideoIndex(index);
+
+                              handleClickOpen(url, id);
+                            }}
                             activeId={activeId}
                             foundedCourseFromDash={foundedCourseFromDash}
                           />
@@ -476,6 +712,42 @@ function CourseDetail() {
                   ))}
                 </DialogContent>
               </Dialog>
+              <div style={{ textAlign: "center" }}>
+                <Dialog
+                  open={openSignal}
+                  onClose={handleCloseSignal}
+                  aria-labelledby="alert-dialog-title"
+                  aria-describedby="alert-dialog-description"
+                >
+                  <DialogContent>
+                    <DialogContentText
+                      style={{
+                        fontSize: 28,
+                        fontWeight: 600,
+                        color: "#252525",
+                        textAlign: "center",
+                        marginTop: 30,
+                      }}
+                      id="alert-dialog-description"
+                    >
+                      {foundedCourseFromDash
+                        ? "Sorry, you  already purchase this course!!"
+                        : chargeCourseStatus
+                        ? "Buy course Successfully!!!"
+                        : "Sorry, You don't have aenough money!!"}
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button
+                      onClick={handleCloseSignal}
+                      color="primary"
+                      autoFocus
+                    >
+                      Ok
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+              </div>
             </div>
           </div>
         </div>

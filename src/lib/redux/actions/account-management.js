@@ -1,6 +1,5 @@
 import * as TYPES from "../types";
 import axios from "axios";
-
 export const apiUrl = "https://abcstudyonline.herokuapp.com";
 
 export const ApiChangePassword =
@@ -54,5 +53,41 @@ export const ApiUpdateAvatar =
       .catch((error) => {
         console.log("UPDATE_AVATAR_FAILED: ", error);
         dispatch({ type: TYPES.UPDATE_AVATAR_FAILED });
+      });
+  };
+
+export const ApiChangeProfile =
+  (accessToken, firstName, lastName, email, phoneNumber, address) =>
+  (dispatch, getStore) => {
+    console.log("email: ", email);
+    return axios
+      .patch(
+        apiUrl + "/auth/users",
+
+        {
+          firstName: firstName,
+          lastName: lastName,
+          birthDay: "01/01/2020",
+          email: email,
+          phoneNumber: phoneNumber,
+          address: address,
+          shortBio: "",
+        },
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+      )
+      .then((response) => {
+        if (response.status === 200) {
+          dispatch({ type: TYPES.CHANGE_PROFILE_SUCCESSED });
+        } else {
+          dispatch({ type: TYPES.CHANGE_PROFILE_FAILED });
+        }
+        console.log("response change profile: ", response);
+        return response;
+      })
+      .catch((error) => {
+        console.log("CHANGE_PROFILE_FAILED: ", error);
+        dispatch({ type: TYPES.CHANGE_PROFILE_FAILED });
       });
   };
