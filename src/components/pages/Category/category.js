@@ -110,6 +110,10 @@ function Category() {
         dispatch(ApiGetsearchTopCourses("register", 1, 20)).finally(() => {
           setLoadingCategories(false);
         });
+      } else if (titleLocation === "View Courses") {
+        dispatch(ApiGetsearchTopCourses("views", 1, 20)).finally(() => {
+          setLoadingCategories(false);
+        });
       } else if (titleLocation === "All") {
         dispatch(ApiGetsearchTopCourses("all", 1, 20)).finally(() => {
           setLoadingCategories(false);
