@@ -16,6 +16,7 @@ import {
   ApiSortAll,
   ApiSortByPriceCategory,
   ApiSortCategory,
+  ApiSortPriceBySearchCourses,
 } from "../../../lib/redux/actions/courses";
 import { CircularProgress } from "@material-ui/core";
 
@@ -45,7 +46,7 @@ function Category() {
     console.log("xxx: ", event.target.value);
     const value = +event.target.value;
 
-    if (titleLocation === "All") {
+    if (!keyWord && titleLocation === "All") {
       if (value === 1) {
         dispatch(ApiSortAll("mount", "ASC", 1, 20)).finally(() => {
           setLoadingCategories(false);
@@ -57,7 +58,7 @@ function Category() {
       } else {
         setLoadingCategories(false);
       }
-    } else {
+    } else if (keyWord === "category") {
       if (value === 1) {
         console.log("xxx1: ", value);
         dispatch(
@@ -73,7 +74,24 @@ function Category() {
           setLoadingCategories(false);
         });
       } else {
+        setLoadingCategories(false);
+      }
+    } else {
+      if (value === 1) {
+        dispatch(
+          ApiSortPriceBySearchCourses("name", "ASC", keyWord, 1, 10)
+        ).finally(() => {
+          setLoadingCategories(false);
+        });
+      } else if (value === 2) {
+        dispatch(
+          ApiSortPriceBySearchCourses("name", "DESC", keyWord, 1, 10)
+        ).finally(() => {
+          setLoadingCategories(false);
+        });
+      } else {
         console.log("xxx3: ", value);
+
         setLoadingCategories(false);
       }
     }

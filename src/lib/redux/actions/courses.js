@@ -316,6 +316,30 @@ export const ApiSearchCourses =
       });
   };
 
+  
+export const ApiSortPriceBySearchCourses =
+(type,value, subText, page, limit) => (dispatch, getStore) => {
+  return axios
+    .get(
+      apiUrl +
+        `/courses/finds?type=${type}&value=${value}&subText=${subText}&page=${page}&limit=${limit}`
+    )
+    .then((response) => {
+      if (response.status === 200) {
+        dispatch({
+          type: TYPES.SORT_PRICE_BY_SEARCH_COURSES_SUCCESSED,
+          payload: response.data,
+        });
+      } else {
+        dispatch({ type: TYPES.SORT_PRICE_BY_SEARCH_COURSES_FAILED });
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      dispatch({ type: TYPES.SORT_PRICE_BY_SEARCH_COURSES_FAILED });
+    });
+};
+
 export const ApiGetsearchTopCourses =
   (type, page, limit) => (dispatch, getStore) => {
     return axios
