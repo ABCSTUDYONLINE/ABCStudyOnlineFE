@@ -146,20 +146,22 @@ function CourseDetail() {
     setActiveId(id);
   };
   const handleClose = () => {
-    console.log("duration in close: ", duration);
+    if (foundedCourseFromDash) {
+      console.log("duration in close: ", duration);
 
-    dispatch(
-      ApiPostLessonStatus(
-        accessToken,
-        foundedCourseFromDash?.studystatus?.id,
-        courseDetail.topics[topicIndex].lessons[videoIndex].id,
-        "seeing",
-        secondsElapsed
-      )
-    ).finally(() => {
-      console.log("send record time in close");
-      dispatch(ApiGetCoursesFromCart(accessToken, "paid", 1, 10));
-    });
+      dispatch(
+        ApiPostLessonStatus(
+          accessToken,
+          foundedCourseFromDash?.studystatus?.id,
+          courseDetail.topics[topicIndex].lessons[videoIndex].id,
+          "seeing",
+          secondsElapsed
+        )
+      ).finally(() => {
+        console.log("send record time in close");
+        dispatch(ApiGetCoursesFromCart(accessToken, "paid", 1, 10));
+      });
+    }
 
     setActiveId("");
     setOpen(false);
@@ -233,45 +235,54 @@ function CourseDetail() {
     // if (nextVideoIndex === -1 || nextTopicIndex === -1) {
     //   return;
     // }
-    console.log("duration in end: ", duration);
-    dispatch(
-      ApiPostLessonStatus(
-        accessToken,
-        foundedCourseFromDash?.studystatus?.id,
-        courseDetail.topics[topicIndex].lessons[videoIndex].id,
-        "seem",
-        secondsElapsed
-      )
-    ).finally(() => {
-      console.log("send record time in end");
-      dispatch(ApiGetCoursesFromCart(accessToken, "paid", 1, 10));
-    });
 
-    if (videoIndex === 0 || foundedCourseFromDash) {
+    if (foundedCourseFromDash) {
       console.log(
-        "foundedCourseFromDash from next video",
+        "index : foundedCourseFromDash",
+        videoIndex,
         foundedCourseFromDash
       );
-      foundLessonStatus = foundedCourseFromDash?.studystatus?.lessonStatus.find(
-        (lessonStatusItem) => lessonStatusItem.lessonId === nextLesson.id
-      );
-      console.log("nexxt :",nextLesson.id,foundLessonStatus)
+      console.log("duration in end: ", duration);
+      dispatch(
+        ApiPostLessonStatus(
+          accessToken,
+          foundedCourseFromDash?.studystatus?.id,
+          courseDetail.topics[topicIndex].lessons[videoIndex].id,
+          "seem",
+          secondsElapsed
+        )
+      ).finally(() => {
+        console.log("send record time in end");
+        dispatch(ApiGetCoursesFromCart(accessToken, "paid", 1, 10));
+      });
 
-      if (foundLessonStatus?.timeRecord) {
-        if (
-          foundLessonStatus?.status === "seem" &&
-          foundLessonStatus.timeRecord + 1 > duration
-        ) {
-          setVideoUrl(nextLesson.videoLink);
-        } else {
-          setVideoUrl(
-            `${nextLesson.videoLink}#t=${foundLessonStatus.timeRecord}`
+      if (videoIndex === 0 || foundedCourseFromDash) {
+        console.log(
+          "foundedCourseFromDash from next video",
+          foundedCourseFromDash
+        );
+        foundLessonStatus =
+          foundedCourseFromDash?.studystatus?.lessonStatus.find(
+            (lessonStatusItem) => lessonStatusItem.lessonId === nextLesson.id
           );
+        console.log("nexxt :", nextLesson.id, foundLessonStatus);
+
+        if (foundLessonStatus?.timeRecord) {
+          if (
+            foundLessonStatus?.status === "seem" &&
+            foundLessonStatus.timeRecord + 1 > duration
+          ) {
+            setVideoUrl(nextLesson.videoLink);
+          } else {
+            setVideoUrl(
+              `${nextLesson.videoLink}#t=${foundLessonStatus.timeRecord}`
+            );
+          }
+        } else {
+          setVideoUrl(nextLesson.videoLink);
         }
-      } else {
-        setVideoUrl(nextLesson.videoLink);
+        setActiveId(nextLesson.id);
       }
-      setActiveId(nextLesson.id);
     }
   };
   return (
