@@ -38,6 +38,7 @@ let initState = {
   getTopViewsCoursesStatus: false,
   postLessonStatus: false,
   putLessonStatus: false,
+  sortPriceBySearchCourses:false
 };
 
 export function Courses(prevState = initState, action) {
@@ -229,6 +230,15 @@ export function Courses(prevState = initState, action) {
       };
     case TYPES.PUT_LESSONSTATUS_FAILED:
       return { ...prevState, putLessonStatus: false };
+
+      case TYPES.SORT_PRICE_BY_SEARCH_COURSES_SUCCESSED:
+      return {
+        ...prevState,
+        sortPriceBySearchCourses: true,
+        listCoursesBySearch: action.payload.data.list,
+      };
+    case TYPES.SORT_PRICE_BY_SEARCH_COURSES_FAILED:
+      return { ...prevState, sortPriceBySearchCourses: false };
     default:
       return prevState;
   }
