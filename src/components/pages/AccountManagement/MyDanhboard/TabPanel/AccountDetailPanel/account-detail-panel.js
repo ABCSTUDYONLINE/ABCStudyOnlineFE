@@ -38,6 +38,8 @@ function AccountDetailPanel({ value, index }) {
 
   const dispatch = useDispatch();
   const accessToken = localStorage.getItem("accessToken");
+  
+  const refreshToken = localStorage.getItem("refreshToken");
   const changeProfileStatus = useSelector(
     (state) => state.AccountManagement.changeProfileStatus
   );
@@ -95,6 +97,7 @@ function AccountDetailPanel({ value, index }) {
       dispatch(
         ApiChangeProfile(
           accessToken,
+          refreshToken,
           firstName,
           lastName,
           email,
@@ -128,7 +131,7 @@ function AccountDetailPanel({ value, index }) {
       if (Object.keys(msg).length > 0) {
         return;
       }
-      dispatch(ApiChangePassword(accessToken, currentPassword, newPassword))
+      dispatch(ApiChangePassword(accessToken,refreshToken, currentPassword, newPassword))
         .then((response) => {
           if (response?.status === 200 && response?.data.data !== null) {
             console.log("Show diaglog Change password thanh cong");

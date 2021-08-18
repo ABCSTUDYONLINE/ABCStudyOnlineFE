@@ -46,6 +46,7 @@ function PanelCourseItem({ course, style }) {
               borderTopLeftRadius: 8,
               borderTopRightRadius: 8,
               width: "100%",
+              height: 240,
             }}
             src={course.course.courseImageLink}
             alt=""

@@ -13,17 +13,33 @@ import ImportContactsIcon from "@material-ui/icons/ImportContacts";
 import { useHistory } from "react-router-dom";
 import ActionLinksHover from "./action-links-hover";
 import Avatar from "@material-ui/core/Avatar";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ApiCoursesView } from "../../../../../lib/redux/actions/courses";
 
 function ListCourseItem({ course, style }) {
   let history = useHistory();
-  const dispatch=useDispatch();
+  const dispatch = useDispatch();
   const [isHover, setIsHover] = useState(false);
+  let seen = true;
   let countLessons = 0;
   course?.topics.map((topic) => {
     countLessons += topic.lessons.length;
   });
+
+  const myDash = useSelector((state) => state.Courses.myDash);
+  let foundedCourseFromDash = myDash?.find(
+    (dashItem) => dashItem.course.id === course?.id
+  );
+
+  if (foundedCourseFromDash?.studystatus?.lessonStatus.length === 0) {
+    seen = false;
+  }
+  foundedCourseFromDash?.studystatus?.lessonStatus?.map((lessonStatus) => {
+    if (lessonStatus.status === "seeing") {
+      seen = false;
+    }
+  });
+
   // .toLocaleString().slice(0,8)
   const curTime = new Date();
   const expireTime = new Date(course.promotion?.expireTime);
@@ -79,9 +95,19 @@ function ListCourseItem({ course, style }) {
               fontSize: 20,
             }}
           >
-            {course?.promotion.percent * 100}%
+            {Number((course?.promotion.percent * 100).toFixed(0))}%
           </div>
         ) : null}
+        {foundedCourseFromDash && seen ? <div style={{position: "absolute",
+              background: "#fff",
+              padding: "5px 15px",
+              bottom: 0,
+              right: 25,
+              borderRadius: "5px 5px 0 0",
+              color: "#0eb582",
+              fontWeight: 400,
+              fontSize: 20,
+              boxShadow: "0 0 40px 3px rgb(0 0 0 / 4%)"}}>Completed</div> : null}
         {isHover ? <ActionLinksHover id={course.id} /> : <div></div>}
       </div>
       <div
@@ -188,7 +214,11 @@ function ListCourseItem({ course, style }) {
               ) : null}
               {course.promotion && expireTime >= curTime ? (
                 <RedText style={{ fontSize: 18, fontWeight: 500 }}>{`$${
-                  (course.fee * (100-course.promotion?.percent*100 || 100))/100
+                  (course.fee *
+                    (100 -
+                      Number((course.promotion?.percent * 100).toFixed(0)) ||
+                      100)) /
+                  100
                 }`}</RedText>
               ) : (
                 <RedText

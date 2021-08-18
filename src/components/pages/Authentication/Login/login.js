@@ -50,6 +50,7 @@ function Login() {
           response.data.access_token
         );
         localStorage.setItem('accessToken', response.data.data.access_token)
+        localStorage.setItem('refreshToken', response.data.data.refresh_token)
         history.push("/");
       } else {
         console.log("login that bai voi response: ", response);

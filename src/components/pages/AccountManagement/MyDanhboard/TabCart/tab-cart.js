@@ -17,6 +17,7 @@ function TabCart({ value, index }) {
   const cart = useSelector((state) => state.Courses.cart);
   const dispatch = useDispatch();
   const accessToken = localStorage.getItem("accessToken");
+  const refreshToken = localStorage.getItem("refreshToken");
   console.log("cart: ", cart);
   let totalPrice = 0;
   let learnIds = "";
@@ -100,25 +101,37 @@ function TabCart({ value, index }) {
             <CardButton
               style={{ borderRadius: 4, marginLeft: 20 }}
               onClick={() => {
-                dispatch(ApiChargeCourse(accessToken, learnIds)).then(
-                  (response) => {
-                    setOpen(true);
-                    if (response?.status === 200) {
-                      dispatch(
-                        ApiGetCoursesFromCart(accessToken, "unpaid", 1, 10)
-                      );
+                dispatch(
+                  ApiChargeCourse(accessToken, refreshToken, learnIds)
+                ).then((response) => {
+                  setOpen(true);
+                  if (response?.status === 200) {
+                    dispatch(
+                      ApiGetCoursesFromCart(
+                        accessToken,
+                        refreshToken,
+                        "unpaid",
+                        1,
+                        10
+                      )
+                    );
 
-                      dispatch(
-                        ApiGetCoursesFromCart(accessToken, "paid", 1, 10)
-                      );
-                    } else {
-                      console.log(
-                        "remove cart add error: ",
-                        response?.data.message
-                      );
-                    }
+                    dispatch(
+                      ApiGetCoursesFromCart(
+                        accessToken,
+                        refreshToken,
+                        "paid",
+                        1,
+                        10
+                      )
+                    );
+                  } else {
+                    console.log(
+                      "remove cart add error: ",
+                      response?.data.message
+                    );
                   }
-                );
+                });
               }}
             >
               <div>Checkout</div>
@@ -138,7 +151,7 @@ function TabCart({ value, index }) {
                     fontWeight: 600,
                     color: "#252525",
                     textAlign: "center",
-                    marginTop:30
+                    marginTop: 30,
                   }}
                   id="alert-dialog-description"
                 >

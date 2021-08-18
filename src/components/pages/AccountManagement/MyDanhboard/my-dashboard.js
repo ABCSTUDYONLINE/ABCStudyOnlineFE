@@ -31,18 +31,22 @@ import { useHistory, useLocation } from "react-router-dom";
 import { ApiUpdateAvatar } from "../../../../lib/redux/actions/account-management";
 import { ApiUsersMe } from "../../../../lib/redux/actions/authentication";
 import { CircularProgress } from "@material-ui/core";
-import { ApiGetCoursesFromCart, ApiGetFavoriteCourses } from "../../../../lib/redux/actions/courses";
+import {
+  ApiGetCoursesFromCart,
+  ApiGetFavoriteCourses,
+} from "../../../../lib/redux/actions/courses";
 
 function MyDashboard() {
   const location = useLocation();
   const history = useHistory();
 
   const accessToken = localStorage.getItem("accessToken");
-  useEffect(()=>{
-    dispatch(ApiGetFavoriteCourses(accessToken, 1, 10));
-    dispatch(ApiGetCoursesFromCart(accessToken, "unpaid", 1, 10));
-    dispatch(ApiGetCoursesFromCart(accessToken, "paid", 1, 10));
-  },[])
+  const refreshToken = localStorage.getItem("refreshToken");
+  useEffect(() => {
+    dispatch(ApiGetFavoriteCourses(accessToken, refreshToken, 1, 20));
+    dispatch(ApiGetCoursesFromCart(accessToken, refreshToken, "unpaid", 1, 20));
+    dispatch(ApiGetCoursesFromCart(accessToken, refreshToken, "paid", 1, 20));
+  }, []);
 
   const val = location.search?.slice(5, location.search?.length);
   const [value, setValue] = useState(
@@ -199,15 +203,17 @@ function MyDashboard() {
                     //     console.log("Error submitting form!", e);
                     //   }
                     // );
-                    dispatch(ApiUpdateAvatar(accessToken, apiData)).then(
-                      (response) => {
-                        if (response?.status === 200) {
-                          dispatch(ApiUsersMe(accessToken)).finally(() => {
+                    dispatch(
+                      ApiUpdateAvatar(accessToken, refreshToken, apiData)
+                    ).then((response) => {
+                      if (response?.status === 200) {
+                        dispatch(ApiUsersMe(accessToken, refreshToken)).finally(
+                          () => {
                             setLoadingUploadAvatar(false);
-                          });
-                        }
+                          }
+                        );
                       }
-                    );
+                    });
                   }
 
                   event.target.value = "";
@@ -326,6 +332,7 @@ function MyDashboard() {
                 style={{ borderRadius: 4 }}
                 onClick={() => {
                   localStorage.removeItem("accessToken");
+                  localStorage.removeItem("refreshToken");
                   dispatch({ type: "LOGOUT" });
                   history.push("");
                 }}
@@ -359,10 +366,7 @@ function MyDashboard() {
         index={2}
         favoriteCourses={favoriteCourses}
       ></TabPanel>
-      <AccountDetailPanel
-        value={value}
-        index={3}
-      ></AccountDetailPanel>
+      <AccountDetailPanel value={value} index={3}></AccountDetailPanel>
     </div>
   );
 }
