@@ -13,6 +13,7 @@ import Avatar from "@material-ui/core/Avatar";
 import DropHeart from "./DropHeart/drop-heart";
 import DropCart from "./DropCart/drop-cart";
 import { ApiUsersMe } from "../../../lib/redux/actions/authentication";
+import DropMyCourse from "./DropMyCourse/drop-my-course";
 
 function Header() {
   const loginStatus = useSelector((state) => state.Authentication.loginStatus);
@@ -100,6 +101,7 @@ function Header() {
         </CardButton>
       ) : (
         <div style={{ display: "flex", alignItems: "center" }}>
+          <DropMyCourse />
           <DropHeart />
           <DropCart />
           {userInfo?.avatarLink ? (
