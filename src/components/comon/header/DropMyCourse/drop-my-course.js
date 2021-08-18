@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
+import DashboardIcon from '@material-ui/icons/Dashboard';
 import { Fade, Paper, Popper } from "@material-ui/core";
 import SectionCourse from "../../../pages/SectionCourse/section-course";
 import { useSelector } from "react-redux";
 import { GrayText } from "../../../../globals";
 
 function Dropbox({ open, anchorEl }) {
-  const favoriteCourses = useSelector((state) => state.Courses.favoriteCourses);
-  console.log("Favorite courses: ", favoriteCourses);
+  const myDash = useSelector((state) => state.Courses.myDash);
+  console.log("myDash: ", myDash);
   return (
     <Popper
       open={open}
@@ -19,15 +19,17 @@ function Dropbox({ open, anchorEl }) {
       {({ TransitionProps }) => (
         <Fade {...TransitionProps} timeout={350}>
           <Paper>
-            {favoriteCourses.length !== 0 ? (
-              <SectionCourse title={"See all"} courses={favoriteCourses} tab={"favorite"} />
+            {myDash.length !== 0 ? (
+              <SectionCourse title={"See all"} courses={myDash} tab={"My Course"} />
             ) : (
               <div
                 style={{
                   padding: "20px 30px 20px 30px",
                   boxShadow: "-9px 10px 30px -5px rgba(0,0,0,0.06)",
                   alignItems: "center",
-                  justifyContent: "center",display:'flex',flexDirection:'column'
+                  justifyContent: "center",
+                  display: "flex",
+                  flexDirection: "column",
                 }}
               >
                 <img
@@ -35,12 +37,13 @@ function Dropbox({ open, anchorEl }) {
                     objectFit: "cover",
                     width: 100,
                     height: 100,
-                    
-                  }}
+                  }}i
                   src={"/assets/empty-box.png"}
                   alt=""
                 />
-                <GrayText style={{fontSize:16}}>You don't have any favorite course</GrayText>
+                <GrayText style={{ fontSize: 16 }}>
+                  You don't have any course in Dash
+                </GrayText>
               </div>
             )}
           </Paper>
@@ -50,7 +53,7 @@ function Dropbox({ open, anchorEl }) {
   );
 }
 
-function DropHeart() {
+function DropMyCourse() {
   const [anchorEl, setanchorEl] = useState(null);
   return (
     <div
@@ -61,18 +64,17 @@ function DropHeart() {
         setanchorEl(null);
       }}
     >
-      <FavoriteBorderIcon
+      <DashboardIcon
         style={{
           fontSize: 30,
           marginRight: 30,
           marginLeft: 20,
-          color: "#ff1949",
           cursor: "pointer",
         }}
-      ></FavoriteBorderIcon>
+      ></DashboardIcon>
       <Dropbox open={!!anchorEl} anchorEl={anchorEl}></Dropbox>
     </div>
   );
 }
 
-export default DropHeart;
+export default DropMyCourse;
