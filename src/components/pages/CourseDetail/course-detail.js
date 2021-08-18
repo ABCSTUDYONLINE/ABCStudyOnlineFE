@@ -110,6 +110,7 @@ function CourseDetail() {
   );
 
   const accessToken = localStorage.getItem("accessToken");
+  const refreshToken = localStorage.getItem("refreshToken");
 
   useEffect(() => {
     dispatch(ApiGetCourseDetail(id)).then((response) => {
@@ -119,7 +120,7 @@ function CourseDetail() {
     });
     if (myDash.length === 0) {
       console.log("empty dash");
-      dispatch(ApiGetCoursesFromCart(accessToken, "paid", 1, 10));
+      dispatch(ApiGetCoursesFromCart(accessToken, refreshToken, "paid", 1, 10));
     }
   }, []);
 
@@ -152,6 +153,7 @@ function CourseDetail() {
       dispatch(
         ApiPostLessonStatus(
           accessToken,
+          refreshToken,
           foundedCourseFromDash?.studystatus?.id,
           courseDetail.topics[topicIndex].lessons[videoIndex].id,
           "seeing",
@@ -159,7 +161,9 @@ function CourseDetail() {
         )
       ).finally(() => {
         console.log("send record time in close");
-        dispatch(ApiGetCoursesFromCart(accessToken, "paid", 1, 10));
+        dispatch(
+          ApiGetCoursesFromCart(accessToken, refreshToken, "paid", 1, 10)
+        );
       });
     }
 
@@ -184,10 +188,12 @@ function CourseDetail() {
   const handleOpenSignal = () => {
     console.log("learnIds in course detail: ", learnIds);
     console.log("accesstoken in course detail: ", accessToken);
-    dispatch(ApiChargeCourse(accessToken, learnIds))
+    dispatch(ApiChargeCourse(accessToken, refreshToken, learnIds))
       .then((response) => {
         if (response?.status === 200) {
-          dispatch(ApiGetCoursesFromCart(accessToken, "paid", 1, 10));
+          dispatch(
+            ApiGetCoursesFromCart(accessToken, refreshToken, "paid", 1, 10)
+          );
         } else {
           console.log("remove cart add error: ", response?.data.message);
         }
@@ -246,6 +252,7 @@ function CourseDetail() {
       dispatch(
         ApiPostLessonStatus(
           accessToken,
+          refreshToken,
           foundedCourseFromDash?.studystatus?.id,
           courseDetail.topics[topicIndex].lessons[videoIndex].id,
           "seem",
@@ -253,7 +260,9 @@ function CourseDetail() {
         )
       ).finally(() => {
         console.log("send record time in end");
-        dispatch(ApiGetCoursesFromCart(accessToken, "paid", 1, 10));
+        dispatch(
+          ApiGetCoursesFromCart(accessToken, refreshToken, "paid", 1, 10)
+        );
       });
 
       if (videoIndex === 0 || foundedCourseFromDash) {
@@ -676,6 +685,7 @@ function CourseDetail() {
                                 dispatch(
                                   ApiPostLessonStatus(
                                     accessToken,
+                                    refreshToken,
                                     foundedCourseFromDash?.studystatus?.id,
                                     courseDetail.topics[topicIndex].lessons[
                                       videoIndex
@@ -688,6 +698,7 @@ function CourseDetail() {
                                   dispatch(
                                     ApiGetCoursesFromCart(
                                       accessToken,
+                                      refreshToken,
                                       "paid",
                                       1,
                                       10

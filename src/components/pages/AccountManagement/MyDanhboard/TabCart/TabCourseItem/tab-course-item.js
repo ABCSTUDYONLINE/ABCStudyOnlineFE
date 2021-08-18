@@ -18,6 +18,7 @@ function TabCourseItem({ course, isDashBoard, handleOpenDialog }) {
   const history = useHistory();
   const dispatch = useDispatch();
   const accessToken = localStorage.getItem("accessToken");
+  const refreshToken = localStorage.getItem("refreshToken");
   console.log("Course in tab: ", course);
   const curTime = new Date();
   const expireTime = new Date(course?.course.promotion?.expireTime);
@@ -83,7 +84,10 @@ function TabCourseItem({ course, isDashBoard, handleOpenDialog }) {
           <RedText
             style={{ fontSize: 18, fontWeight: 500, marginRight: 30 }}
           >{`$${course.course.fee}`}</RedText>
-          <CommentButton courseId={course.course.id} handleOpenDialog={handleOpenDialog} />
+          <CommentButton
+            courseId={course.course.id}
+            handleOpenDialog={handleOpenDialog}
+          />
         </div>
       ) : (
         <div
@@ -104,20 +108,23 @@ function TabCourseItem({ course, isDashBoard, handleOpenDialog }) {
               fontWeight: 500,
             }}
             onClick={() => {
-              dispatch(ApiRemoveCourseFromCart(accessToken, course.id)).then(
-                (response) => {
-                  if (response?.status === 200) {
-                    dispatch(
-                      ApiGetCoursesFromCart(accessToken, "unpaid", 1, 10)
-                    );
-                  } else {
-                    console.log(
-                      "remove cart add error: ",
-                      response.data.message
-                    );
-                  }
+              dispatch(
+                ApiRemoveCourseFromCart(accessToken, refreshToken, course.id)
+              ).then((response) => {
+                if (response?.status === 200) {
+                  dispatch(
+                    ApiGetCoursesFromCart(
+                      accessToken,
+                      refreshToken,
+                      "unpaid",
+                      1,
+                      10
+                    )
+                  );
+                } else {
+                  console.log("remove cart add error: ", response.data.message);
                 }
-              );
+              });
             }}
           >
             <div>Delete</div>

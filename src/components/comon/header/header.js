@@ -23,11 +23,21 @@ function Header() {
   const categories = useSelector((state) => state.Courses.categories);
   const userInfo = useSelector((state) => state.Authentication.userInfo);
   let accessToken;
+  let refreshToken;
 
+  console.log("user info: ", userInfo);
   useEffect(() => {
     accessToken = localStorage.getItem("accessToken");
-    dispatch(ApiUsersMe(accessToken)).then(() => {
-      console.log("user info: ", userInfo);
+    refreshToken = localStorage.getItem("refreshToken");
+    dispatch(ApiUsersMe(accessToken, refreshToken)).then((response) => {
+      console.log(
+        "user info response: ",
+        response?.data?.newToken,
+        response?.data?.message
+      );
+      if (response?.data?.newToken) {
+        localStorage.setItem("accessToken", response?.data?.newToken);
+      }
     });
     if (categories.length === 0) {
       dispatch(ApiGetCategories(1, 10));
@@ -102,7 +112,7 @@ function Header() {
                 marginRight: 4,
                 cursor: "pointer",
                 marginLeft: 40,
-                borderRadius:"50%"
+                borderRadius: "50%",
               }}
               onClick={() => {
                 history.push("/myDashboardPage");

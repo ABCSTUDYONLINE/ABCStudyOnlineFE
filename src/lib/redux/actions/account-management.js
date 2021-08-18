@@ -3,7 +3,8 @@ import axios from "axios";
 export const apiUrl = "https://abcstudyonline.herokuapp.com";
 
 export const ApiChangePassword =
-  (accessToken, oldPassword, newPassword) => (dispatch, getStore) => {
+  (accessToken, refreshToken, oldPassword, newPassword) =>
+  (dispatch, getStore) => {
     return axios
       .patch(
         apiUrl + "/auth/password",
@@ -12,7 +13,10 @@ export const ApiChangePassword =
           newPassword,
         },
         {
-          headers: { Authorization: `Bearer ${accessToken}` },
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            Refresh: refreshToken,
+          },
         }
       )
       .then((response) => {
@@ -33,12 +37,13 @@ export const ApiChangePassword =
   };
 
 export const ApiUpdateAvatar =
-  (accessToken, apiData) => (dispatch, getStore) => {
+  (accessToken, refreshToken, apiData) => (dispatch, getStore) => {
     return axios
       .put(apiUrl + "/auth/avatar", apiData, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
           "content-type": "multipart/form-data",
+          Refresh: refreshToken,
         },
       })
       .then((response) => {
@@ -57,7 +62,15 @@ export const ApiUpdateAvatar =
   };
 
 export const ApiChangeProfile =
-  (accessToken, firstName, lastName, email, phoneNumber, address) =>
+  (
+    accessToken,
+    refreshToken,
+    firstName,
+    lastName,
+    email,
+    phoneNumber,
+    address
+  ) =>
   (dispatch, getStore) => {
     console.log("email: ", email);
     return axios
@@ -74,7 +87,10 @@ export const ApiChangeProfile =
           shortBio: "",
         },
         {
-          headers: { Authorization: `Bearer ${accessToken}` },
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            Refresh: refreshToken,
+          },
         }
       )
       .then((response) => {

@@ -100,10 +100,13 @@ export const ApiGetCategories = (page, limit) => (dispatch, getStore) => {
 };
 
 export const ApiGetFavoriteCourses =
-  (accessToken, page, limit) => (dispatch, getStore) => {
+  (accessToken, refreshToken, page, limit) => (dispatch, getStore) => {
     return axios
       .get(apiUrl + `/courses/favorites?page=${page}&limit=${limit}`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          Refresh: refreshToken,
+        },
       })
       .then((response) => {
         if (response.status === 200) {
@@ -123,7 +126,7 @@ export const ApiGetFavoriteCourses =
       });
   };
 export const ApiAddFavoriteCourse =
-  (accessToken, courseId) => (dispatch, getStore) => {
+  (accessToken, refreshToken, courseId) => (dispatch, getStore) => {
     return axios
       .post(
         apiUrl + "/courses/favorites",
@@ -131,7 +134,10 @@ export const ApiAddFavoriteCourse =
           courseId,
         },
         {
-          headers: { Authorization: `Bearer ${accessToken}` },
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            Refresh: refreshToken,
+          },
         }
       )
       .then((response) => {
@@ -148,10 +154,13 @@ export const ApiAddFavoriteCourse =
       });
   };
 export const ApiRemoveFavoriteCourse =
-  (accessToken, favoriteId) => (dispatch, getStore) => {
+  (accessToken, refreshToken, favoriteId) => (dispatch, getStore) => {
     return axios
       .delete(apiUrl + `/courses/favorites?favoriteId=${favoriteId}`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          Refresh: refreshToken,
+        },
       })
       .then((response) => {
         if (response.status === 200) {
@@ -188,7 +197,7 @@ export const ApiGetCourseDetail = (courseId) => (dispatch, getStore) => {
 };
 
 export const ApiAddCourseToCart =
-  (accessToken, courseId) => (dispatch, getStore) => {
+  (accessToken, refreshToken, courseId) => (dispatch, getStore) => {
     return axios
       .post(
         apiUrl + "/learn",
@@ -196,7 +205,10 @@ export const ApiAddCourseToCart =
           courseId,
         },
         {
-          headers: { Authorization: `Bearer ${accessToken}` },
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            Refresh: refreshToken,
+          },
         }
       )
       .then((response) => {
@@ -214,10 +226,13 @@ export const ApiAddCourseToCart =
       });
   };
 export const ApiRemoveCourseFromCart =
-  (accessToken, courseId) => (dispatch, getStore) => {
+  (accessToken, refreshToken, courseId) => (dispatch, getStore) => {
     return axios
       .delete(apiUrl + `/learn?learnId=${courseId}`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          Refresh: refreshToken,
+        },
       })
       .then((response) => {
         if (response.status === 200) {
@@ -235,10 +250,13 @@ export const ApiRemoveCourseFromCart =
   };
 
 export const ApiGetCoursesFromCart =
-  (accessToken, status, page, limit) => (dispatch, getStore) => {
+  (accessToken, refreshToken, status, page, limit) => (dispatch, getStore) => {
     return axios
       .get(apiUrl + `/learn?status=${status}&page=${page}&limit=${limit}`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          Refresh: refreshToken,
+        },
       })
       .then((response) => {
         if (status === "unpaid") {
@@ -316,29 +334,28 @@ export const ApiSearchCourses =
       });
   };
 
-  
 export const ApiSortPriceBySearchCourses =
-(type,value, subText, page, limit) => (dispatch, getStore) => {
-  return axios
-    .get(
-      apiUrl +
-        `/courses/finds?type=${type}&value=${value}&subText=${subText}&page=${page}&limit=${limit}`
-    )
-    .then((response) => {
-      if (response.status === 200) {
-        dispatch({
-          type: TYPES.SORT_PRICE_BY_SEARCH_COURSES_SUCCESSED,
-          payload: response.data,
-        });
-      } else {
+  (type, value, subText, page, limit) => (dispatch, getStore) => {
+    return axios
+      .get(
+        apiUrl +
+          `/courses/finds?type=${type}&value=${value}&subText=${subText}&page=${page}&limit=${limit}`
+      )
+      .then((response) => {
+        if (response.status === 200) {
+          dispatch({
+            type: TYPES.SORT_PRICE_BY_SEARCH_COURSES_SUCCESSED,
+            payload: response.data,
+          });
+        } else {
+          dispatch({ type: TYPES.SORT_PRICE_BY_SEARCH_COURSES_FAILED });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
         dispatch({ type: TYPES.SORT_PRICE_BY_SEARCH_COURSES_FAILED });
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-      dispatch({ type: TYPES.SORT_PRICE_BY_SEARCH_COURSES_FAILED });
-    });
-};
+      });
+  };
 
 export const ApiGetsearchTopCourses =
   (type, page, limit) => (dispatch, getStore) => {
@@ -363,7 +380,7 @@ export const ApiGetsearchTopCourses =
   };
 
 export const ApiChargeCourse =
-  (accessToken, learnIds) => (dispatch, getStore) => {
+  (accessToken, refreshToken, learnIds) => (dispatch, getStore) => {
     return axios
       .put(
         apiUrl + "/learn/charge",
@@ -371,7 +388,10 @@ export const ApiChargeCourse =
           learnIds: learnIds,
         },
         {
-          headers: { Authorization: `Bearer ${accessToken}` },
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            Refresh: refreshToken,
+          },
         }
       )
       .then((response) => {
@@ -391,7 +411,8 @@ export const ApiChargeCourse =
 
 //Rate course
 export const ApiRateCourse =
-  (accessToken, courseId, rateNumber, message) => (dispatch, getStore) => {
+  (accessToken, refreshToken, courseId, rateNumber, message) =>
+  (dispatch, getStore) => {
     return axios
       .post(
         apiUrl + "/rates",
@@ -401,7 +422,10 @@ export const ApiRateCourse =
           message,
         },
         {
-          headers: { Authorization: `Bearer ${accessToken}` },
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            Refresh: refreshToken,
+          },
         }
       )
       .then((response) => {
@@ -420,10 +444,14 @@ export const ApiRateCourse =
       });
   };
 export const ApiGetRatesCourse =
-  (accessToken, courseId, page, limit) => (dispatch, getStore) => {
+  (accessToken, refreshToken, courseId, page, limit) =>
+  (dispatch, getStore) => {
     return axios
       .get(apiUrl + `/rates?courseId=${courseId}&page=${page}&limit=${limit}`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          Refresh: refreshToken,
+        },
       })
       .then((response) => {
         if (response.status === 200) {
@@ -557,7 +585,7 @@ export const ApiGetTopViewsCourses = (page, limit) => (dispatch, getStore) => {
 };
 
 export const ApiPostLessonStatus =
-  (accessToken, studyStatusId, lessonId,status, timeRecord) =>
+  (accessToken, refreshToken, studyStatusId, lessonId, status, timeRecord) =>
   (dispatch, getStore) => {
     return axios
       .post(
@@ -569,7 +597,10 @@ export const ApiPostLessonStatus =
           timeRecord,
         },
         {
-          headers: { Authorization: `Bearer ${accessToken}` },
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            Refresh: refreshToken,
+          },
         }
       )
       .then((response) => {

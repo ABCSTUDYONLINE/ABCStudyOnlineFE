@@ -22,6 +22,7 @@ export default function CommentButton({ courseId, handleOpenDialog }) {
   const [validationRatingMsg, setValidationRatingMsg] = useState("");
   const dispatch = useDispatch();
   const accessToken = localStorage.getItem("accessToken");
+  const refreshToken = localStorage.getItem("refreshToken");
 
   const handleClickOpen = () => {
     setRate(0);
@@ -40,12 +41,12 @@ export default function CommentButton({ courseId, handleOpenDialog }) {
       setValidationRatingMsg("Please choose your rating");
       return;
     }
-    dispatch(ApiRateCourse(accessToken, courseId, rate, comment)).finally(
-      () => {
-        console.log("FDSFDS");
-        handleOpenDialog();
-      }
-    );
+    dispatch(
+      ApiRateCourse(accessToken, refreshToken, courseId, rate, comment)
+    ).finally(() => {
+      console.log("FDSFDS");
+      handleOpenDialog();
+    });
     setOpen(false);
   };
   const handleCloseCancel = () => {

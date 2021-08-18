@@ -48,11 +48,11 @@ function Category() {
 
     if (!keyWord && titleLocation === "All") {
       if (value === 1) {
-        dispatch(ApiSortAll("mount", "ASC", 1, 20)).finally(() => {
+        dispatch(ApiSortAll("mount", "ASC", 1, 30)).finally(() => {
           setLoadingCategories(false);
         });
       } else if (value === 2) {
-        dispatch(ApiSortAll("mount", "DESC", 1, 20)).finally(() => {
+        dispatch(ApiSortAll("mount", "DESC", 1, 30)).finally(() => {
           setLoadingCategories(false);
         });
       } else {
@@ -133,7 +133,7 @@ function Category() {
           setLoadingCategories(false);
         });
       } else if (titleLocation === "All") {
-        dispatch(ApiGetsearchTopCourses("all", 1, 20)).finally(() => {
+        dispatch(ApiGetsearchTopCourses("all", 1, 30)).finally(() => {
           setLoadingCategories(false);
         });
       } else {

@@ -109,27 +109,31 @@ export const ApiGoogleLogin = (payload) => (dispatch, getStore) => {
     });
 };
 
-export const ApiUsersMe = (accessToken) => (dispatch, getStore) => {
-  return axios
-    .get(apiUrl + "/users/me", {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    })
-    .then((response) => {
-      if (response.status === 200) {
-        dispatch({
-          type: TYPES.GET_USERINFO_SUCCESSED,
-          payload: response.data,
-        });
-      } else {
+export const ApiUsersMe =
+  (accessToken, refreshToken) => (dispatch, getStore) => {
+    return axios
+      .get(apiUrl + "/users/me", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          Refresh: refreshToken,
+        },
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          dispatch({
+            type: TYPES.GET_USERINFO_SUCCESSED,
+            payload: response.data,
+          });
+        } else {
+          dispatch({ type: TYPES.GET_USERINFO_FAILED });
+        }
+        return response;
+      })
+      .catch((error) => {
+        console.log("Get userinfo Error: ", error);
         dispatch({ type: TYPES.GET_USERINFO_FAILED });
-      }
-      return response;
-    })
-    .catch((error) => {
-      console.log("Get userinfo Error: ", error);
-      dispatch({ type: TYPES.GET_USERINFO_FAILED });
-    });
-};
+      });
+  };
 
 export const ApiForgetPasswordSendEmail =
   (username) => (dispatch, getStore) => {

@@ -53,6 +53,7 @@ function ActionLinksHover({ id }) {
   const [circleShopLoading, setCircleShopLoading] = useState(false);
 
   const accessToken = localStorage.getItem("accessToken");
+  const refreshToken = localStorage.getItem("refreshToken");
 
   const dispatch = useDispatch();
   let foundedCourse = favoriteCourses.find(
@@ -78,11 +79,11 @@ function ActionLinksHover({ id }) {
     loading = true;
     setCircleHeartLoading(true);
     if (foundedCourse) {
-      dispatch(ApiRemoveFavoriteCourse(accessToken, foundedCourse.id)).then(
+      dispatch(ApiRemoveFavoriteCourse(accessToken,refreshToken, foundedCourse.id)).then(
         (response) => {
           if (response?.status === 200) {
             loading = false;
-            dispatch(ApiGetFavoriteCourses(accessToken, 1, 10));
+            dispatch(ApiGetFavoriteCourses(accessToken,refreshToken, 1, 20));
           } else {
             console.log("action link remove error: ", response?.data.message);
           }
@@ -90,10 +91,10 @@ function ActionLinksHover({ id }) {
         }
       );
     } else {
-      dispatch(ApiAddFavoriteCourse(accessToken, id)).then((response) => {
+      dispatch(ApiAddFavoriteCourse(accessToken,refreshToken, id)).then((response) => {
         if (response.status === 201) {
           loading = false;
-          dispatch(ApiGetFavoriteCourses(accessToken, 1, 10));
+          dispatch(ApiGetFavoriteCourses(accessToken,refreshToken, 1, 20));
         } else {
           console.log("action link add error: ", response.data.message);
         }
@@ -118,11 +119,11 @@ function ActionLinksHover({ id }) {
     setCircleShopLoading(true);
     if (foundedCourseFromCart) {
       dispatch(
-        ApiRemoveCourseFromCart(accessToken, foundedCourseFromCart.id)
+        ApiRemoveCourseFromCart(accessToken,refreshToken, foundedCourseFromCart.id)
       ).then((response) => {
         if (response?.status === 200) {
           loadingCart = false;
-          dispatch(ApiGetCoursesFromCart(accessToken, "unpaid", 1, 10));
+          dispatch(ApiGetCoursesFromCart(accessToken,refreshToken, "unpaid", 1, 10));
         } else {
           console.log("action link add error: ", response.data.message);
         }
@@ -130,10 +131,10 @@ function ActionLinksHover({ id }) {
       });
     } else {
       setOpen(true);
-      dispatch(ApiAddCourseToCart(accessToken, id)).then((response) => {
+      dispatch(ApiAddCourseToCart(accessToken,refreshToken, id)).then((response) => {
         if (response?.status === 201) {
           loadingCart = false;
-          dispatch(ApiGetCoursesFromCart(accessToken, "unpaid", 1, 10));
+          dispatch(ApiGetCoursesFromCart(accessToken,refreshToken, "unpaid", 1, 10));
         } else {
           console.log("action link remove error: ", response.data.message);
         }

@@ -25,6 +25,7 @@ function CourseContent({
   const dispatch = useDispatch();
 
   const accessToken = localStorage.getItem("accessToken");
+  const refreshToken = localStorage.getItem("refreshToken");
   return (
     <div
       style={{
@@ -76,6 +77,7 @@ function CourseContent({
                       dispatch(
                         ApiPostLessonStatus(
                           accessToken,
+                          refreshToken,
                           foundedCourseFromDash?.studystatus.id,
                           course.topics[topicIndex].lessons[videoIndex].id,
                           "seeing",
@@ -84,7 +86,13 @@ function CourseContent({
                       ).finally(() => {
                         console.log("send record time");
                         dispatch(
-                          ApiGetCoursesFromCart(accessToken, "paid", 1, 10)
+                          ApiGetCoursesFromCart(
+                            accessToken,
+                            refreshToken,
+                            "paid",
+                            1,
+                            10
+                          )
                         );
                       });
                     }

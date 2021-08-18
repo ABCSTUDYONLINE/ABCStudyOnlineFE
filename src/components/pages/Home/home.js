@@ -28,11 +28,12 @@ function Home() {
 
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
+    const refreshToken = localStorage.getItem("refreshToken");
     if (accessToken) {
       console.log("Home: ", accessToken);
-      dispatch(ApiGetFavoriteCourses(accessToken, 1, 10));
-      dispatch(ApiGetCoursesFromCart(accessToken, "unpaid", 1, 10));
-      dispatch(ApiGetCoursesFromCart(accessToken, "paid", 1, 10));
+      dispatch(ApiGetFavoriteCourses(accessToken,refreshToken, 1, 10));
+      dispatch(ApiGetCoursesFromCart(accessToken,refreshToken, "unpaid", 1, 10));
+      dispatch(ApiGetCoursesFromCart(accessToken,refreshToken, "paid", 1, 10));
     }
 
     setloaLingNewCourses(true);
