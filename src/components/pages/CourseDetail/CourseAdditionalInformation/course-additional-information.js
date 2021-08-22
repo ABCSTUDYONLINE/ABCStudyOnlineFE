@@ -4,11 +4,11 @@ import LearnItem from "./LearnItem/learn-item";
 import RequirementItem from "./RequirementItem/requirement-item";
 
 function CourseAdditionalInformation({ course }) {
-  const whatYouWillLearns = course.whatWillLearn.split("/");
-  console.log("whatYouWillLearns", whatYouWillLearns);
+  // const whatYouWillLearns = course.whatWillLearn.split("/");
+  // console.log("whatYouWillLearns", whatYouWillLearns);
 
-  const requirements = course.requirements.split("/");
-  console.log("requirements", requirements);
+  // const requirements = course.requirements.split("/");
+  // console.log("requirements", requirements);
   return (
     <div>
       <img
@@ -21,7 +21,9 @@ function CourseAdditionalInformation({ course }) {
         src={course.courseImageLink}
         alt=""
       />
-      <div style={{ marginTop: 30 }}>
+
+      <div dangerouslySetInnerHTML={{ __html: course.content }}></div>
+      {/* <div style={{ marginTop: 30 }}>
         <BlackText
           style={{
             fontSize: 22,
@@ -97,7 +99,7 @@ function CourseAdditionalInformation({ course }) {
         >
           {course.detailCourseDescription}
         </BlackText>
-      </div>
+      </div> */}
     </div>
   );
 }
