@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import {
   BlackText,
@@ -22,6 +22,20 @@ function TabCourseItem({ course, isDashBoard, handleOpenDialog }) {
   console.log("Course in tab: ", course);
   const curTime = new Date();
   const expireTime = new Date(course?.course.promotion?.expireTime);
+  let seen = true;
+  const myDash = useSelector((state) => state.Courses.myDash);
+  let foundedCourseFromDash = myDash?.find(
+    (dashItem) => dashItem.course.id === course?.course?.id
+  );
+
+  if (foundedCourseFromDash?.studystatus?.lessonStatus.length === 0) {
+    seen = false;
+  }
+  foundedCourseFromDash?.studystatus?.lessonStatus?.map((lessonStatus) => {
+    if (lessonStatus.status === "seeing") {
+      seen = false;
+    }
+  });
   return (
     <div
       style={{
@@ -34,17 +48,55 @@ function TabCourseItem({ course, isDashBoard, handleOpenDialog }) {
         alignItems: "center",
       }}
     >
-      <div style={{ display: "flex" }}>
-        <img
-          style={{
-            objectFit: "cover",
-            width: 120,
-            height: 70,
-            borderRadius: 8,
-          }}
-          src={course.course.courseImageLink}
-          alt=""
-        />
+      <div style={{ display: "flex", position: "relative" }}>
+        <div style={{ display: "flex", position: "relative" }}>
+          <img
+            style={{
+              objectFit: "cover",
+              width: 120,
+              height: 70,
+              borderRadius: 8,
+            }}
+            src={course.course.courseImageLink}
+            alt=""
+          />
+          {course?.course?.promotion && expireTime >= curTime ? (
+            <div
+              style={{
+                position: "absolute",
+                background: "#ff1949",
+                padding: "12px 4px",
+                top: 0,
+                left: 8,
+                borderRadius: "0 0 32px 32px",
+                color: "white",
+                fontWeight: 700,
+                fontSize: 7,
+              }}
+            >
+              {Number((course?.course?.promotion.percent * 100).toFixed(0))}%
+            </div>
+          ) : null}
+          {foundedCourseFromDash && seen ? (
+            <div
+              style={{
+                position: "absolute",
+                background: "#fff",
+                padding: "5px 5px",
+                bottom: 0,
+                right: 10,
+                borderRadius: "5px 5px 0 0",
+                color: "#0eb582",
+                fontWeight: 400,
+                fontSize: 6,
+                boxShadow: "0 0 40px 3px rgb(0 0 0 / 4%)",
+              }}
+            >
+              Completed
+            </div>
+          ) : null}
+        </div>
+
         <div
           style={{
             marginLeft: 10,
@@ -142,11 +194,12 @@ function TabCourseItem({ course, isDashBoard, handleOpenDialog }) {
               >{`$${course.course.fee}`}</div>
             ) : null}
             {course.course.promotion && expireTime >= curTime ? (
-              <RedText
-                style={{ fontSize: 18, fontWeight: 500, marginRight: 30 }}
-              >{`$${
+              <RedText style={{ fontSize: 18, fontWeight: 500 }}>{`$${
                 (course.course.fee *
-                  (100 - course.course.promotion?.percent * 100 || 100)) /
+                  (100 -
+                    Number(
+                      (course.course.promotion?.percent * 100).toFixed(0)
+                    ) || 100)) /
                 100
               }`}</RedText>
             ) : (
