@@ -6,17 +6,34 @@ import {
   CardButtonText,
   GrayText,
   RedText,
-} from "../../../../../../globals/index"
+} from "../../../../../../globals/index";
 import StarRatings from "react-star-ratings";
 import PermIdentityIcon from "@material-ui/icons/PermIdentity";
 import ImportContactsIcon from "@material-ui/icons/ImportContacts";
 import { useHistory } from "react-router-dom";
-import ActionLinksHover from "../../../../Home/ListCourse/ListCourseItem/action-links-hover"
+import ActionLinksHover from "../../../../Home/ListCourse/ListCourseItem/action-links-hover";
 import Avatar from "@material-ui/core/Avatar";
+import { useSelector } from "react-redux";
 
 function PanelCourseItem({ course, style }) {
   let history = useHistory();
   const [isHover, setIsHover] = useState(false);
+  const curTime = new Date();
+  const expireTime = new Date(course.course.promotion?.expireTime);
+  let seen = true;
+  const myDash = useSelector((state) => state.Courses.myDash);
+  let foundedCourseFromDash = myDash?.find(
+    (dashItem) => dashItem.course.id === course?.course?.id
+  );
+
+  if (foundedCourseFromDash?.studystatus?.lessonStatus.length === 0) {
+    seen = false;
+  }
+  foundedCourseFromDash?.studystatus?.lessonStatus?.map((lessonStatus) => {
+    if (lessonStatus.status === "seeing") {
+      seen = false;
+    }
+  });
   return (
     <Card
       onMouseEnter={() => {
@@ -52,6 +69,42 @@ function PanelCourseItem({ course, style }) {
             alt=""
           />
         </CardButtonItem>
+        {course?.course?.promotion && expireTime >= curTime ? (
+          <div
+            style={{
+              position: "absolute",
+              background: "#ff1949",
+              padding: "16px 4px",
+              top: 0,
+              left: 8,
+              borderRadius: "0 0 32px 32px",
+              color: "white",
+              fontWeight: 700,
+              fontSize: 20,
+            }}
+          >
+            {Number((course?.course?.promotion.percent * 100).toFixed(0))}%
+          </div>
+        ) : null}
+        {foundedCourseFromDash && seen ? (
+          <div
+            style={{
+              position: "absolute",
+              background: "#fff",
+              padding: "5px 15px",
+              bottom: 0,
+              right: 25,
+              borderRadius: "5px 5px 0 0",
+              color: "#0eb582",
+              fontWeight: 400,
+              fontSize: 20,
+              boxShadow: "0 0 40px 3px rgb(0 0 0 / 4%)",
+            }}
+          >
+            Completed
+          </div>
+        ) : null}
+        {isHover ? <ActionLinksHover id={course.id} /> : <div></div>}
         {isHover ? <ActionLinksHover id={course.course.id} /> : <div></div>}
       </div>
       <div
@@ -65,7 +118,7 @@ function PanelCourseItem({ course, style }) {
             alignItems: "center",
           }}
         >
-          {course.course.teacher.avatarLink !==null ? (
+          {course.course.teacher.avatarLink !== null ? (
             <img
               src={course.course.teacher.avatarLink}
               alt=""
@@ -78,7 +131,7 @@ function PanelCourseItem({ course, style }) {
           ) : (
             <Avatar src="/broken-image.jpg" />
           )}
-          <BlackText style={{ fontSize: 14.5, fontWeight: 500,marginLeft:8 }}>
+          <BlackText style={{ fontSize: 14.5, fontWeight: 500, marginLeft: 8 }}>
             {`${course.course.teacher.firstName} ${course.course.teacher.lastName}`}
           </BlackText>
         </div>
@@ -143,9 +196,33 @@ function PanelCourseItem({ course, style }) {
               <ImportContactsIcon></ImportContactsIcon>
               <div style={{ marginLeft: 5 }}>{`6 lessons`}</div>
             </div>
-            <RedText
-              style={{ fontSize: 18, fontWeight: 500 }}
-            >{`$${course.course.fee}`}</RedText>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              {course.course.promotion && expireTime >= curTime ? (
+                <div
+                  style={{
+                    color: "#81868a",
+                    textDecoration: "line-through",
+                    fontSize: 16,
+                    fontWeight: 400,
+                    marginRight: 5,
+                  }}
+                >{`$${course.course.fee}`}</div>
+              ) : null}
+              {course.course.promotion && expireTime >= curTime ? (
+                <RedText style={{ fontSize: 18, fontWeight: 500 }}>{`$${
+                  (course.course.fee *
+                    (100 -
+                      Number(
+                        (course.course.promotion?.percent * 100).toFixed(0)
+                      ) || 100)) /
+                  100
+                }`}</RedText>
+              ) : (
+                <RedText
+                  style={{ fontSize: 18, fontWeight: 500 }}
+                >{`$${course.course.fee}`}</RedText>
+              )}
+            </div>
           </div>
         </div>
       </div>
