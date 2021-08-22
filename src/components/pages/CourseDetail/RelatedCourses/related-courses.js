@@ -46,7 +46,7 @@ function RelatedCourses({caseTitle,style,relatedCourses}) {
           <ListCourseItem
             key={index}
             course={course}
-            style={{ maxWidth: 360 }}
+            style={{ width: 320 }}
           />
         ))}
       </Carousel>
