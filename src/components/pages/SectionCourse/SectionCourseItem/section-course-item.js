@@ -134,7 +134,7 @@ function SectionCourseItem({ course }) {
               marginLeft: 4,
             }}
           >
-            {`${course.rates.rate} (${course.rates.total} rating)`}
+            {`${Number((course.rates.rate).toFixed(2))} (${course.rates.total} rating)`}
           </GrayText>
         </div>
       </div>
