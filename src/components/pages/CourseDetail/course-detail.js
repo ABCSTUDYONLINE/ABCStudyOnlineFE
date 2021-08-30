@@ -561,8 +561,10 @@ function CourseDetail() {
                     >
                       {`$${
                         (courseDetail.fee *
-                          (100 - courseDetail.promotion?.percent * 100 ||
-                            100)) /
+                          (100 -
+                            Number(
+                              (courseDetail.promotion?.percent * 100).toFixed(0)
+                            ) || 100)) /
                         100
                       }`}
                     </BlackText>
