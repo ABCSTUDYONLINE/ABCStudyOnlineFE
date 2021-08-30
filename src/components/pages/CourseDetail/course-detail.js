@@ -627,11 +627,12 @@ function CourseDetail() {
                 onClose={handleClose}
                 aria-labelledby="customized-dialog-title"
                 open={open}
+                style={{marginTop:80}}
               >
                 <DialogTitle id="customized-dialog-title" onClose={handleClose}>
                   {courseDetail.courseName}
                 </DialogTitle>
-                <DialogContent dividers>
+                <DialogContent dividers  >
                   <ReactPlayer
                     url={videoUrl}
                     width="100%"
