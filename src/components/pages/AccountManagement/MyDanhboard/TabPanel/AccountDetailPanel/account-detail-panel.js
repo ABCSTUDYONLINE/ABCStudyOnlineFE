@@ -15,6 +15,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import Dialog from "@material-ui/core/Dialog";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import Button from "@material-ui/core/Button";
+import { ApiUsersMe } from "../../../../../../lib/redux/actions/authentication";
 
 function AccountDetailPanel({ value, index }) {
   const userInfo = useSelector((state) => state.Authentication.userInfo);
@@ -108,6 +109,7 @@ function AccountDetailPanel({ value, index }) {
         .then((response) => {
           if (response?.status === 200 && response?.data.data !== null) {
             setValidationMsg({});
+            dispatch(ApiUsersMe(accessToken, refreshToken))
           }
         })
         .finally(() => {
